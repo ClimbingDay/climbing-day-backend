@@ -8,6 +8,15 @@ tasks.withType<Jar> {
     enabled = true
 }
 
+// jjwt 버전
+val jjwtVersion = "0.11.5"
+
 dependencies {
+    implementation(project(":core:domain"))
+
     implementation("org.springframework.boot:spring-boot-starter-security")
+    // jwt
+    implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
+    implementation("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
+    implementation("io.jsonwebtoken:jjwt-jackson:$jjwtVersion")
 }
