@@ -11,5 +11,10 @@ tasks.withType<Jar> {
 dependencies {
     implementation(project(":core:domain"))
 
+    // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    // valid
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    // security
+    implementation("org.springframework.boot:spring-boot-starter-security")
 }
