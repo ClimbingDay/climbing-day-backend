@@ -14,12 +14,14 @@ import lombok.Getter;
 
 @Getter
 public class UserDetailsImpl implements UserDetails {
+	private long id;
 	private String email;
 	@JsonIgnore
 	private String password;
 	private List<GrantedAuthority> authorities;
 
-	public UserDetailsImpl(String email, String password, List<GrantedAuthority> authorities) {
+	public UserDetailsImpl(long id, String email, String password, List<GrantedAuthority> authorities) {
+		this.id = id;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
@@ -30,6 +32,7 @@ public class UserDetailsImpl implements UserDetails {
 		authorities.add(new SimpleGrantedAuthority(member.getRoles().name()));
 
 		return new UserDetailsImpl(
+			member.getId(),
 			member.getEmail(),
 			member.getPassword(),
 			authorities
