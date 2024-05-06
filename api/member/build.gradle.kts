@@ -7,3 +7,9 @@ tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
 tasks.withType<Jar> {
     enabled = true
 }
+
+dependencies {
+    implementation(project(":core:domain"))
+
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+}

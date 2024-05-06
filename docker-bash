@@ -18,6 +18,7 @@ step1() {
     # 이미지 목록
     IMAGES=(
         "jaspeen/oracle-xe-11g"
+        "redis"
     )
 
     for image in "${IMAGES[@]}"; do

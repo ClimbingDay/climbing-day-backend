@@ -7,3 +7,12 @@ tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
 tasks.withType<Jar> {
     enabled = true
 }
+
+val oracleVersion = "21.3.0.0"
+
+dependencies {
+    // oracle
+    implementation("com.oracle.database.jdbc:ojdbc11:$oracleVersion")
+    // redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+}
