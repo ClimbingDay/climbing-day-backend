@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -33,13 +34,14 @@ public class Member {
 
 	private String email;						// 아이디(이메일)
 
+	@Setter
 	private String password;					// 비밀번호
 
 	private String name;						// 이름
 
 	private Date birthDate;						// 생년월일
 
-	private String phoneNum;					// 전화번호
+	private String phoneNumber;					// 전화번호
 
 	@Enumerated(EnumType.STRING)
 	private EStatus status = EStatus.PENDING;	// 상태
