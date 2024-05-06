@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# 이미지 체크
+check_and_pull() {
+    local image=$1
+    echo "${image} 이미지 확인 및 다운로드"
+    if ! docker images ${image} -q; then
+        echo "${image}가 존재하지 않습니다. ${image} 다운로드합니다..."
+        docker pull ${image} || { echo "Error: ${image}를 이미지 가져오는데 실패했습니다."; exit 1; }
+    else
+        echo "${image}가 존재합니다."
+    fi
+}
+
+# docker hub에서 제공하는 필요한 이미지 확인 및 다운로드
+step1() {
+    echo "Step1: docker hub에서 제공하는 필요한 이미지 확인 및 다운로드"
+    # 이미지 목록
+    IMAGES=(
+        "jaspeen/oracle-xe-11g"
+    )
+
+    for image in "${IMAGES[@]}"; do
+        check_and_pull "$image"
+    done
+}
+
+# 프로젝트 관련 최신 이미지 파일 불러오기
+step2() {
+    echo "Step2: 프로젝트 관련 최신 이미지 파일 불러오기"
+    REPOSITORY="seongolee/climbing_day"
+    tag="latest"
+
+    docker pull ${REPOSITORY}:${tag}
+}
+
+main() {
+    step1
+    step2
+    echo "Docker image 설정이 정상적으로 완료되었습니다."
+}
+
+main
