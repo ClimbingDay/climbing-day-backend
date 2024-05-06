@@ -2,6 +2,7 @@ package com.climbingday.domain.member;
 
 import java.sql.Date;
 
+import com.climbingday.domain.member.enums.ERoles;
 import com.climbingday.domain.member.enums.EStatus;
 
 import jakarta.persistence.Column;
@@ -42,4 +43,7 @@ public class Member {
 
 	@Enumerated(EnumType.STRING)
 	private EStatus status = EStatus.PENDING;	// 상태
+
+	@Enumerated(EnumType.STRING)
+	private ERoles roles = ERoles.ROLE_USER;
 }
