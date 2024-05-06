@@ -2,16 +2,23 @@ package com.climbingday.security.jwt;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.climbingday.security.service.UserDetailsImpl;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -57,6 +64,42 @@ public class JwtProvider {
 			.claim(AUTHENTICATION_CLAIM_NAME, roles.toString())
 			.signWith(key, SignatureAlgorithm.HS512)
 			.compact();
+	}
+
+	/**
+	 * 권한 체크
+	 */
+	public Authentication toAuthentication(String token) {
+		JwtParser jwtParser = Jwts.parserBuilder()
+			.setSigningKey(extractSecretKey())
+			.build();
+		Claims claims = jwtParser.parseClaimsJws(token).getBody();
+
+		Object roles = claims.get(AUTHENTICATION_CLAIM_NAME);
+		List<GrantedAuthority> authorities = null;
+		if(roles != null && !roles.toString().trim().isEmpty()) {
+			authorities = List.of(new SimpleGrantedAuthority(roles.toString()));
+		}
+
+		UserDetails user = UserDetailsImpl.builder()
+			.id(claims.get("id", Long.class))
+			.email(claims.getSubject())
+			.password(null)
+			.authorities(authorities)
+			.build();
+
+		return new UsernamePasswordAuthenticationToken(user, token, authorities);
+	}
+
+	/**
+	 * 토큰 검증
+	 */
+	public void validate(String token) {
+		JwtParser jwtParser = Jwts.parserBuilder()
+			.setSigningKey(extractSecretKey())
+			.build();
+
+		jwtParser.parseClaimsJws(token);
 	}
 
 	/**
