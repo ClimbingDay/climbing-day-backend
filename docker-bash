@@ -1,14 +1,16 @@
 #!/bin/bash
 
+set -e
+
 # 이미지 체크
 check_and_pull() {
     local image=$1
     echo "${image} 이미지 확인 및 다운로드"
-    if ! docker images ${image} -q; then
+    if docker images | awk '{print $1":"$2}' | grep -q ${image}; then
+        echo "${image}가 이미 존재합니다."
+    else
         echo "${image}가 존재하지 않습니다. ${image} 다운로드합니다..."
         docker pull ${image} || { echo "Error: ${image}를 이미지 가져오는데 실패했습니다."; exit 1; }
-    else
-        echo "${image}가 존재합니다."
     fi
 }
 
@@ -17,8 +19,8 @@ step1() {
     echo "Step1: docker hub에서 제공하는 필요한 이미지 확인 및 다운로드"
     # 이미지 목록
     IMAGES=(
-        "jaspeen/oracle-xe-11g"
-        "redis"
+        "jaspeen/oracle-xe-11g:latest"
+        "redis:latest"
     )
 
     for image in "${IMAGES[@]}"; do
@@ -37,7 +39,7 @@ step2() {
 
 main() {
     step1
-    step2
+#    step2
     echo "Docker image 설정이 정상적으로 완료되었습니다."
 }
 
