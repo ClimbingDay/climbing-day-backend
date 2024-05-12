@@ -38,6 +38,11 @@ jobs:
             # Build and Push Docker Image
             # api/member
             -   name: member api > Build and Push Docker images
-                run: |
-                    docker build -t ${{ secrets.DOCKER_USERNAME }}/climbing-day-member:${{ env.CURRENT_VERSION }} -t ${{ secrets.DOCKER_USERNAME }}/climbing-day-member:latest api/member
-                    docker push ${{ secrets.DOCKER_USERNAME }}/climbing-day-member:latest
+                uses: docker/build-push-action@v5
+                with:
+                    context: api/member
+                    file: api/member/Dockerfile
+                    platforms: linux/amd64,linux/arm64
+                    push: true
+                    tag: |
+                        ${{ secrets.DOCKER_USERNAME }}/climbing-day-member:latest
