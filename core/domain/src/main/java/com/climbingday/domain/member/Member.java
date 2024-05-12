@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Table(uniqueConstraints = {
 	@UniqueConstraint(columnNames = "email"),
-	@UniqueConstraint(columnNames = "phoneNum")
+	@UniqueConstraint(columnNames = "phoneNumber")
 })
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class Member {
