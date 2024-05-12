@@ -10,6 +10,8 @@ tasks.withType<Jar> {
 
 dependencies {
     implementation(project(":core:domain"))
+    implementation(project(":core:infra"))
+    implementation(project(":core:security"))
 
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")

@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.climbingday.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

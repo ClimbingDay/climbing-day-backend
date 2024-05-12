@@ -8,11 +8,18 @@ tasks.withType<Jar> {
     enabled = true
 }
 
-val oracleVersion = "21.3.0.0"
+val mysqlVersion = "8.0.29"
+val queryDslVersion = "5.0.0"
+
 
 dependencies {
-    // oracle
-    implementation("com.oracle.database.jdbc:ojdbc11:$oracleVersion")
+    // mysql
+    implementation("mysql:mysql-connector-java:$mysqlVersion")
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    // querydsl
+    implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 }

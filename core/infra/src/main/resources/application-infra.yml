@@ -2,17 +2,17 @@ spring:
     config.activate.on-profile: dev
 
     datasource:
-        url: jdbc:oracle:thin:@localhost:1521:xe
+        url: jdbc:mysql://localhost:3306/test
         username: root
         password: 1234
-        driver-class-name: oracle.jdbc.driver.OracleDriver
+        driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
         show-sql: true
         hibernate:
             ddl-auto: create-drop
         defer-datasource-initialization: true
         properties:
-            dialect: org.hibernate.dialect.OracleDialect
+            dialect: org.hibernate.dialect.MySQLDialect
 
     data:
         redis:

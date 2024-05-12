@@ -20,6 +20,13 @@ tasks.withType<JavaCompile> {
 
 allprojects {
 	repositories {
+		maven {
+			url = uri("https://maven.oracle.com")
+			credentials {
+				username = "seongo0521@gmail.com"
+				password = "A1148721as@"
+			}
+		}
 		mavenCentral()
 	}
 }

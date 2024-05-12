@@ -13,7 +13,6 @@ val jjwtVersion = "0.11.5"
 
 dependencies {
     implementation(project(":core:domain"))
-    implementation(project(":core:security"))
 
     implementation("org.springframework.boot:spring-boot-starter-security")
     // jwt
