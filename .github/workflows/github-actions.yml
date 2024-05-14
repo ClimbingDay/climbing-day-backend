@@ -25,10 +25,12 @@ jobs:
             # gradle 설정
             -   name: Setup Gradle
                 uses: gradle/actions/setup-gradle@v3.1.0
-            # gradle build
+            # gradle build, active dev
             -   name: Build with Gradle
                 run: |
-                    ./gradlew -p api/member build
+                    ./gradlew -p api/member build -Dspring.profiles.active=dev
+                env:
+                    SPRING_PROFILES_ACTIVE: dev
             # 멀티플랫폼 이미지 빌드 환경 설정
             -   name: Set up QEMU
                 uses: docker/setup-qemu-action@v3
