@@ -3,6 +3,7 @@ plugins {
 	war
 	id("org.springframework.boot") version "3.2.5"
 	id("io.spring.dependency-management") version "1.1.4"
+	id("org.asciidoctor.jvm.convert") version "3.3.2" apply false
 }
 
 buildscript {
@@ -17,16 +18,12 @@ tasks.withType<JavaCompile> {
 	targetCompatibility = JavaVersion.VERSION_21.toString()
 }
 
+val asciidoctorExt = configurations.create("asciidoctorExt") {
+	extendsFrom(configurations["testImplementation"])
+}
 
 allprojects {
 	repositories {
-		maven {
-			url = uri("https://maven.oracle.com")
-			credentials {
-				username = "seongo0521@gmail.com"
-				password = "A1148721as@"
-			}
-		}
 		mavenCentral()
 	}
 }
@@ -34,27 +31,51 @@ allprojects {
 subprojects {
 	group = "com.climbingday"
 
+	val snippetsDir = layout.buildDirectory.dir("generated-snippets")
+
 	// 하위 프로젝트 플러그인 적용
 	apply(plugin = "java")
 	apply(plugin = "org.springframework.boot")
 	apply(plugin = "io.spring.dependency-management")
+	apply(plugin = "org.asciidoctor.jvm.convert")
 
 	dependencies {
 		// Spring Boot 기본 스타터 의존성
 		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 		implementation("org.springframework.boot:spring-boot-starter-web")
 
+		// asciidoctorj
+		implementation("org.asciidoctor:asciidoctorj:2.4.3")
+
 		// Lombok 의존성 설정
 		implementation("org.projectlombok:lombok")
 		annotationProcessor("org.projectlombok:lombok")
 		testAnnotationProcessor("org.projectlombok:lombok")
-
-		// 테스트 의존성
-		testImplementation("org.springframework.boot:spring-boot-starter-test")
 	}
 
-	// JUnit 플랫폼을 사용한 테스트 구성
 	tasks.test {
+		outputs.dir(snippetsDir)
 		useJUnitPlatform()
 	}
+
+	tasks.named<org.asciidoctor.gradle.jvm.AsciidoctorTask>("asciidoctor") {
+		setSourceDir(snippetsDir.get().asFile)
+		dependsOn("test")
+	}
 }
+
+val collectSnippets by tasks.registering(Copy::class) {
+	from(subprojects.map { it.layout.buildDirectory.dir("generated-snippets") })
+	into(layout.buildDirectory.dir("central-snippets"))
+}
+
+//tasks.register<org.asciidoctor.gradle.jvm.AsciidoctorTask>("asciidoctorAll") {
+//	dependsOn(collectSnippets)
+
+	// 명시적으로 AsciidoctorJ 확장을 설정
+//	extensions.create<org.asciidoctor.gradle.jvm.AsciidoctorJExtension>("asciidoctorj", objects)
+
+//	setSourceDir(layout.buildDirectory.dir("central-snippets").get().asFile)
+//	inputs.dir(layout.buildDirectory.dir("central-snippets"))
+//	setOutputDir(layout.buildDirectory.dir("docs").get().asFile)
+//}
