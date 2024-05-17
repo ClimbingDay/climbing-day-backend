@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.climbingday.domain.common.enums.MemberErrorCode;
 import com.climbingday.domain.response.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,5 +21,11 @@ public class GlobalExceptionHandler {
 			.body(INTERNAL_SERVER_ERROR.getErrorResponse());
 	}
 
-
+	@ExceptionHandler(MemberException.class)
+	protected ResponseEntity<ErrorResponse> handleMemberException(MemberException ex) {
+		log.error(">>>>> MemberException : {}", ex);
+		MemberErrorCode errorCode = ex.getErrorCode();
+		return ResponseEntity.status(errorCode.getStatus())
+			.body(errorCode.getErrorResponse());
+	}
 }
