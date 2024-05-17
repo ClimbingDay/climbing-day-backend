@@ -23,7 +23,7 @@ step1() {
     echo "Step1: docker hub에서 제공하는 필요한 이미지 확인 및 다운로드"
     # 이미지 목록
     IMAGES=("mysql" "redis")
-    TAGS=("8.0" "latest")
+    TAGS=("8.0" "7.2-alpine")
 
     for i in "${!IMAGES[@]}"; do
         check_and_pull "${IMAGES[$i]}" "${TAGS[$i]}"
