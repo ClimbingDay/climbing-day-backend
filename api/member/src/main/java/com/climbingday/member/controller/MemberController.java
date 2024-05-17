@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.climbingday.domain.common.enums.GlobalSuccessCode;
 import com.climbingday.domain.member.repository.CDResponse;
+import com.climbingday.member.dto.MemberLoginDto;
 import com.climbingday.member.dto.MemberRegisterDto;
 import com.climbingday.member.service.MemberService;
 
@@ -27,7 +29,14 @@ public class MemberController {
 	@PostMapping("/register")
 	public ResponseEntity<CDResponse<?>> registerMember(
 		@Valid @RequestBody MemberRegisterDto reqMemberDto) {
-		return ResponseEntity.status(HttpStatus.CREATED)
+		return ResponseEntity.status(CREATE.getStatus())
 			.body(new CDResponse<>(CREATE, Map.of("id", memberService.registerMember(reqMemberDto))));
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<CDResponse<?>> login(
+		@Valid @RequestBody MemberLoginDto memberLoginDto) {
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(memberService.login(memberLoginDto)));
 	}
 }
