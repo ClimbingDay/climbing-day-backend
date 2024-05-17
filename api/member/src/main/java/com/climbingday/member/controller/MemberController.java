@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.climbingday.domain.member.repository.CDResponse;
-import com.climbingday.member.dto.request.MemberRegisterDto;
+import com.climbingday.member.dto.MemberRegisterDto;
 import com.climbingday.member.service.MemberService;
 
 import jakarta.validation.Valid;

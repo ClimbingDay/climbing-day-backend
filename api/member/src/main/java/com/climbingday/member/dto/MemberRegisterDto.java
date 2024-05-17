@@ -1,4 +1,4 @@
-package com.climbingday.member.dto.request;
+package com.climbingday.member.dto;
 
 import java.util.List;
 

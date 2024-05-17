@@ -10,9 +10,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/test
       REDIS_HOST: redis
       REDIS_PORT: 6379
-    depends_on:
-      mysql-db:
-        condition: service_healthy
 
   mysql-db:
     image: mysql:8.0 # mysql 이미지
@@ -23,5 +20,9 @@ services:
       MYSQL_DATABASE: test
 #    volumes:
 #      - ./initdb.d:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+
+  redis:
+    image: redis:7.2-alpine
+    ports:
+      - "6379:6379"
+

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.climbingday.domain.member.Member;
 import com.climbingday.domain.member.repository.MemberRepository;
-import com.climbingday.member.dto.request.MemberRegisterDto;
+import com.climbingday.member.dto.MemberRegisterDto;
 import com.climbingday.member.exception.MemberException;
 
 import lombok.RequiredArgsConstructor;
@@ -41,6 +41,11 @@ public class MemberService {
 
 		return memberRepository.save(member).getId();
 	}
+
+	/**
+	 * 회원 로그인
+	 */
+
 
 	/**
 	 * password, passwordConfirm 체크
