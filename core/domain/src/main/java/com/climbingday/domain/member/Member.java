@@ -44,8 +44,10 @@ public class Member {
 	private String phoneNumber;					// 전화번호
 
 	@Enumerated(EnumType.STRING)
+	@Builder.Default
 	private EStatus status = EStatus.PENDING;	// 상태
 
 	@Enumerated(EnumType.STRING)
+	@Builder.Default
 	private ERoles roles = ERoles.ROLE_USER;
 }
