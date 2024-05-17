@@ -11,6 +11,7 @@ tasks.withType<Jar> {
 val mysqlVersion = "8.0.29"
 val queryDslVersion = "5.0.0"
 val testContainerVersion = "1.19.5"
+val openapiVersion = "2.5.0"
 
 
 dependencies {
@@ -25,6 +26,9 @@ dependencies {
     annotationProcessor("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
     annotationProcessor("jakarta.annotation:jakarta.annotation-api")
     annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+
+    // swagger
+    implementation("io.swagger.core.v3:swagger-core:2.1.6")
 
     // testContainer
     testFixturesImplementation("org.testcontainers:testcontainers:$testContainerVersion")

@@ -3,7 +3,6 @@ plugins {
 	war
 	id("org.springframework.boot") version "3.2.5"
 	id("io.spring.dependency-management") version "1.1.4"
-	id("org.asciidoctor.jvm.convert") version "3.3.2" apply true
 }
 
 buildscript {
@@ -31,14 +30,12 @@ allprojects {
 subprojects {
 	group = "com.climbingday"
 
-	val snippetsDir = layout.buildDirectory.dir("generated-snippets")
 	val testContainerVersion = "1.19.5"
 
 	// 하위 프로젝트 플러그인 적용
 	apply(plugin = "java")
 	apply(plugin = "org.springframework.boot")
 	apply(plugin = "io.spring.dependency-management")
-	apply(plugin = "org.asciidoctor.jvm.convert")
 	apply(plugin = "java-test-fixtures") // plugin 설정이 있어야 testFixtures 디렉토리를 정상적으로 인지함.
 
 	dependencies {
@@ -57,30 +54,14 @@ subprojects {
 		// testContainer
 		testImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
 	}
-
-	tasks.test {
-		outputs.dir(snippetsDir)
-		useJUnitPlatform()
-	}
-
-	tasks.named<org.asciidoctor.gradle.jvm.AsciidoctorTask>("asciidoctor") {
-		setSourceDir(snippetsDir.get().asFile)
-		dependsOn("test")
-	}
 }
 
-val collectSnippets by tasks.registering(Copy::class) {
-	from(subprojects.map { it.layout.buildDirectory.dir("generated-snippets") })
-	into(layout.buildDirectory.dir("central-snippets"))
-}
+tasks.register<Copy>("generatedDocs") {
+	dependsOn(":api:member:openapi3")
 
-tasks.register<org.asciidoctor.gradle.jvm.AsciidoctorTask>("asciidoctorAll") {
-	dependsOn(collectSnippets)
+	val memberBuildDir = project(":api:member").layout.buildDirectory
 
-//	 명시적으로 AsciidoctorJ 확장을 설정
-	extensions.create<org.asciidoctor.gradle.jvm.AsciidoctorJExtension>("asciidoctorj", objects)
-
-	setSourceDir(layout.buildDirectory.dir("central-snippets").get().asFile)
-	inputs.dir(layout.buildDirectory.dir("central-snippets"))
-	setOutputDir(layout.buildDirectory.dir("docs").get().asFile)
+	// member
+	from(memberBuildDir.file("api-spec/member-openapi.yaml"))
+	into(project.rootProject.layout.buildDirectory.dir("docs/openapi"))
 }
