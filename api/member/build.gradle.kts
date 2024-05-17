@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:infra"))
     implementation(project(":core:security"))
+    implementation(testFixtures(project(":core:infra")))
 
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
@@ -31,12 +32,15 @@ dependencies {
     // 테스트 의존성
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation("org.mockito:mockito-core:4.0.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
+    testImplementation("io.rest-assured:rest-assured")
 }
 
 // Junit5 플랫폼을 사용하여 테스트
 tasks.test {
-    outputs.dir(snippetsDir)
     useJUnitPlatform()
+    outputs.dir(snippetsDir)
 }
 
 tasks.named<org.asciidoctor.gradle.jvm.AsciidoctorTask>("asciidoctor") {

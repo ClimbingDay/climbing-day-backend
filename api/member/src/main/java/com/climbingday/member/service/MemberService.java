@@ -29,7 +29,7 @@ public class MemberService {
 		// 아이디 중복 체크
 		if(memberRepository.existsByEmail(memberRegisterDto.getEmail())){
 			throw new MemberException(DUPLICATED_MEMBER_EMAIL);
-		}else if(memberRepository.existsByPhoneNumber(memberRegisterDto.getPhoneNumber())){
+		}else if(memberRepository.existsByPhoneNumber(String.join("-", memberRegisterDto.getPhoneNumber()))){
 			throw new MemberException(DUPLICATED_MEMBER_PHONE_NUMBER);
 		}
 

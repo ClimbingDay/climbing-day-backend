@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.climbingday.domain.member.repository.CResponse;
+import com.climbingday.domain.member.repository.CDResponse;
 import com.climbingday.member.dto.request.MemberRegisterDto;
 import com.climbingday.member.service.MemberService;
 
@@ -25,9 +25,9 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@PostMapping("/register")
-	public ResponseEntity<CResponse<?>> registerMember(
+	public ResponseEntity<CDResponse<?>> registerMember(
 		@Valid @RequestBody MemberRegisterDto reqMemberDto) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(new CResponse<>(CREATE, Map.of("id", memberService.registerMember(reqMemberDto))));
+			.body(new CDResponse<>(CREATE, Map.of("id", memberService.registerMember(reqMemberDto))));
 	}
 }

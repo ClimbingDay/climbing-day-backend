@@ -1,53 +1,57 @@
 package com.climbingday.member.controller;
 
-import static org.springframework.http.MediaType.*;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static io.restassured.RestAssured.*;
+import static io.restassured.http.ContentType.*;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
+import com.climbingday.infra.config.TestConfig;
 import com.climbingday.member.dto.request.MemberRegisterDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebMvcTest
+import io.restassured.RestAssured;
+
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 @AutoConfigureRestDocs(outputDir = "target/snippets")
-class MemberControllerTest {
+class MemberControllerTest extends TestConfig {
 
-	@Autowired
-	private MockMvc mockMvc;
+	// 테스트 시 랜덤으로 설정된 port 를 가져옴
+	@LocalServerPort
+	private int port;
 
-	@Autowired
-	private ObjectMapper objectMapper;
+	@BeforeEach
+	void setup() {
+		RestAssured.port = port;
+	}
 
 	@Test
+	@DisplayName("일반 회원가입 테스트")
 	public void memberRegisterTest() throws Exception {
 		MemberRegisterDto registerDto = MemberRegisterDto.builder()
-			.email("test@gmail.com")
-			.name("테스트")
+			.email("test@naver.com")
+			.name("test")
 			.password("123456")
 			.passwordConfirm("123456")
 			.phoneNumber(List.of("010", "1234", "5678"))
 			.build();
 
-		this.mockMvc.perform(post("/register")
-				.contentType(APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(registerDto)))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.name").value("테스트"))
-			.andDo(document("회원 등록",
-				responseFields(
-					fieldWithPath("code").description("회원 등록이 정상"),
-					fieldWithPath("message").description("정상적으로 생성되었습니다."),
-					fieldWithPath("data").description("생성된 회원이 고유 번호")
-				)));
+		given()
+			.contentType(JSON)
+			.body(registerDto)
+		.when()
+			.post("/v1/member/register")
+		.then()
+			.statusCode(201)
+			.body("code", equalTo(201))
+			.body("message", equalTo("정상적으로 생성되었습니다."))
+			.body("data.id", equalTo(1));
 	}
-
 }

@@ -10,16 +10,25 @@ tasks.withType<Jar> {
 
 val mysqlVersion = "8.0.29"
 val queryDslVersion = "5.0.0"
+val testContainerVersion = "1.19.5"
 
 
 dependencies {
     // mysql
     implementation("mysql:mysql-connector-java:$mysqlVersion")
+
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
     // querydsl
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
     annotationProcessor("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
     annotationProcessor("jakarta.annotation:jakarta.annotation-api")
     annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+
+    // testContainer
+    testFixturesImplementation("org.testcontainers:testcontainers:$testContainerVersion")
+    testFixturesImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
+    testFixturesImplementation("org.testcontainers:mysql")
+    testFixturesImplementation("org.springframework.boot:spring-boot-starter-test")
 }

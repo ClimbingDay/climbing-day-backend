@@ -9,18 +9,18 @@ import lombok.Getter;
 
 @Getter
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-public class CResponse<T> {
+public class CDResponse<T> {
 	private int code;
 	private String message;
 	private T data;
 
-	public CResponse(T data) {
+	public CDResponse(T data) {
 		this.code = SUCCESS.getCode();
 		this.message = SUCCESS.getMessage();
 		this.data = data;
 	}
 
-	public CResponse(GlobalSuccessCode statusCode, T data) {
+	public CDResponse(GlobalSuccessCode statusCode, T data) {
 		this.code = statusCode.getCode();
 		this.message = statusCode.getMessage();
 		this.data = data;

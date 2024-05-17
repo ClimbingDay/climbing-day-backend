@@ -35,15 +35,12 @@ public class MemberRegisterDto {
 	@Size(min = 3, max = 3, message = "핸드폰 번호를 올바르게 입력해 주세요.")
 	private List<String> phoneNumber;
 
-	public String getPhoneNumber() {
-		return String.join("-", this.phoneNumber);
-	}
-
 	public static Member toMember(MemberRegisterDto registerDto) {
+
 		return Member.builder()
 			.email(registerDto.getEmail())
 			.name(registerDto.getName())
-			.phoneNumber(registerDto.getPhoneNumber())
+			.phoneNumber(String.join("-", registerDto.getPhoneNumber()))
 			.build();
 	}
 
