@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.climbingday.domain.common.repository.RedisRepository;
 import com.climbingday.domain.member.Member;
 import com.climbingday.domain.member.repository.MemberRepository;
 import com.climbingday.member.dto.MemberLoginDto;
@@ -30,6 +31,7 @@ public class MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 	private final JwtProvider jwtProvider;
+	private final RedisRepository redisRepository;
 
 	/**
 	 * 회원 등록
@@ -67,10 +69,15 @@ public class MemberService {
 		UserDetailsImpl userDetail = (UserDetailsImpl) authenticated.getPrincipal();
 
 		String accessToken = jwtProvider.createAccessToken(userDetail);
+		String refreshToken = jwtProvider.createRefreshToken(userDetail);
+		int refreshExpirationSeconds = jwtProvider.getRefreshExpirationSeconds();
 
 		MemberTokenDto loginTokenDto = MemberTokenDto.builder()
 			.accessToken(accessToken)
+			.refreshToken(refreshToken)
 			.build();
+
+		redisRepository.setRedisRefreshToken(userDetail.getId(), refreshToken, refreshExpirationSeconds);
 
 		return loginTokenDto;
 	}

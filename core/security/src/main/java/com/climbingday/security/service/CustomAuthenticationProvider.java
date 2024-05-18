@@ -32,9 +32,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		UserDetailsImpl userDetails;
 
 		userDetails = (UserDetailsImpl)memberUserDetailsService.loadUserByUsername(email);
-
-		// OAuth 로그인 관련 추가예정
-
+		
 		// 비밀번호 확인
 		if(!passwordEncoder.matches(password, userDetails.getPassword())) {
 			throw new CustomSecurityException(CHECK_ID_OR_PASSWORD);

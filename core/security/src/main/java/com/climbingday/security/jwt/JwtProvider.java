@@ -35,11 +35,14 @@ public class JwtProvider {
 	@Value("${jwt.access-expiration-seconds}")
 	private int accessExpirationSeconds;	// 엑세스 토큰 만료 시간
 
+	@Value("${jwt.refresh-expiration-seconds}")
+	private int refreshExpirationSeconds;	// 리프래쉬 토큰 만료 시간
+
 	@Value("${jwt.access-key}")
 	private String accessSecret;				// 엑세스 키
 
 	/**
-	 * 토큰 생성
+	 * 엑세스 토큰 생성
 	 */
 	public String createAccessToken(UserDetailsImpl userDetails) {
 		Instant now = Instant.now();
@@ -64,6 +67,42 @@ public class JwtProvider {
 			.claim(AUTHENTICATION_CLAIM_NAME, roles.toString())
 			.signWith(key, SignatureAlgorithm.HS512)
 			.compact();
+	}
+
+	/**
+	 * 리프래쉬 토큰 생성
+	 */
+	public String createRefreshToken(UserDetailsImpl userDetails) {
+		Instant now = Instant.now();
+		Date expiration = Date.from(now.plusSeconds(refreshExpirationSeconds));
+		SecretKey key = extractSecretKey();
+
+		StringBuilder roles = new StringBuilder();
+		// member roles 추출
+		if(userDetails.getAuthorities() != null && !userDetails.getAuthorities().isEmpty()) {
+			roles.append(
+				userDetails.getAuthorities().stream()
+					.map(GrantedAuthority::getAuthority)
+					.collect(Collectors.joining(", "))
+			);
+		}
+
+		return Jwts.builder()
+			.claim("id", userDetails.getId())
+			.setSubject(userDetails.getUsername())
+			.setIssuedAt(Date.from(now))
+			.setExpiration(expiration)
+			.claim(AUTHENTICATION_CLAIM_NAME, roles.toString())
+			.signWith(key, SignatureAlgorithm.HS512)
+			.compact();
+	}
+
+	/**
+	 * getter 리프래쉬 토큰 만료시간
+	 */
+
+	public int getRefreshExpirationSeconds() {
+		return refreshExpirationSeconds;
 	}
 
 	/**
