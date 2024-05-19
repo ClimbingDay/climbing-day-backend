@@ -1,0 +1,76 @@
+openapi: 3.0.1
+info:
+  title: Climbing-day-member-swagger API Documentation
+  description: Spring REST Docs with SwaggerUI
+  version: 0.0.1
+servers:
+- url: http://localhost:8080
+tags: []
+paths:
+  /v1/member/register:
+    post:
+      tags:
+      - v1
+      operationId: 회원 가입 API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1-member-register-582868884'
+            examples:
+              회원 가입 API:
+                value: "{\"email\":\"test@naver.com\",\"name\":\"test\",\"password\"\
+                  :\"123456\",\"passwordConfirm\":\"123456\",\"phoneNumber\":[\"010\"\
+                  ,\"1234\",\"5678\"]}"
+      responses:
+        "201":
+          description: "201"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-member-register-1856603489'
+              examples:
+                회원 가입 API:
+                  value: "{\"code\":201,\"message\":\"정상적으로 생성되었습니다.\",\"data\":{\"\
+                    id\":1}}"
+components:
+  schemas:
+    v1-member-register-1856603489:
+      type: object
+      properties:
+        code:
+          type: number
+          description: Response status code.
+        data:
+          type: object
+          properties:
+            id:
+              type: number
+              description: The ID of the created user.
+        message:
+          type: string
+          description: Response status message.
+    v1-member-register-582868884:
+      type: object
+      properties:
+        password:
+          type: string
+          description: The user's password.
+        phoneNumber:
+          type: array
+          description: The user's phone number.
+          items:
+            oneOf:
+            - type: object
+            - type: boolean
+            - type: string
+            - type: number
+        passwordConfirm:
+          type: string
+          description: Confirmation of the user's password.
+        name:
+          type: string
+          description: The user's name.
+        email:
+          type: string
+          description: The user's email address.

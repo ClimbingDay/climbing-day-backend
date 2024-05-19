@@ -62,6 +62,6 @@ tasks.register<Copy>("generatedDocs") {
 	val memberBuildDir = project(":api:member").layout.buildDirectory
 
 	// member
-	from(memberBuildDir.file("api-spec/member-openapi.yaml"))
-	into(project.rootProject.layout.buildDirectory.dir("docs/openapi"))
+	from(memberBuildDir.file("api-spec/openapi3.yaml"))
+	into(project(":api:member").file("src/main/resources/static"))
 }

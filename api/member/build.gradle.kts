@@ -10,13 +10,12 @@ tasks.withType<Jar> {
 
 // 빌드 디렉토리 참조해서 generated-snippets 폴더 지정
 val snippetsDir = layout.buildDirectory.dir("generated-snippets")
-val restdocsApiSpecVersion = "0.16.2"
+val restdocsApiSpecVersion = "0.18.2"
+val openUiVersion = "1.7.0"
 
 plugins {
-    id("com.epages.restdocs-api-spec") version "0.16.2"
+    id("com.epages.restdocs-api-spec") version "0.17.1"
 }
-
-
 
 openapi3 {
     setServer("http://localhost:8080")
@@ -41,14 +40,18 @@ dependencies {
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    // swagger ui
+    implementation("org.springdoc:springdoc-openapi-ui:$openUiVersion")
+
     // 테스트 의존성
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.epages:restdocs-api-spec-restassured:$restdocsApiSpecVersion")
     testImplementation("com.epages:restdocs-api-spec-mockmvc:$restdocsApiSpecVersion")
+    testImplementation("com.epages:restdocs-api-spec-restassured:$restdocsApiSpecVersion")
     testImplementation("org.springframework.restdocs:spring-restdocs-restassured")
 }
 
 // Junit5 플랫폼을 사용하여 테스트
 tasks.test {
+    outputs.dir(file(snippetsDir))
     useJUnitPlatform()
 }
