@@ -20,10 +20,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.climbingday.infra.config.TestConfig;
+import com.climbingday.member.dto.MemberLoginDto;
 import com.climbingday.member.dto.MemberRegisterDto;
 import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
 
@@ -52,7 +52,7 @@ class MemberControllerTest extends TestConfig {
 	}
 
 	@Test
-	@DisplayName("1. 회원가입")
+	@DisplayName("1. 회원가입 테스트")
 	@Transactional
 	public void memberRegisterTest() throws Exception {
 		MemberRegisterDto registerDto = MemberRegisterDto.builder()
@@ -66,16 +66,16 @@ class MemberControllerTest extends TestConfig {
 		given(spec).log().all()
 			.filter(RestAssuredRestDocumentationWrapper.document("회원 가입 API",
 				requestFields(
-					fieldWithPath("email").type(STRING).description("The user's email address."),
-					fieldWithPath("name").type(STRING).description("The user's name."),
-					fieldWithPath("password").type(STRING).description("The user's password."),
-					fieldWithPath("passwordConfirm").type(STRING).description("Confirmation of the user's password."),
-					fieldWithPath("phoneNumber").type(ARRAY).description("The user's phone number.")
+					fieldWithPath("email").type(STRING).description("이메일(계정)"),
+					fieldWithPath("name").type(STRING).description("이름"),
+					fieldWithPath("password").type(STRING).description("패스워드"),
+					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
+					fieldWithPath("phoneNumber").type(ARRAY).description("핸드폰 번호")
 				),
 				responseFields(
-					fieldWithPath("code").type(NUMBER).description("Response status code."),
-					fieldWithPath("message").type(STRING).description("Response status message."),
-					fieldWithPath("data.id").type(NUMBER).description("The ID of the created user.")
+					fieldWithPath("code").type(NUMBER).description("상태 코드"),
+					fieldWithPath("message").type(STRING).description("상태 메시지"),
+					fieldWithPath("data.id").type(NUMBER).description("아이디 고유번호")
 				)))
 			.contentType(JSON)
 			.body(registerDto)
@@ -83,5 +83,33 @@ class MemberControllerTest extends TestConfig {
 			.post("/v1/member/register")
 		.then().log().all()
 			.statusCode(201);
+	}
+
+	@Test
+	@DisplayName("2. 로그인 테스트")
+	public void memberLoginTest() throws Exception {
+		MemberLoginDto memberLoginDto = MemberLoginDto.builder()
+			.email("test@naver.com")
+			.password("123456")
+			.build();
+
+		given(spec).log().all()
+			.filter(RestAssuredRestDocumentationWrapper.document("로그인 API",
+				requestFields(
+					fieldWithPath("email").type(STRING).description("이메일(계정)"),
+					fieldWithPath("password").type(STRING).description("패스워드")
+				),
+				responseFields(
+					fieldWithPath("code").type(NUMBER).description("상태 코드"),
+					fieldWithPath("message").type(STRING).description("상태 메시지"),
+					fieldWithPath("data.accessToken").type(STRING).description("액세스 토큰"),
+					fieldWithPath("data.refreshToken").type(STRING).description("리프래쉬 토큰")
+				)))
+			.contentType(JSON)
+			.body(memberLoginDto)
+		.when()
+			.post("/v1/member/login")
+		.then().log().all()
+			.statusCode(200);
 	}
 }

@@ -7,6 +7,32 @@ servers:
 - url: http://localhost:8080
 tags: []
 paths:
+  /v1/member/login:
+    post:
+      tags:
+      - v1
+      operationId: 로그인 API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1-member-login965174184'
+            examples:
+              로그인 API:
+                value: "{\"email\":\"test@naver.com\",\"password\":\"123456\"}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-member-login1698192666'
+              examples:
+                로그인 API:
+                  value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYxMDkyNDMsImV4cCI6MTcxNjExMTA0Mywicm9sZXMiOiJST0xFX1VTRVIifQ.uAQIkGvbqFZNPyqpRNrRp8nt7Fi9WhqvpuTbBEpwohWwSXWohiEX7AkaFUjjFdkK7o2ZDLs2HWz4t6uTadWM-A\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYxMDkyNDMsImV4cCI6MTcxNjE2OTI0Mywicm9sZXMiOiJST0xFX1VTRVIifQ.cLKAdvc8qxFs0ceVPeT5HpygR5ooLCJKt82kN1S6b9Cospdc95SVbCcFm51jwBXaY3p-csW37oESwaN7NdLnaA\"\
+                    }}"
   /v1/member/register:
     post:
       tags:
@@ -16,7 +42,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/v1-member-register-582868884'
+              $ref: '#/components/schemas/v1-member-register2051235083'
             examples:
               회원 가입 API:
                 value: "{\"email\":\"test@naver.com\",\"name\":\"test\",\"password\"\
@@ -28,37 +54,55 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-register-1856603489'
+                $ref: '#/components/schemas/v1-member-register1233141654'
               examples:
                 회원 가입 API:
                   value: "{\"code\":201,\"message\":\"정상적으로 생성되었습니다.\",\"data\":{\"\
                     id\":1}}"
 components:
   schemas:
-    v1-member-register-1856603489:
+    v1-member-login1698192666:
       type: object
       properties:
         code:
           type: number
-          description: Response status code.
+          description: 상태 코드
+        data:
+          type: object
+          properties:
+            accessToken:
+              type: string
+              description: 액세스 토큰
+            refreshToken:
+              type: string
+              description: 리프래쉬 토큰
+        message:
+          type: string
+          description: 상태 메시지
+    v1-member-register1233141654:
+      type: object
+      properties:
+        code:
+          type: number
+          description: 상태 코드
         data:
           type: object
           properties:
             id:
               type: number
-              description: The ID of the created user.
+              description: 아이디 고유번호
         message:
           type: string
-          description: Response status message.
-    v1-member-register-582868884:
+          description: 상태 메시지
+    v1-member-register2051235083:
       type: object
       properties:
         password:
           type: string
-          description: The user's password.
+          description: 패스워드
         phoneNumber:
           type: array
-          description: The user's phone number.
+          description: 핸드폰 번호
           items:
             oneOf:
             - type: object
@@ -67,10 +111,19 @@ components:
             - type: number
         passwordConfirm:
           type: string
-          description: Confirmation of the user's password.
+          description: 패스워드 확인
         name:
           type: string
-          description: The user's name.
+          description: 이름
         email:
           type: string
-          description: The user's email address.
+          description: 이메일(계정)
+    v1-member-login965174184:
+      type: object
+      properties:
+        password:
+          type: string
+          description: 패스워드
+        email:
+          type: string
+          description: 이메일(계정)
