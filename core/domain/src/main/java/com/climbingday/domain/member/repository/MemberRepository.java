@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.climbingday.domain.member.Member;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberCustom {
 	Optional<Member> findByEmail(String email);
 
 	boolean existsByEmail(String email);

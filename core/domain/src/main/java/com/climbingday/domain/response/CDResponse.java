@@ -1,4 +1,4 @@
-package com.climbingday.domain.member.repository;
+package com.climbingday.domain.response;
 
 import static com.climbingday.domain.common.enums.GlobalSuccessCode.*;
 

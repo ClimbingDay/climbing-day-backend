@@ -2,8 +2,9 @@ package com.climbingday.domain.member;
 
 import java.sql.Date;
 
-import com.climbingday.domain.member.enums.ERoles;
-import com.climbingday.domain.member.enums.EStatus;
+import com.climbingday.enums.member.ERoles;
+import com.climbingday.enums.member.EStatus;
+import com.climbingday.dto.member.MemberRegisterDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,5 +50,14 @@ public class Member {
 
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
-	private ERoles roles = ERoles.ROLE_USER;
+	private ERoles roles = ERoles.ROLE_USER;	// 역할(권한)
+
+	public static Member fromMemberRegisterDto(MemberRegisterDto registerDto) {
+
+		return Member.builder()
+			.email(registerDto.getEmail())
+			.name(registerDto.getName())
+			.phoneNumber(String.join("-", registerDto.getPhoneNumber()))
+			.build();
+	}
 }

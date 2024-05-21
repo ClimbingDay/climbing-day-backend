@@ -10,16 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.climbingday.domain.member.repository.CDResponse;
-import com.climbingday.member.dto.MemberLoginDto;
-import com.climbingday.member.dto.MemberRegisterDto;
+import com.climbingday.domain.response.CDResponse;
+import com.climbingday.dto.member.MemberLoginDto;
+import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.member.service.MemberService;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name ="회원", description = "회원 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")

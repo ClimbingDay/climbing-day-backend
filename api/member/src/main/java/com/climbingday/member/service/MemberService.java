@@ -2,6 +2,8 @@ package com.climbingday.member.service;
 
 import static com.climbingday.domain.common.enums.MemberErrorCode.*;
 
+import java.util.List;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,9 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.climbingday.domain.common.repository.RedisRepository;
 import com.climbingday.domain.member.Member;
 import com.climbingday.domain.member.repository.MemberRepository;
-import com.climbingday.member.dto.MemberLoginDto;
-import com.climbingday.member.dto.MemberRegisterDto;
-import com.climbingday.member.dto.MemberTokenDto;
+import com.climbingday.dto.member.MemberDto;
+import com.climbingday.dto.member.MemberLoginDto;
+import com.climbingday.dto.member.MemberRegisterDto;
+import com.climbingday.dto.member.MemberTokenDto;
 import com.climbingday.member.exception.MemberException;
 import com.climbingday.security.jwt.JwtProvider;
 import com.climbingday.security.service.UserDetailsImpl;
@@ -38,17 +41,17 @@ public class MemberService {
 	 */
 	@Transactional
 	public Long registerMember(MemberRegisterDto memberRegisterDto) {
-		// 아이디 중복 체크
+		// 이메일 중복 및 핸드폰 번호 중복 체크
 		if(memberRepository.existsByEmail(memberRegisterDto.getEmail())){
 			throw new MemberException(DUPLICATED_MEMBER_EMAIL);
-		}else if(memberRepository.existsByPhoneNumber(String.join("-", memberRegisterDto.getPhoneNumber()))){
+		}else if(memberRepository.existsByPhoneNumber(memberRegisterDto.getPhoneNumber())){
 			throw new MemberException(DUPLICATED_MEMBER_PHONE_NUMBER);
 		}
 
 		// 비밀번호 확인
 		validatePassword(memberRegisterDto.getPassword(), memberRegisterDto.getPasswordConfirm());
 
-		Member member = MemberRegisterDto.toMember(memberRegisterDto);
+		Member member = Member.fromMemberRegisterDto(memberRegisterDto);
 		member.setPassword(passwordEncoder.encode(memberRegisterDto.getPassword()));
 
 		return memberRepository.save(member).getId();
@@ -82,6 +85,12 @@ public class MemberService {
 		return loginTokenDto;
 	}
 
+	/**
+	 * 회원 조회
+	 */
+	public List<MemberDto> getAllMember() {
+		return memberRepository.getAllMember();
+	}
 
 	/**
 	 * password, passwordConfirm 체크

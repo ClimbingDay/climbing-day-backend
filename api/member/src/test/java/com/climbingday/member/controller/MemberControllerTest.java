@@ -22,9 +22,9 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.climbingday.dto.member.MemberLoginDto;
+import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.infra.config.TestConfig;
-import com.climbingday.member.dto.MemberLoginDto;
-import com.climbingday.member.dto.MemberRegisterDto;
 import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
 
 import io.restassured.RestAssured;

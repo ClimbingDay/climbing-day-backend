@@ -8,6 +8,17 @@ tasks.withType<Jar> {
     enabled = true
 }
 
+val queryDslVersion = "5.0.0";
+
 dependencies {
+    implementation(project(":common"))
+
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // querydsl
+    implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 }

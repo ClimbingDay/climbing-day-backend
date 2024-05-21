@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:infra"))
     implementation(project(":core:security"))
+    implementation(project(":common"))
     implementation(testFixtures(project(":core:infra")))
 
     // redis
@@ -39,9 +40,6 @@ dependencies {
 
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
-
-    // swagger ui
-    implementation("org.springdoc:springdoc-openapi-ui:$openUiVersion")
 
     // 테스트 의존성
     testImplementation("org.springframework.boot:spring-boot-starter-test")
