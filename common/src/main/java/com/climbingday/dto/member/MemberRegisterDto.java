@@ -1,8 +1,6 @@
-package com.climbingday.member.dto;
+package com.climbingday.dto.member;
 
 import java.util.List;
-
-import com.climbingday.domain.member.Member;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -32,16 +30,7 @@ public class MemberRegisterDto {
 	@Size(min = 6, message = "비밀번호 확인은 최소 6자 이상 입력해주세요.")
 	private String passwordConfirm;
 
-	@Size(min = 3, max = 3, message = "핸드폰 번호를 올바르게 입력해 주세요.")
-	private List<String> phoneNumber;
-
-	public static Member toMember(MemberRegisterDto registerDto) {
-
-		return Member.builder()
-			.email(registerDto.getEmail())
-			.name(registerDto.getName())
-			.phoneNumber(String.join("-", registerDto.getPhoneNumber()))
-			.build();
-	}
-
+	@Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "핸드폰 번호를 올바르게 입력해주세요.")
+	@NotBlank(message = "핸드폰 번호는 필수 항목입니다.")
+	private String phoneNumber;
 }

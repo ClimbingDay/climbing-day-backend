@@ -1,4 +1,4 @@
-package com.climbingday.domain.member.enums;
+package com.climbingday.enums.member;
 
 public enum ERoles {
 	ROLE_ADMIN,		// 관리자

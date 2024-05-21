@@ -1,4 +1,4 @@
-package com.climbingday.member.dto;
+package com.climbingday.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
