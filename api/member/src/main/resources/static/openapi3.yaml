@@ -30,8 +30,8 @@ paths:
               examples:
                 로그인 API:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYxMDkyNDMsImV4cCI6MTcxNjExMTA0Mywicm9sZXMiOiJST0xFX1VTRVIifQ.uAQIkGvbqFZNPyqpRNrRp8nt7Fi9WhqvpuTbBEpwohWwSXWohiEX7AkaFUjjFdkK7o2ZDLs2HWz4t6uTadWM-A\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYxMDkyNDMsImV4cCI6MTcxNjE2OTI0Mywicm9sZXMiOiJST0xFX1VTRVIifQ.cLKAdvc8qxFs0ceVPeT5HpygR5ooLCJKt82kN1S6b9Cospdc95SVbCcFm51jwBXaY3p-csW37oESwaN7NdLnaA\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYzMDI0MzMsImV4cCI6MTcxNjMwNDIzMywicm9sZXMiOiJST0xFX1VTRVIifQ.OT6P5OAnEzoQGlZAZjTt_xNr1r6a0CuzZSrs02vtgTVskuILGf8HJUJ62lb7E-OJXwSX9sDHVgIAhNHp4XpPpg\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYzMDI0MzMsImV4cCI6MTcxNjM2MjQzMywicm9sZXMiOiJST0xFX1VTRVIifQ.ex9hv1nu537FhJgid4KU24UIo1Dd4xvimY223Xe9UGWPnag7msp-JSUrbRvA3T8xKJrbf3PPfV84gyNb16redQ\"\
                     }}"
   /v1/member/register:
     post:
@@ -42,12 +42,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/v1-member-register2051235083'
+              $ref: '#/components/schemas/v1-member-register1818902465'
             examples:
               회원 가입 API:
                 value: "{\"email\":\"test@naver.com\",\"name\":\"test\",\"password\"\
-                  :\"123456\",\"passwordConfirm\":\"123456\",\"phoneNumber\":[\"010\"\
-                  ,\"1234\",\"5678\"]}"
+                  :\"123456\",\"passwordConfirm\":\"123456\",\"phoneNumber\":\"010-1234-5678\"\
+                  }"
       responses:
         "201":
           description: "201"
@@ -94,21 +94,15 @@ components:
         message:
           type: string
           description: 상태 메시지
-    v1-member-register2051235083:
+    v1-member-register1818902465:
       type: object
       properties:
         password:
           type: string
           description: 패스워드
         phoneNumber:
-          type: array
+          type: string
           description: 핸드폰 번호
-          items:
-            oneOf:
-            - type: object
-            - type: boolean
-            - type: string
-            - type: number
         passwordConfirm:
           type: string
           description: 패스워드 확인

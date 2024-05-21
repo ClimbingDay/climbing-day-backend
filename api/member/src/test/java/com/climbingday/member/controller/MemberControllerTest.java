@@ -7,8 +7,6 @@ import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -60,7 +58,7 @@ class MemberControllerTest extends TestConfig {
 			.name("test")
 			.password("123456")
 			.passwordConfirm("123456")
-			.phoneNumber(List.of("010", "1234", "5678"))
+			.phoneNumber("010-1234-5678")
 			.build();
 
 		given(spec).log().all()
@@ -70,7 +68,7 @@ class MemberControllerTest extends TestConfig {
 					fieldWithPath("name").type(STRING).description("이름"),
 					fieldWithPath("password").type(STRING).description("패스워드"),
 					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
-					fieldWithPath("phoneNumber").type(ARRAY).description("핸드폰 번호")
+					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호")
 				),
 				responseFields(
 					fieldWithPath("code").type(NUMBER).description("상태 코드"),
