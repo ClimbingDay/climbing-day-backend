@@ -110,4 +110,23 @@ class MemberControllerTest extends TestConfig {
 		.then().log().all()
 			.statusCode(200);
 	}
+
+	@Test
+	@DisplayName("3. 어드민 - 일반회원 조회")
+	public void getMembers() throws Exception {
+		given(spec).log().all()
+			.filter(RestAssuredRestDocumentationWrapper.document("일반회원 조회(어드민) API",
+				responseFields(
+					fieldWithPath("code").type(NUMBER).description("상태 코드"),
+					fieldWithPath("message").type(STRING).description("상태 메시지"),
+					fieldWithPath("data[].id").type(NUMBER).description("회원 번호"),
+					fieldWithPath("data[].email").type(STRING).description("회원 이메일(계정)"),
+					fieldWithPath("data[].status").type(STRING).description("회원 상태"),
+					fieldWithPath("data[].roles").type(STRING).description("회원 권한")
+				)))
+			.when()
+			.get("/v1/admin/member")
+			.then().log().all()
+			.statusCode(200);
+	}
 }

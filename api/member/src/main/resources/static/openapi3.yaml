@@ -7,6 +7,23 @@ servers:
 - url: http://localhost:8080
 tags: []
 paths:
+  /v1/admin/member:
+    get:
+      tags:
+      - v1
+      operationId: 일반회원 조회(어드민) API
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-admin-member1631054700'
+              examples:
+                일반회원 조회(어드민) API:
+                  value: "{\"code\":201,\"message\":\"정상적으로 생성되었습니다.\",\"data\":[{\"\
+                    id\":1,\"email\":\"test@naver.com\",\"status\":\"PENDING\",\"\
+                    roles\":\"ROLE_USER\"}]}"
   /v1/member/login:
     post:
       tags:
@@ -30,8 +47,8 @@ paths:
               examples:
                 로그인 API:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYzMDI0MzMsImV4cCI6MTcxNjMwNDIzMywicm9sZXMiOiJST0xFX1VTRVIifQ.OT6P5OAnEzoQGlZAZjTt_xNr1r6a0CuzZSrs02vtgTVskuILGf8HJUJ62lb7E-OJXwSX9sDHVgIAhNHp4XpPpg\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYzMDI0MzMsImV4cCI6MTcxNjM2MjQzMywicm9sZXMiOiJST0xFX1VTRVIifQ.ex9hv1nu537FhJgid4KU24UIo1Dd4xvimY223Xe9UGWPnag7msp-JSUrbRvA3T8xKJrbf3PPfV84gyNb16redQ\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYzODk4MTIsImV4cCI6MTcxNjM5MTYxMiwicm9sZXMiOiJST0xFX1VTRVIifQ.l3_JgupXU5pOwJciZU8Hejs40mtoFU0e9tyj4gBPMBivCFbik8FliIT9LpcS1zvtcOliso9kd7dpk__Ylihdkg\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYzODk4MTIsImV4cCI6MTcxNjQ0OTgxMiwicm9sZXMiOiJST0xFX1VTRVIifQ.eY3U9d-Xo7XPUjm-WnXwAJ4BEufmO2r6O0eHEmEH5TujrELVoSHe39aMf2FOm1WnlTigmLit1I70DEIucfLSPA\"\
                     }}"
   /v1/member/register:
     post:
@@ -112,6 +129,32 @@ components:
         email:
           type: string
           description: 이메일(계정)
+    v1-admin-member1631054700:
+      type: object
+      properties:
+        code:
+          type: number
+          description: 상태 코드
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              roles:
+                type: string
+                description: 회원 권한
+              id:
+                type: number
+                description: 회원 번호
+              email:
+                type: string
+                description: 회원 이메일(계정)
+              status:
+                type: string
+                description: 회원 상태
+        message:
+          type: string
+          description: 상태 메시지
     v1-member-login965174184:
       type: object
       properties:
