@@ -1,5 +1,6 @@
 package com.climbingday.security.config;
 
+import static com.climbingday.enums.member.ERoles.*;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.*;
 
@@ -20,10 +21,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.climbingday.security.exception.CustomAccessDeniedHandler;
+import com.climbingday.security.jwt.JwtFilter;
+import com.climbingday.security.jwt.JwtProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +38,9 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SpringSecurityConfig {
+	private final JwtProvider jwtProvider;
+	private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
 	/**
 	 * 패스워드 인코더
 	 */
@@ -81,11 +90,67 @@ public class SpringSecurityConfig {
 	}
 
 	/**
+	 * token and auth http
+	 */
+	@Bean
+	@Order(2)
+	public SecurityFilterChain authenticatedFilterChain(HttpSecurity http) throws Exception {
+		httpSecuritySetting(http);
+		http
+			.securityMatchers(matcher -> matcher
+				.requestMatchers(AuthRequestMatchers()))
+			.authorizeHttpRequests(auth -> auth
+				.requestMatchers(AuthRequestMatchers()).hasAuthority(ROLE_ADMIN.name())
+				.anyRequest().authenticated()
+			)
+			.exceptionHandling(exception -> exception
+				.accessDeniedHandler(customAccessDeniedHandler)
+			)
+			.addFilterBefore(new JwtFilter(jwtProvider), ExceptionTranslationFilter.class);
+		return http.build();
+	}
+
+	/**
+	 * 설정하지 않은 http 거부
+	 */
+	@Bean
+	@Order(2)
+	public SecurityFilterChain otherFilterChain(HttpSecurity http) throws Exception {
+		httpSecuritySetting(http);
+		http
+			.securityMatchers(matcher -> matcher
+				.requestMatchers("/**")
+			)
+			.authorizeHttpRequests(auth -> auth
+				.anyRequest().denyAll()
+			);
+
+		return http.build();
+	}
+
+	/**
 	 * permitAll endpoint
 	 */
 	private RequestMatcher[] permitAllRequestMatchers() {
 		List<RequestMatcher> requestMatchers = List.of(
-			antMatcher(POST, "/member/register")        // 회원가입
+			antMatcher(POST, "/member/login"),			// 로그인
+			antMatcher(POST, "/member/register"),			// 회원가입
+
+			// 스웨거
+			antMatcher(GET, "/swagger-ui.html"),
+			antMatcher(GET, "/urls.json"),
+			antMatcher(GET, "/openapi3.yaml")
+		);
+
+		return requestMatchers.toArray(RequestMatcher[]::new);
+	}
+
+	/**
+	 * Auth endpoint
+	 */
+	private RequestMatcher[] AuthRequestMatchers() {
+		List<RequestMatcher> requestMatchers = List.of(
+			antMatcher(GET, "/admin/member")			// 모든 회원 조회
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);
@@ -151,6 +216,5 @@ public class SpringSecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 생성을 하지 않음
 			)
 			.anonymous(AbstractHttpConfigurer::disable); // 익명 사용자 접근 제한, 모든 요청이 인증 필요
-
 	}
 }
