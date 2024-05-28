@@ -59,6 +59,7 @@ class MemberControllerTest extends TestConfig {
 			.password("123456")
 			.passwordConfirm("123456")
 			.phoneNumber("010-1234-5678")
+			.birthDate("2000-11-11")
 			.build();
 
 		given(spec).log().all()
@@ -68,7 +69,8 @@ class MemberControllerTest extends TestConfig {
 					fieldWithPath("name").type(STRING).description("이름"),
 					fieldWithPath("password").type(STRING).description("패스워드"),
 					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
-					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호")
+					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호"),
+					fieldWithPath("birthDate").type(STRING).description("생년월일")
 				),
 				responseFields(
 					fieldWithPath("code").type(NUMBER).description("상태 코드"),

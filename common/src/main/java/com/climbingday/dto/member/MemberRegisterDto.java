@@ -33,4 +33,8 @@ public class MemberRegisterDto {
 	@Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "핸드폰 번호를 올바르게 입력해주세요.")
 	@NotBlank(message = "핸드폰 번호는 필수 항목입니다.")
 	private String phoneNumber;
+
+	@Pattern(regexp = "^(?:(?:19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$", message = "생년월일을 올바르게 입력해주세요.")
+	@NotBlank(message = "생년월일은 필수 항목입니다")
+	private String birthDate;
 }

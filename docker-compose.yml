@@ -28,7 +28,7 @@ services:
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 10s
-      timeout: 5s
+      timeout: 15s
       retries: 5
 
   redis:
@@ -40,4 +40,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-

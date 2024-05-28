@@ -47,8 +47,8 @@ paths:
               examples:
                 로그인 API:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYzODk4MTIsImV4cCI6MTcxNjM5MTYxMiwicm9sZXMiOiJST0xFX1VTRVIifQ.l3_JgupXU5pOwJciZU8Hejs40mtoFU0e9tyj4gBPMBivCFbik8FliIT9LpcS1zvtcOliso9kd7dpk__Ylihdkg\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTYzODk4MTIsImV4cCI6MTcxNjQ0OTgxMiwicm9sZXMiOiJST0xFX1VTRVIifQ.eY3U9d-Xo7XPUjm-WnXwAJ4BEufmO2r6O0eHEmEH5TujrELVoSHe39aMf2FOm1WnlTigmLit1I70DEIucfLSPA\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTY5MDE3MjAsImV4cCI6MTcxNjkwMzUyMCwicm9sZXMiOiJST0xFX1VTRVIifQ.cHbdOfyuPsfKjbKaCCBXNLrB_gNeccbTwh03drwJjSuCzAr6Fn2NUfKtLeYtOGwuUyV-4WXQxsgWpZ9A9xNBug\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTY5MDE3MjAsImV4cCI6MTcxNjk2MTcyMCwicm9sZXMiOiJST0xFX1VTRVIifQ.G6dzqZdWmXkaXbXAfqlZqBV8VtN7aGtJrYDsIVYbChsZRhXOHERt53zhekmTLqeliKIfkaOQgkBofbX8INNB2w\"\
                     }}"
   /v1/member/register:
     post:
@@ -59,12 +59,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/v1-member-register1818902465'
+              $ref: '#/components/schemas/v1-member-register389488942'
             examples:
               회원 가입 API:
                 value: "{\"email\":\"test@naver.com\",\"name\":\"test\",\"password\"\
                   :\"123456\",\"passwordConfirm\":\"123456\",\"phoneNumber\":\"010-1234-5678\"\
-                  }"
+                  ,\"birthDate\":\"2000-11-11\"}"
       responses:
         "201":
           description: "201"
@@ -111,7 +111,7 @@ components:
         message:
           type: string
           description: 상태 메시지
-    v1-member-register1818902465:
+    v1-member-register389488942:
       type: object
       properties:
         password:
@@ -126,6 +126,9 @@ components:
         name:
           type: string
           description: 이름
+        birthDate:
+          type: string
+          description: 생년월일
         email:
           type: string
           description: 이메일(계정)
