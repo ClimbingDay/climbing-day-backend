@@ -32,18 +32,20 @@ step1() {
 
 # 프로젝트 관련 최신 이미지 파일 불러오기
 step2() {
-    echo "Step2: 프로젝트 관련 최신 이미지 파일 불러오기 및 기존 이미지 제거"
+    echo "Step2: 프로젝트 관련 최신 이미지 파일 불러오기"
     REPOSITORY="seongolee/climbing-day-member"
     tag="latest"
 
-    docker pull ${REPOSITORY}:${tag} && docker image prune -f
+    docker pull ${REPOSITORY}:${tag}
 }
 
 main() {
-    docker compose down
+    docker compose down && docker image prune -f && docker volume prune -f
     step1
     step2
     echo "Docker image 설정이 정상적으로 완료되었습니다."
+    docker compose up -d
+    echo "서버가 정상적으로 실행되었습니다."
 }
 
 main
