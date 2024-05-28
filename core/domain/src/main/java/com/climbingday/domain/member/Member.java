@@ -58,6 +58,7 @@ public class Member {
 			.email(registerDto.getEmail())
 			.name(registerDto.getName())
 			.phoneNumber(String.join("-", registerDto.getPhoneNumber()))
+			.birthDate(Date.valueOf(registerDto.getBirthDate()))
 			.build();
 	}
 }
