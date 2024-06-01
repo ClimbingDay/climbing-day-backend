@@ -27,6 +27,9 @@ dependencies {
     annotationProcessor("jakarta.annotation:jakarta.annotation-api")
     annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
+    // smtp
+    implementation("org.springframework.boot:spring-boot-starter-mail:3.0.5")
+
     // swagger
     implementation("io.swagger.core.v3:swagger-core:2.1.6")
 
@@ -35,4 +38,5 @@ dependencies {
     testFixturesImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
     testFixturesImplementation("org.testcontainers:mysql")
     testFixturesImplementation("org.springframework.boot:spring-boot-starter-test")
+    testFixturesImplementation("org.springframework:spring-jdbc:5.3.22")
 }
