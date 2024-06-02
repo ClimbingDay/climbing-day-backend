@@ -1,2 +1,2 @@
-member-service-url: http://localhost:8081
-mail-service-url: http://localhost:8089
+member-service-url: http://api-member:8081
+mail-service-url: http://api-mail:8089
