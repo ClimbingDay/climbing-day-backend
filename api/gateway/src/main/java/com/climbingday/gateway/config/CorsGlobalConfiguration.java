@@ -13,10 +13,10 @@ public class CorsGlobalConfiguration {
 	@Bean
 	public CorsWebFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(false);
-		config.addAllowedOriginPattern("*");
-		config.addAllowedMethod("*");
-		config.addAllowedHeader("*");
+		config.setAllowCredentials(true); // 크레덴셜 허용 설정
+		config.addAllowedOriginPattern("*"); // 모든 출처 허용
+		config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
+		config.addAllowedHeader("*"); // 모든 헤더 허용
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
 		source.registerCorsConfiguration("/**", config);

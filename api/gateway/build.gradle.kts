@@ -16,6 +16,10 @@ configurations {
 }
 
 dependencies {
+    if (System.getProperty("os.arch").equals("aarch64")) {
+        runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.94.Final:osx-aarch_64")
+    }
+
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.cloud:spring-cloud-starter-gateway:4.1.4")
 }

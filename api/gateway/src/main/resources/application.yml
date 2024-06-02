@@ -9,7 +9,13 @@ spring:
     profiles:
         active: local
 
+    webflux:
+        base-path: /v1
+
+springdoc:
+    swagger-ui:
+        path: /swagger-ui
+        enabled: true
+
 server:
     port: 8080
-    servlet:
-        context-path: /v1

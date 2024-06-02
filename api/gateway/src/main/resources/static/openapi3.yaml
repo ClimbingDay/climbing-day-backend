@@ -32,8 +32,8 @@ paths:
               examples:
                 로그인 API:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTczMjIxOTYsImV4cCI6MTcxNzMyMzk5Niwicm9sZXMiOiJST0xFX1VTRVIifQ.GUbGx3lGPHlheuDrz4b0wyeyZsskjNmO00mMX2y-vQzxLSGgya2vfl5fnImYv0QLGKq_IjgVwxMPLxfW3kJVpw\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTczMjIxOTYsImV4cCI6MTcxNzM4MjE5Niwicm9sZXMiOiJST0xFX1VTRVIifQ.nQaRDMA9XvVPsaV-IJxjfkr8EQWGLve7ru44DDIB9c9tMpGpLRC0nr91GSpxgsTdwFu6JruxJVjnIGzVWQw-uw\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTczNDgyMjEsImV4cCI6MTcxNzM1MDAyMSwicm9sZXMiOiJST0xFX1VTRVIifQ.ZFJk1-D1--kS3nCOMx-r7_T_kgh_eleqNFuOaBsq_pmUfauLlSgWGk0gZQyloT0MB18SPLWgIdIsfknBXbdyxg\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTczNDgyMjEsImV4cCI6MTcxNzQwODIyMSwicm9sZXMiOiJST0xFX1VTRVIifQ.xqy1zi3YGWFqxOh4s0uu_oCOCRmR648a0UUSTc9_6gtkUvKtddybp9gyxMNl7KhIXhOzMXBTA6X3z6wSj43cGg\"\
                     }}"
   /v1/member/register:
     post:

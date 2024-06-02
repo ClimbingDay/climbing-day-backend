@@ -63,5 +63,5 @@ tasks.register<Copy>("generatedDocs") {
 
 	// member
 	from(memberBuildDir.file("api-spec/openapi3.yaml"))
-	into(project(":api:member").file("src/main/resources/static"))
+	into(project(":api:gateway").file("src/main/resources/static"))
 }

@@ -33,10 +33,18 @@ step1() {
 # 프로젝트 관련 최신 이미지 파일 불러오기
 step2() {
     echo "Step2: 프로젝트 관련 최신 이미지 파일 불러오기"
-    REPOSITORY="seongolee/climbing-day-member"
-    tag="latest"
 
-    docker pull ${REPOSITORY}:${tag}
+    BASE_REPOSITORY="seongolee/climbing-day-"
+    SERVICES=("gateway" "mail" "member")
+    TAG="latest"
+
+     # 배열에 있는 각 서비스에 대해 Docker 이미지 불러오기
+    for SERVICE in "${SERVICES[@]}"
+    do
+        REPOSITORY="${BASE_REPOSITORY}${SERVICE}"
+        echo "Pulling ${REPOSITORY}:${TAG}"
+        docker pull "${REPOSITORY}:${TAG}"
+    done
 }
 
 main() {

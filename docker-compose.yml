@@ -1,21 +1,6 @@
 version: '3.7'
 
 services:
-  climbing-day-member:
-    image: seongolee/climbing-day-member:latest
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/test
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    depends_on:
-      mysql-db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-
   mysql-db:
     image: mysql:8.0 # mysql 이미지
     ports:
@@ -40,3 +25,42 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  api-gateway:
+    image: seongolee/climbing-day-gateway:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      - api-member
+
+  api-mail:
+    image: seongolee/climbing-day-mail:latest
+    ports:
+      - "8089:8089"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/test
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  api-member:
+    image: seongolee/climbing-day-member:latest
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/test
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy

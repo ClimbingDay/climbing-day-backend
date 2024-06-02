@@ -146,6 +146,7 @@ public class SpringSecurityConfig {
 
 			// 스웨거
 			antMatcher(GET, "/swagger-ui.html"),
+			antMatcher(GET, "/swagger-ui/**"),
 			antMatcher(GET, "/urls.json"),
 			antMatcher(GET, "/openapi3.yaml")
 		);
@@ -169,45 +170,46 @@ public class SpringSecurityConfig {
 	 */
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowCredentials(true);															// 쿠키 및 인증 정보 전송
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));			// 허용할 HTTP 메서드
-		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control","Content-Type"));	// 허용할 헤더
-
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration() {
-			@Override
-			public String checkOrigin(String requestOrigin) {
-				if (requestOrigin != null) {
-					// 동적으로 특정 Origin 허용
-					return requestOrigin;
-				}
-				// null을 반환하면 CORS 요청이 허용되지 않음
-				return null;
-			}
-		});
-
-		return source;
-
-		// // 허용할 Origin(출처)
-		// configuration.setAllowedOrigins(
-		// 	Arrays.asList(
-		// 		"http://localhost:8080",
-		// 		"http://127.0.0.1:8080",
-		// 		"http://localhost:8081",
-		// 		"http://127.0.0.1:8081",
-		// 		"http://localhost:3000",
-		// 		"http://127.0.0.1:3000",
-		// 		// 도커 사용시 사용할 임시 origin
-		// 		"http://api-gateway:8080",
-		// 		"http://api-member:8081",
-		// 		"http://api-mail:8089"
-		// 	)
+		// List<String> allowedOrigins = Arrays.asList(
+		// 	"http://localhost:8080",
+		// 	"http://localhost:3000"
 		// );
 		//
+		// CorsConfiguration configuration = new CorsConfiguration();
+		// configuration.setAllowCredentials(true);															// 쿠키 및 인증 정보 전송
+		// configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));			// 허용할 HTTP 메서드
+		// configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));	// 허용할 헤더
+		//
 		// UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		// source.registerCorsConfiguration("/**", configuration);
+		// // 실서버 반영할때 수정해야 됌
+		// source.registerCorsConfiguration("/**", new CorsConfiguration() {
+		// 	@Override
+		// 	public String checkOrigin(String requestOrigin) {
+		// 		if (requestOrigin != null && isAllowedOrigin(requestOrigin)) {
+		// 			// 동적으로 특정 Origin 허용
+		// 			return requestOrigin;
+		// 		}
+		// 		// null을 반환하면 CORS 요청이 허용되지 않음
+		// 		return null;
+		// 	}
+		//
+		// 	private boolean isAllowedOrigin(String requestOrigin) {
+		// 		// 허용된 도메인 목록 확인 로직
+		// 		return allowedOrigins.contains(requestOrigin);
+		// 	}
+		// });
+		//
 		// return source;
+
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowCredentials(true); // 크레덴셜 허용 설정
+		configuration.addAllowedOriginPattern("*"); // 모든 출처 허용
+		configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
+		configuration.addAllowedHeader("*"); // 모든 헤더 허용
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 CORS 설정 적용
+
+		return source;
 	}
 
 	private void httpSecuritySetting(HttpSecurity http) throws Exception {
