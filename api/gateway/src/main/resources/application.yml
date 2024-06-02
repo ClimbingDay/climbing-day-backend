@@ -6,6 +6,9 @@ spring:
     autoconfigure:
         exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration        # 데이터베이스 관련 설정이 필요없으므로 비활성화 처리
 
+    profiles:
+        active: local
+
 server:
     port: 8080
     servlet:

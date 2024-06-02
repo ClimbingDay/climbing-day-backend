@@ -1,5 +1,6 @@
 package com.climbingday.gateway;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -13,12 +14,15 @@ public class GatewayApplication {
 	}
 
 	@Bean
-	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+	public RouteLocator customRouteLocator(RouteLocatorBuilder builder,
+		@Value("${member-service-url}") String memberServiceUrl,
+		@Value("${mail-service-url}") String mailServiceUrl
+	) {
 		return builder.routes()
 			.route("api-member", r -> r.path("/v1/member/**")
-				.uri("http://api-member:8081"))
+				.uri(memberServiceUrl))
 			.route("api-email", r -> r.path("/v1/email/**")
-				.uri("http://api-mail:8089"))
+				.uri(mailServiceUrl))
 			.build();
 	}
 }
