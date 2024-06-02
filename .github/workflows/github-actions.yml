@@ -22,31 +22,62 @@ jobs:
                 with:
                     java-version: "21"
                     distribution: "temurin"
+
             # gradle 설정
             -   name: Setup Gradle
                 uses: gradle/actions/setup-gradle@v3.1.0
+
             # gradle build, active dev
-            -   name: Build with Gradle
+            -   name: Gateway API Build with Gradle
+                run: |
+                    ./gradlew -p api/gateway build
+            -   name: Mail API Build with Gradle
+                run: |
+                    ./gradlew -p api/mail build
+            -   name: Member API Build with Gradle
                 run: |
                     ./gradlew -p api/member build
+
             # 멀티플랫폼 이미지 빌드 환경 설정
             -   name: Set up QEMU
                 uses: docker/setup-qemu-action@v3
+
             # 멀티플랫폼 이미지 빌드 환경 설정
             -   name: Set up Docker Buildx
                 uses: docker/setup-buildx-action@v3
+
             # dockerhub 에 로그인
             -   name: Login to Docker Hub
                 run: |
                     echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
             # Build and Push Docker Image
+            # api/gateway
+            -   name: Gateway API > Build and Push Docker images
+                uses: docker/build-push-action@v5
+                with:
+                    context: api/gateway
+                    file: api/gateway/Dockerfile
+                    platforms: linux/amd64,linux/arm64
+                    push: true
+                    tags: ${{ secrets.DOCKER_USERNAME }}/climbing-day-gateway:latest
+
+            # api/mail
+            -   name: Mail API > Build and Push Docker images
+                uses: docker/build-push-action@v5
+                with:
+                    context: api/mail
+                    file: api/mail/Dockerfile
+                    platforms: linux/amd64,linux/arm64
+                    push: true
+                    tags: ${{ secrets.DOCKER_USERNAME }}/climbing-day-mail:latest
+
             # api/member
-            -   name: member api > Build and Push Docker images
+            -   name: Member API > Build and Push Docker images
                 uses: docker/build-push-action@v5
                 with:
                     context: api/member
                     file: api/member/Dockerfile
                     platforms: linux/amd64,linux/arm64
                     push: true
-                    tags: |
-                        ${{ secrets.DOCKER_USERNAME }}/climbing-day-member:latest
+                    tags: ${{ secrets.DOCKER_USERNAME }}/climbing-day-member:latest
