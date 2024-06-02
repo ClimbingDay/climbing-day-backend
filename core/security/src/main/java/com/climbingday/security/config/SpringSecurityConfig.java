@@ -174,7 +174,11 @@ public class SpringSecurityConfig {
 				"http://localhost:8081",
 				"http://127.0.0.1:8081",
 				"http://localhost:3000",
-				"http://127.0.0.1:3000"
+				"http://127.0.0.1:3000",
+				// 도커 사용시 사용할 임시 origin
+				"http://api-gateway:8080",
+				"http://api-member:8081",
+				"http://api-mail:8089"
 			)
 		);
 
