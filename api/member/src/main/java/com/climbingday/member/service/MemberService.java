@@ -145,7 +145,7 @@ public class MemberService {
 	 * 이메일 인증코드 요청
 	 */
 	private void sendEmailVerification(Map<String, String> emailInfo) {
-		String url = "http://localhost:8089/v1/mail/verification/send";
+		String url = "http://localhost:8080/v1/mail/verification/send";
 		restTemplate.postForObject(url, emailInfo, String.class);
 	}
 }
