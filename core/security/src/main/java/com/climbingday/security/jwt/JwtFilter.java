@@ -1,6 +1,6 @@
 package com.climbingday.security.jwt;
 
-import static com.climbingday.domain.common.enums.GlobalErrorCode.*;
+import static com.climbingday.enums.GlobalErrorCode.*;
 import static org.springframework.util.StringUtils.*;
 
 import java.io.IOException;
@@ -10,7 +10,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.climbingday.domain.common.enums.BaseErrorCode;
+import com.climbingday.enums.BaseErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.ExpiredJwtException;

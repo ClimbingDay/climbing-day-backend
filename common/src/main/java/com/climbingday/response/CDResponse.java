@@ -1,8 +1,8 @@
-package com.climbingday.domain.response;
+package com.climbingday.response;
 
-import static com.climbingday.domain.common.enums.GlobalSuccessCode.*;
+import static com.climbingday.enums.GlobalSuccessCode.*;
 
-import com.climbingday.domain.common.enums.GlobalSuccessCode;
+import com.climbingday.enums.GlobalSuccessCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;
@@ -13,6 +13,11 @@ public class CDResponse<T> {
 	private int code;
 	private String message;
 	private T data;
+
+	public CDResponse(GlobalSuccessCode statusCode) {
+		this.code = statusCode.getCode();
+		this.message = statusCode.getMessage();
+	}
 
 	public CDResponse(T data) {
 		this.code = SUCCESS.getCode();

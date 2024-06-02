@@ -1,6 +1,6 @@
 package com.climbingday.security.service;
 
-import static com.climbingday.domain.common.enums.MemberErrorCode.*;
+import static com.climbingday.enums.MemberErrorCode.*;
 import static com.climbingday.enums.member.EStatus.*;
 
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,8 +1,8 @@
-package com.climbingday.domain.common.enums;
+package com.climbingday.enums;
 
 import org.springframework.http.HttpStatus;
 
-import com.climbingday.domain.response.ErrorResponse;
+import com.climbingday.response.ErrorResponse;
 
 import lombok.Getter;
 

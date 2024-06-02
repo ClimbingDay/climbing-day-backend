@@ -136,6 +136,9 @@ public class SpringSecurityConfig {
 			antMatcher(POST, "/member/login"),			// 로그인
 			antMatcher(POST, "/member/register"),			// 회원가입
 
+			antMatcher(POST, "/member/email/auth/request"),		// 이메일 인증 요청
+			antMatcher(POST, "/mail/verification/send"),	// 이메일 메일 보내기
+
 			// 스웨거
 			antMatcher(GET, "/swagger-ui.html"),
 			antMatcher(GET, "/urls.json"),

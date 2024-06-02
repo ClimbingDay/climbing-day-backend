@@ -1,6 +1,6 @@
 package com.climbingday.security.exception;
 
-import com.climbingday.domain.common.enums.BaseErrorCode;
+import com.climbingday.enums.BaseErrorCode;
 
 import lombok.Getter;
 

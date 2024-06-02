@@ -5,5 +5,6 @@ include("core:infra")
 include("core:infra:testFixtures")
 include("core:security")
 include("api:member")
-include("api:common")
-include("common:dto")
+include("common")
+include("api:mail")
+findProject(":api:mail")?.name = "mail"

@@ -1,13 +1,13 @@
 package com.climbingday.member.controller;
 
-import static com.climbingday.domain.common.enums.GlobalSuccessCode.*;
+import static com.climbingday.enums.GlobalSuccessCode.*;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.climbingday.domain.response.CDResponse;
+import com.climbingday.response.CDResponse;
 import com.climbingday.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;

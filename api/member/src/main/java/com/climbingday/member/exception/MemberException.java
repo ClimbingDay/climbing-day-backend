@@ -1,6 +1,6 @@
 package com.climbingday.member.exception;
 
-import com.climbingday.domain.common.enums.MemberErrorCode;
+import com.climbingday.enums.MemberErrorCode;
 
 import lombok.Getter;
 

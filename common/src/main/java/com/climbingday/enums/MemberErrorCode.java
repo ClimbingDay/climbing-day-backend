@@ -1,13 +1,13 @@
-package com.climbingday.domain.common.enums;
+package com.climbingday.enums;
 
 import org.springframework.http.HttpStatus;
 
-import com.climbingday.domain.response.ErrorResponse;
+import com.climbingday.response.ErrorResponse;
 
 import lombok.Getter;
 
 @Getter
-public enum MemberErrorCode implements BaseErrorCode{
+public enum MemberErrorCode implements BaseErrorCode {
 	NOT_FIND_MEMBER_EMAIL(400, "존재하지 않는 회원입니다.", HttpStatus.BAD_REQUEST),
 	DUPLICATED_MEMBER_EMAIL(400, "이미 존재하는 회원 이메일입니다.", HttpStatus.BAD_REQUEST),
 	DUPLICATED_MEMBER_PHONE_NUMBER(400, "이미 등록된 휴대폰 번호입니다.", HttpStatus.BAD_REQUEST),

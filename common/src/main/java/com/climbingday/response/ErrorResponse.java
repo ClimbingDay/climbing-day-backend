@@ -1,4 +1,4 @@
-package com.climbingday.domain.response;
+package com.climbingday.response;
 
 import java.util.HashMap;
 import java.util.Map;

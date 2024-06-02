@@ -1,4 +1,4 @@
-package com.climbingday.member.exception;
+package com.climbingday.mail.exception;
 
 import static com.climbingday.enums.GlobalErrorCode.*;
 
@@ -6,10 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.climbingday.enums.BaseErrorCode;
+import com.climbingday.enums.MailErrorCode;
 import com.climbingday.enums.MemberErrorCode;
 import com.climbingday.response.ErrorResponse;
-import com.climbingday.security.exception.CustomSecurityException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,18 +22,10 @@ public class GlobalExceptionHandler {
 			.body(INTERNAL_SERVER_ERROR.getErrorResponse());
 	}
 
-	@ExceptionHandler(MemberException.class)
-	protected ResponseEntity<ErrorResponse> handleMemberException(MemberException ex) {
-		log.error(">>>>> MemberException : {}", ex);
-		MemberErrorCode errorCode = ex.getErrorCode();
-		return ResponseEntity.status(errorCode.getStatus())
-			.body(errorCode.getErrorResponse());
-	}
-
-	@ExceptionHandler(CustomSecurityException.class)
-	protected ResponseEntity<ErrorResponse> handleSecurityException(CustomSecurityException ex) {
-		log.error(">>>>> SecurityException : {}", ex);
-		BaseErrorCode errorCode = ex.getErrorCode();
+	@ExceptionHandler(MailException.class)
+	protected ResponseEntity<ErrorResponse> handleMemberException(MailException ex) {
+		log.error(">>>>> MailException : {}", ex);
+		MailErrorCode errorCode = ex.getErrorCode();
 		return ResponseEntity.status(errorCode.getStatus())
 			.body(errorCode.getErrorResponse());
 	}
