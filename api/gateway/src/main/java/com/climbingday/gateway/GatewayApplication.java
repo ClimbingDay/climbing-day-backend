@@ -21,7 +21,7 @@ public class GatewayApplication {
 		return builder.routes()
 			.route("api-member", r -> r.path("/v1/member/**")
 				.uri(memberServiceUrl))
-			.route("api-email", r -> r.path("/v1/email/**")
+			.route("api-mail", r -> r.path("/v1/mail/**")
 				.uri(mailServiceUrl))
 			.build();
 	}
