@@ -7,4 +7,4 @@ include("core:security")
 include("api:member")
 include("common")
 include("api:mail")
-findProject(":api:mail")?.name = "mail"
+include("api:gateway")

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.climbingday.dto.member.EmailAuthDto;
-import com.climbingday.response.CDResponse;
 import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.member.service.MemberService;
+import com.climbingday.response.CDResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

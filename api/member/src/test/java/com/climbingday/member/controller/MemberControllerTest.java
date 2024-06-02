@@ -7,7 +7,6 @@ import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.*;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -24,11 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.infra.config.TestConfig;
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 @ExtendWith(RestDocumentationExtension.class)
@@ -66,6 +65,9 @@ class MemberControllerTest extends TestConfig {
 
 		given(spec).log().all()
 			.filter(RestAssuredRestDocumentationWrapper.document("회원 가입 API",
+				RestAssuredRestDocumentationWrapper.resourceDetails()
+					.tag("회원 API")
+					.summary("회원 가입"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)"),
 					fieldWithPath("name").type(STRING).description("이름"),
@@ -97,6 +99,9 @@ class MemberControllerTest extends TestConfig {
 
 		given(spec).log().all()
 			.filter(RestAssuredRestDocumentationWrapper.document("로그인 API",
+				RestAssuredRestDocumentationWrapper.resourceDetails()
+					.tag("회원 API")
+					.summary("로그인"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)"),
 					fieldWithPath("password").type(STRING).description("패스워드")

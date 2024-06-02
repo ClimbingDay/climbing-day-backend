@@ -7,27 +7,12 @@ servers:
 - url: http://localhost:8080
 tags: []
 paths:
-  /v1/admin/member:
-    get:
-      tags:
-      - v1
-      operationId: 일반회원 조회(어드민) API
-      responses:
-        "200":
-          description: "200"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/v1-admin-member1631054700'
-              examples:
-                일반회원 조회(어드민) API:
-                  value: "{\"code\":201,\"message\":\"정상적으로 생성되었습니다.\",\"data\":[{\"\
-                    id\":1,\"email\":\"test@naver.com\",\"status\":\"PENDING\",\"\
-                    roles\":\"ROLE_USER\"}]}"
   /v1/member/login:
     post:
       tags:
-      - v1
+      - 회원 API
+      summary: 로그인
+      description: 로그인
       operationId: 로그인 API
       requestBody:
         content:
@@ -47,13 +32,15 @@ paths:
               examples:
                 로그인 API:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTY5MDE3MjAsImV4cCI6MTcxNjkwMzUyMCwicm9sZXMiOiJST0xFX1VTRVIifQ.cHbdOfyuPsfKjbKaCCBXNLrB_gNeccbTwh03drwJjSuCzAr6Fn2NUfKtLeYtOGwuUyV-4WXQxsgWpZ9A9xNBug\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTY5MDE3MjAsImV4cCI6MTcxNjk2MTcyMCwicm9sZXMiOiJST0xFX1VTRVIifQ.G6dzqZdWmXkaXbXAfqlZqBV8VtN7aGtJrYDsIVYbChsZRhXOHERt53zhekmTLqeliKIfkaOQgkBofbX8INNB2w\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTczMTYwOTQsImV4cCI6MTcxNzMxNzg5NCwicm9sZXMiOiJST0xFX1VTRVIifQ.hrTQ_d4Npdnd6Bqwco2Ag7XFCV5QQBSHm5UbCftVqkSSRvRY4LdJ7nji5vjshE_WGp_FqFBoIXXeyyCv1mNmow\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTczMTYwOTQsImV4cCI6MTcxNzM3NjA5NCwicm9sZXMiOiJST0xFX1VTRVIifQ.0x3u80_Oh8lANkZa1-slbKhjjIJVCOeZ9bWgATSaC-YzIFXNjFo7oPcpFi4sVhwW6DoDcPEjGFUPMibKMRcK9A\"\
                     }}"
   /v1/member/register:
     post:
       tags:
-      - v1
+      - 회원 API
+      summary: 회원 가입
+      description: 회원 가입
       operationId: 회원 가입 API
       requestBody:
         content:
@@ -132,32 +119,6 @@ components:
         email:
           type: string
           description: 이메일(계정)
-    v1-admin-member1631054700:
-      type: object
-      properties:
-        code:
-          type: number
-          description: 상태 코드
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              roles:
-                type: string
-                description: 회원 권한
-              id:
-                type: number
-                description: 회원 번호
-              email:
-                type: string
-                description: 회원 이메일(계정)
-              status:
-                type: string
-                description: 회원 상태
-        message:
-          type: string
-          description: 상태 메시지
     v1-member-login965174184:
       type: object
       properties:
