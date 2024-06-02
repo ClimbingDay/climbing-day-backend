@@ -5,6 +5,7 @@ import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -25,12 +26,16 @@ import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsProcessor;
+import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.server.ServerWebExchange;
 
 import com.climbingday.security.exception.CustomAccessDeniedHandler;
 import com.climbingday.security.jwt.JwtFilter;
 import com.climbingday.security.jwt.JwtProvider;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -165,49 +170,44 @@ public class SpringSecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-
-		// 허용할 Origin(출처)
-		configuration.setAllowedOrigins(
-			Arrays.asList(
-				"http://localhost:8080",
-				"http://127.0.0.1:8080",
-				"http://localhost:8081",
-				"http://127.0.0.1:8081",
-				"http://localhost:3000",
-				"http://127.0.0.1:3000",
-				// 도커 사용시 사용할 임시 origin
-				"http://api-gateway:8080",
-				"http://api-member:8081",
-				"http://api-mail:8089"
-			)
-		);
-
-		// 허용할 HTTP 메서드
-		configuration.setAllowedMethods(
-			Arrays.asList(
-				"GET",
-				"POST",
-				"PUT",
-				"PATCH",
-				"DELETE"
-			)
-		);
-
-		// 허용할 헤더
-		configuration.setAllowedHeaders(
-			Arrays.asList(
-				"Authorization",
-				"Cache-Control",
-				"Content-Type"
-			)
-		);
-
-		// 쿠키 및 인증 정보 전송
-		configuration.setAllowCredentials(true);
+		configuration.setAllowCredentials(true);															// 쿠키 및 인증 정보 전송
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));			// 허용할 HTTP 메서드
+		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control","Content-Type"));	// 허용할 헤더
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
+		source.registerCorsConfiguration("/**", new CorsConfiguration() {
+			@Override
+			public String checkOrigin(String requestOrigin) {
+				if (requestOrigin != null) {
+					// 동적으로 특정 Origin 허용
+					return requestOrigin;
+				}
+				// null을 반환하면 CORS 요청이 허용되지 않음
+				return null;
+			}
+		});
+
 		return source;
+
+		// // 허용할 Origin(출처)
+		// configuration.setAllowedOrigins(
+		// 	Arrays.asList(
+		// 		"http://localhost:8080",
+		// 		"http://127.0.0.1:8080",
+		// 		"http://localhost:8081",
+		// 		"http://127.0.0.1:8081",
+		// 		"http://localhost:3000",
+		// 		"http://127.0.0.1:3000",
+		// 		// 도커 사용시 사용할 임시 origin
+		// 		"http://api-gateway:8080",
+		// 		"http://api-member:8081",
+		// 		"http://api-mail:8089"
+		// 	)
+		// );
+		//
+		// UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		// source.registerCorsConfiguration("/**", configuration);
+		// return source;
 	}
 
 	private void httpSecuritySetting(HttpSecurity http) throws Exception {
