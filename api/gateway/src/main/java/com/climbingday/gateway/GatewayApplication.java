@@ -16,9 +16,9 @@ public class GatewayApplication {
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
 		return builder.routes()
 			.route("api-member", r -> r.path("/v1/member/**")
-				.uri("http://localhost:8081"))
+				.uri("http://api-member:8081"))
 			.route("api-email", r -> r.path("/v1/email/**")
-				.uri("http://localhost:8089"))
+				.uri("http://api-mail:8089"))
 			.build();
 	}
 }
