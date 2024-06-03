@@ -32,8 +32,8 @@ paths:
               examples:
                 로그인 API:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTczNDgyMjEsImV4cCI6MTcxNzM1MDAyMSwicm9sZXMiOiJST0xFX1VTRVIifQ.ZFJk1-D1--kS3nCOMx-r7_T_kgh_eleqNFuOaBsq_pmUfauLlSgWGk0gZQyloT0MB18SPLWgIdIsfknBXbdyxg\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTczNDgyMjEsImV4cCI6MTcxNzQwODIyMSwicm9sZXMiOiJST0xFX1VTRVIifQ.xqy1zi3YGWFqxOh4s0uu_oCOCRmR648a0UUSTc9_6gtkUvKtddybp9gyxMNl7KhIXhOzMXBTA6X3z6wSj43cGg\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTc0MjIyMjgsImV4cCI6MTcxNzQyNDAyOCwicm9sZXMiOiJST0xFX1VTRVIifQ.EQYuHybAoPTfi2cYK1nyyWVeKSnHe4wKuk30-0PndebjV-duMltKhsARt4upMqgW4mXgjORbj7Vt1V7zEGjXLA\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTc0MjIyMjgsImV4cCI6MTcxNzQ4MjIyOCwicm9sZXMiOiJST0xFX1VTRVIifQ.l4XuJWhNxfEyk_WEXWAo-1azTZZge8WNPJg5MkaXSEXQkxGRvK8_X5fBxDz9TIC5-cKaxwDY2EAvh783JcKPLg\"\
                     }}"
   /v1/member/register:
     post:
