@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,6 +42,9 @@ public class MemberService {
 	private final JwtProvider jwtProvider;
 	private final RedisRepository redisRepository;
 	private final RestTemplate restTemplate;
+
+	@Value("${service-url}")
+	private String serviceUrl;
 
 	/**
 	 * 회원 등록
@@ -145,7 +149,7 @@ public class MemberService {
 	 * 이메일 인증코드 요청
 	 */
 	private void sendEmailVerification(Map<String, String> emailInfo) {
-		String url = "http://localhost:8080/v1/mail/verification/send";
+		String url = serviceUrl + "/v1/mail/verification/send";
 		restTemplate.postForObject(url, emailInfo, String.class);
 	}
 }

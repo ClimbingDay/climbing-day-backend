@@ -3,7 +3,7 @@ spring:
         name: api-member
     profiles:
         include: domain, infra, security
-        active: dev
+        active: local
     jpa:
         open-in-view: false # view, Controller 단에서 Lazy를 사용하지 않음
         properties:
