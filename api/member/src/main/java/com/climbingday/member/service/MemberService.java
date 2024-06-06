@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.climbingday.domain.common.repository.RedisRepository;
@@ -148,8 +150,17 @@ public class MemberService {
 	/**
 	 * 이메일 인증코드 요청
 	 */
-	private void sendEmailVerification(Map<String, String> emailInfo) {
+	public void sendEmailVerification(Map<String, String> emailInfo) {
 		String url = serviceUrl + "/v1/mail/verification/send";
-		restTemplate.postForObject(url, emailInfo, String.class);
+
+		try{
+			ResponseEntity<String> response = restTemplate.postForEntity(url, emailInfo, String.class);
+
+			if (!response.getStatusCode().is2xxSuccessful()) {
+				throw new MemberException(UNABLE_TO_SEND_EMAIL);
+			}
+		}catch (RestClientException e) {
+			throw new MemberException(UNABLE_TO_SEND_EMAIL);
+		}
 	}
 }

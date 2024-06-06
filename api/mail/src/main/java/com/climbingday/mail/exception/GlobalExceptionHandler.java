@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.climbingday.enums.MailErrorCode;
-import com.climbingday.enums.MemberErrorCode;
 import com.climbingday.response.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
