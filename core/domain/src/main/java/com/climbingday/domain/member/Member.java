@@ -2,6 +2,7 @@ package com.climbingday.domain.member;
 
 import java.sql.Date;
 
+import com.climbingday.domain.MutableBaseEntity;
 import com.climbingday.enums.member.ERoles;
 import com.climbingday.enums.member.EStatus;
 import com.climbingday.dto.member.MemberRegisterDto;
@@ -28,7 +29,7 @@ import lombok.Setter;
 	@UniqueConstraint(columnNames = "phoneNumber")
 })
 @Builder @NoArgsConstructor @AllArgsConstructor
-public class Member {
+public class Member extends MutableBaseEntity {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "member_id")
 	private Long id;

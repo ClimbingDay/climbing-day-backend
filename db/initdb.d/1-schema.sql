@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS member
     phone_number            VARCHAR(20)     NOT NULL,                               -- 회원 핸드폰 번호
     status                  VARCHAR(20)     NOT NULL,                               -- 회원 상태(e.g., 휴면, 활성화 등)
     roles                   VARCHAR(20)     NOT NULL,                               -- 회원 권한(e.g., 일반, 관리자 등)
-    created_date            DATETIME,
+    created_date            DATETIME        NOT NULL,
     created_by              VARCHAR(20),
     updated_date            DATETIME,
     updated_by              VARCHAR(20)
@@ -21,15 +21,15 @@ CREATE TABLE IF NOT EXISTS terms
     version                 VARCHAR(255)    NOT NULL,                               -- 약관 버전
     content                 TEXT            NOT NULL,                               -- 약관 내용
     is_mandatory            BOOLEAN         NOT NULL,                               -- 약관 필수 여부
-    created_date            DATETIME
-)
+    created_date            DATETIME        NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS member_terms
 (
     member_terms_id         BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,             -- 회원 약관 id
-    member_id               BIGINT          NOT NULL,                               -- 회원 id
-    terms_id                BIGINT          NOT NULL,                               -- 약관 id
-    agree_date              DATETIME        NOT NULL                                -- 약관 동의한 날짜
+    member_id               BIGINT UNSIGNED NOT NULL,                               -- 회원 id
+    terms_id                BIGINT UNSIGNED NOT NULL,                               -- 약관 id
+    agree_date              DATETIME        NOT NULL,                               -- 약관 동의한 날짜
     FOREIGN KEY (member_id) REFERENCES member(member_id),
     FOREIGN KEY (terms_id) REFERENCES terms(terms_id)
-)
+);
