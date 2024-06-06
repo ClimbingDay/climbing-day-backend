@@ -128,7 +128,7 @@ class MemberControllerTest extends TestConfig {
 	public void validMemberRegisterTest() throws Exception {
 		MemberRegisterDto registerDto = MemberRegisterDto.builder()
 			.email("testnaver.com")
-			.name(null)
+			.name("")
 			.password("12345")
 			.passwordConfirm("12345")
 			.phoneNumber("0101234-5678")
