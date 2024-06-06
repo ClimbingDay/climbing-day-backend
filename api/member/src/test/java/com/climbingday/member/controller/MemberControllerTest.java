@@ -442,10 +442,10 @@ class MemberControllerTest extends TestConfig {
 		doNothing().when(memberService).emailAuthConfirm(any());
 
 		given(spec).log().all()
-			.filter(document("이메일 인증 확인 API - 성공",
+			.filter(document("이메일 인증 코드 확인 API - 성공",
 				resourceDetails()
 					.tag("회원 API")
-					.summary("이메일 인증 확인"),
+					.summary("이메일 인증 코드 확인"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)"),
 					fieldWithPath("authCode").type(STRING).description("인증 코드")
@@ -471,10 +471,10 @@ class MemberControllerTest extends TestConfig {
 			.build();
 
 		given(spec).log().all()
-			.filter(document("이메일 인증 확인 API - 실패: 인증 코드 요청 필요",
+			.filter(document("이메일 인증 코드 확인 API - 실패: 인증 코드 요청 필요",
 				resourceDetails()
 					.tag("회원 API")
-					.summary("이메일 인증 확인"),
+					.summary("이메일 인증 코드 확인"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)"),
 					fieldWithPath("authCode").type(STRING).description("인증 코드")
@@ -502,10 +502,10 @@ class MemberControllerTest extends TestConfig {
 		doThrow(new MemberException(NOT_MATCHED_AUTH_CODE)).when(memberService).emailAuthConfirm(any());
 
 		given(spec).log().all()
-			.filter(document("이메일 인증 확인 API - 실패: 인증 코드 불일치",
+			.filter(document("이메일 인증 코드 확인 API - 실패: 인증 코드 불일치",
 				resourceDetails()
 					.tag("회원 API")
-					.summary("이메일 인증 확인"),
+					.summary("이메일 인증 코드 확인"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)"),
 					fieldWithPath("authCode").type(STRING).description("인증 코드")
@@ -531,10 +531,10 @@ class MemberControllerTest extends TestConfig {
 			.build();
 
 		given(spec).log().all()
-			.filter(document("이메일 인증 확인 API - 실패: 필드 유효성",
+			.filter(document("이메일 인증 코드 확인 API - 실패: 필드 유효성",
 				resourceDetails()
 					.tag("회원 API")
-					.summary("이메일 인증 확인"),
+					.summary("이메일 인증 코드 확인"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)"),
 					fieldWithPath("authCode").type(STRING).description("인증 코드")
