@@ -23,6 +23,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +36,10 @@ public class JwtProvider {
 	@Value("${jwt.access-expiration-seconds}")
 	private int accessExpirationSeconds;	// 엑세스 토큰 만료 시간
 
+	/**
+	 *  getter 리프래쉬 토큰 만료시간
+	 */
+	@Getter
 	@Value("${jwt.refresh-expiration-seconds}")
 	private int refreshExpirationSeconds;	// 리프래쉬 토큰 만료 시간
 
@@ -95,14 +100,6 @@ public class JwtProvider {
 			.claim(AUTHENTICATION_CLAIM_NAME, roles.toString())
 			.signWith(key, SignatureAlgorithm.HS512)
 			.compact();
-	}
-
-	/**
-	 * getter 리프래쉬 토큰 만료시간
-	 */
-
-	public int getRefreshExpirationSeconds() {
-		return refreshExpirationSeconds;
 	}
 
 	/**
