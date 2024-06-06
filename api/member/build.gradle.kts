@@ -48,8 +48,17 @@ dependencies {
     testImplementation("org.springframework.restdocs:spring-restdocs-restassured")
 }
 
+// 스니펫 문서 정리
+val cleanGeneratedSnippets by tasks.registering(Delete::class) {
+    val snippetsDir = project(":api:member").layout.buildDirectory.dir("generated-snippets")
+    delete(snippetsDir)
+}
+
 // Junit5 플랫폼을 사용하여 테스트
 tasks.test {
+    dependsOn(cleanGeneratedSnippets)
+
+    jvmArgs("-Xshare:off")          // CDS 비활성화
     outputs.dir(file(snippetsDir))
     useJUnitPlatform()
 }
