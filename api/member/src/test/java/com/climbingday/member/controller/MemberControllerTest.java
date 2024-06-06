@@ -1,6 +1,7 @@
 package com.climbingday.member.controller;
 
 import static com.climbingday.enums.MailErrorCode.*;
+import static com.climbingday.enums.RedisErrorCode.*;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.*;
 import static io.restassured.RestAssured.*;
@@ -192,7 +193,7 @@ class MemberControllerTest extends TestConfig {
 			.birthDate("2000-11-11")
 			.build();
 
-		doThrow(new MemberException(NOT_AUTHENTICATED_EMAIL)).when(memberService).emailAuthCheck(any());
+		doThrow(new MemberException(NOT_EXIST_EMAIL_INFO)).when(memberService).emailAuthCheck(any());
 
 		given(spec).log().all()
 			.filter(document("회원 API - 실패: 이메일 인증 x",
