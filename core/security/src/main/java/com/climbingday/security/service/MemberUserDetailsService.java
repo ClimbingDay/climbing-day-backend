@@ -24,7 +24,7 @@ public class MemberUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomSecurityException(NOT_FIND_MEMBER_EMAIL));
+                .orElseThrow(() -> new CustomSecurityException(CHECK_ID_OR_PASSWORD));
 
         if (member.getStatus().equals(INACTIVE)) {
             throw new CustomSecurityException(DELETE_MEMBER);
