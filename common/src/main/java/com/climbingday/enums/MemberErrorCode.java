@@ -12,8 +12,8 @@ public enum MemberErrorCode implements BaseErrorCode {
 	DUPLICATED_MEMBER_PHONE_NUMBER(409, "이미 등록된 휴대폰 번호입니다.", HttpStatus.CONFLICT),
 	DELETE_MEMBER(400, "탈퇴 또는 삭제된 회원입니다.", HttpStatus.BAD_REQUEST),
 	CHECK_ID_OR_PASSWORD(401, "아이디 또는 비밀번호를 확인해주세요.", HttpStatus.UNAUTHORIZED),
-	PASSWORD_NOT_MATCHED(400, "비밀번호와 비밀번호 확인이 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
-	UNABLE_TO_SEND_EMAIL(504, "이메일 전송에 실패했습니다.", HttpStatus.GATEWAY_TIMEOUT);
+	NOT_MATCHED_PASSWORD(400, "비밀번호와 비밀번호 확인이 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+
 
 	private final int errorCode;
 	private final String errorMessage;

@@ -38,7 +38,6 @@ spring:
                     connectiontimeout: 5000     # 서버 연결 타임아웃 시간 (밀리초)
                     timeout: 5000               # 서버 응답 타임아웃 시간 (밀리초)
                     writetimeout: 5000          # 서버에 데이터 전송 타임아웃 시간 (밀리초)
-        auth-code-expiration-millis: 1800000    # 인증 코드 만료 시간 (밀리초) - 30분
 
 logging:
     level:
@@ -86,7 +85,6 @@ spring:
                     connectiontimeout: 5000     # 서버 연결 타임아웃 시간 (밀리초)
                     timeout: 5000               # 서버 응답 타임아웃 시간 (밀리초)
                     writetimeout: 5000          # 서버에 데이터 전송 타임아웃 시간 (밀리초)
-        auth-code-expiration-millis: 1800000    # 인증 코드 만료 시간 (밀리초) - 30분
 
 logging:
     level:

@@ -25,9 +25,9 @@ public class RedisRepository {
 	private final RedisTemplate<String, Object> redisTemplate;
 
 	/**
-	 * SET 이메일 인증코드
+	 * SET Email AuthCode AND Confirm - 이메일 인증, 확인정보 저장
 	 */
-	public void setEmailCodeAndConfirm(String email, String authCode, boolean confirm) {
+	public void setEmailCodeAndConfirm(String email, String authCode, String confirm) {
 		ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
 		valueOperations.set(email,
 			Map.of(
@@ -37,14 +37,26 @@ public class RedisRepository {
 	}
 
 	/**
-	 * GET 이메일 인증코드
+	 * GET Email AuthCode AND Confirm - 이메일 인증, 확인정보 가져오기
 	 */
-	public Map getEmailCode(String email) {
-		return getKeyIfPresent(email);
+	public Map getEmailCodeAndConfirm(String email) {
+		Optional<Object> optionalResult = getKeyIfPresent(email);
+		if(optionalResult.isPresent()) {
+			return (Map)optionalResult.get();
+		}else {
+			throw new CustomRedisException(NOT_EXIST_EMAIL_INFO);
+		}
 	}
 
 	/**
-	 * SET refresh token
+	 * DELETE Redis Key
+	 */
+	public void deleteRedisInfo(String email) {
+		redisTemplate.delete(email);
+	}
+
+	/**
+	 * SET refresh token - 리프래쉬 토큰 정보 저장
 	 */
 	public void setRedisRefreshToken(Long memberId, String refreshToken, int expirationSeconds) {
 		ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
@@ -52,7 +64,7 @@ public class RedisRepository {
 	}
 
 	/**
-	 * GET refresh token
+	 * GET refresh token - 리프래쉬 토큰 정보 가져오기
 	 */
 	public Object getRefreshToken(Long memberId) {
 		return redisTemplate
@@ -70,13 +82,7 @@ public class RedisRepository {
 	/**
 	 * redis key null 체크
 	 */
-	private Map getKeyIfPresent(String key) {
-		Optional<Object> optionalResult = Optional.ofNullable(redisTemplate.opsForValue().get(key));
-
-		if(optionalResult.isPresent()) {
-			return (Map)optionalResult.get();
-		}else {
-			throw new CustomRedisException(REDIS_EMPTY_KEY);
-		}
+	private Optional getKeyIfPresent(String key) {
+		return Optional.ofNullable(redisTemplate.opsForValue().get(key));
 	}
 }

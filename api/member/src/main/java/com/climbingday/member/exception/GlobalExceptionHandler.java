@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.climbingday.domain.exception.CustomRedisException;
 import com.climbingday.enums.BaseErrorCode;
 import com.climbingday.enums.MemberErrorCode;
 import com.climbingday.response.ErrorResponse;
@@ -31,7 +32,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MemberException.class)
 	protected ResponseEntity<ErrorResponse> handleMemberException(MemberException ex) {
 		log.error(">>>>> MemberException : {}", ex);
-		MemberErrorCode errorCode = ex.getErrorCode();
+		BaseErrorCode errorCode = ex.getErrorCode();
 		return ResponseEntity.status(errorCode.getStatus())
 			.body(errorCode.getErrorResponse());
 	}
@@ -39,6 +40,14 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(CustomSecurityException.class)
 	protected ResponseEntity<ErrorResponse> handleSecurityException(CustomSecurityException ex) {
 		log.error(">>>>> SecurityException : {}", ex);
+		BaseErrorCode errorCode = ex.getErrorCode();
+		return ResponseEntity.status(errorCode.getStatus())
+			.body(errorCode.getErrorResponse());
+	}
+
+	@ExceptionHandler(CustomRedisException.class)
+	protected ResponseEntity<ErrorResponse> handleRedisException(CustomRedisException ex) {
+		log.error(">>>>> RedisException : {}", ex);
 		BaseErrorCode errorCode = ex.getErrorCode();
 		return ResponseEntity.status(errorCode.getStatus())
 			.body(errorCode.getErrorResponse());

@@ -1,6 +1,6 @@
 package com.climbingday.member.controller;
 
-import static com.climbingday.enums.MemberErrorCode.*;
+import static com.climbingday.enums.MailErrorCode.*;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.*;
 import static io.restassured.RestAssured.*;
@@ -11,22 +11,23 @@ import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.*;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 
 import com.climbingday.dto.member.EmailAuthDto;
+import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.infra.config.TestConfig;
@@ -47,6 +48,9 @@ class MemberControllerTest extends TestConfig {
 
 	@SpyBean
 	private MemberService memberService;
+
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
 
 	// 테스트 시 랜덤으로 설정된 port 를 가져옴
 	@LocalServerPort
@@ -71,6 +75,9 @@ class MemberControllerTest extends TestConfig {
 			.phoneNumber("010-1234-5678")
 			.birthDate("2000-11-11")
 			.build();
+
+		// 이메일 인증 여부 체크
+		doNothing().when(memberService).emailAuthCheck(anyString());
 
 		given(spec).log().all()
 			.filter(document("회원 API - 성공",
@@ -174,6 +181,45 @@ class MemberControllerTest extends TestConfig {
 	}
 
 	@Test
+	@DisplayName("1-4. 회원가입 테스트 - 실패: 이메일 인증 x")
+	public void memberRegisterFail3Test() throws Exception {
+		MemberRegisterDto registerDto = MemberRegisterDto.builder()
+			.email("seongo0521@gmail.com")
+			.name("test")
+			.password("123456")
+			.passwordConfirm("123456")
+			.phoneNumber("010-1234-5679")
+			.birthDate("2000-11-11")
+			.build();
+
+		doThrow(new MemberException(NOT_AUTHENTICATED_EMAIL)).when(memberService).emailAuthCheck(any());
+
+		given(spec).log().all()
+			.filter(document("회원 API - 실패: 이메일 인증 x",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("회원 가입"),
+				requestFields(
+					fieldWithPath("email").type(STRING).description("이메일(계정)"),
+					fieldWithPath("name").type(STRING).description("이름"),
+					fieldWithPath("password").type(STRING).description("패스워드"),
+					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
+					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호"),
+					fieldWithPath("birthDate").type(STRING).description("생년월일")
+				),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
+				)))
+			.contentType(JSON)
+			.body(registerDto)
+			.when()
+			.post("/v1/member/register")
+			.then().log().all()
+			.statusCode(400);
+	}
+
+	@Test
 	@DisplayName("2-1. 로그인 테스트 - 성공")
 	public void memberLoginTest() throws Exception {
 		MemberLoginDto memberLoginDto = MemberLoginDto.builder()
@@ -264,20 +310,20 @@ class MemberControllerTest extends TestConfig {
 	}
 
 	@Test
-	@DisplayName("3-1. 이메일 인증 요청 테스트 - 성공")
+	@DisplayName("3-1. 이메일 인증 코드 요청 테스트 - 성공")
 	public void memberEmailAuthRequestTest() throws Exception {
-		EmailAuthDto emailAuthDto = EmailAuthDto.builder()
+		EmailDto emailAuthDto = EmailDto.builder()
 			.email("seongo0521@gmail.com")
 			.build();
 
 		// 메일 서비스 호출
-		doNothing().when(memberService).sendEmailVerification(any(Map.class));
+		doNothing().when(memberService).sendEmailVerification(anyString(), anyString());
 
 		given(spec).log().all()
-			.filter(document("이메일 인증 요청 API - 성공",
+			.filter(document("이메일 인증 코드 요청 API - 성공",
 				resourceDetails()
 					.tag("회원 API")
-					.summary("이메일 인증 요청"),
+					.summary("이메일 인증 코드 요청"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)")
 				),
@@ -294,20 +340,20 @@ class MemberControllerTest extends TestConfig {
 	}
 
 	@Test
-	@DisplayName("3-2. 이메일 인증 요청 테스트 - 실패: 이미 등록 된 이메일")
-	public void memberEmailAuthEmailDuplicatedRequestTest() throws Exception {
-		EmailAuthDto emailAuthDto = EmailAuthDto.builder()
+	@DisplayName("3-2. 이메일 인증 코드 요청 테스트 - 실패: 이미 등록 된 이메일")
+	public void memberEmailAuthEmailRequestDuplicatedTest() throws Exception {
+		EmailDto emailAuthDto = EmailDto.builder()
 			.email("test@naver.com")
 			.build();
 
 		// 메일 서비스 호출
-		doNothing().when(memberService).sendEmailVerification(any(Map.class));
+		doNothing().when(memberService).sendEmailVerification(anyString(), anyString());
 
 		given(spec).log().all()
-			.filter(document("이메일 인증 요청 API - 실패: 이미 등록 된 이메일",
+			.filter(document("이메일 인증 코드 요청 API - 실패: 이미 등록 된 이메일",
 				resourceDetails()
 					.tag("회원 API")
-					.summary("이메일 인증 요청"),
+					.summary("이메일 인증 코드 요청"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)")
 				),
@@ -324,20 +370,20 @@ class MemberControllerTest extends TestConfig {
 	}
 
 	@Test
-	@DisplayName("3-3. 이메일 인증 요청 테스트 - 실패: 메일 서버 이슈")
-	public void memberEmailAuthFailRequestTest() throws Exception {
-		EmailAuthDto emailAuthDto = EmailAuthDto.builder()
+	@DisplayName("3-3. 이메일 인증 코드 요청 테스트 - 실패: 메일 서버 이슈")
+	public void memberEmailAuthRequestFailTest() throws Exception {
+		EmailDto emailAuthDto = EmailDto.builder()
 			.email("seongo0521@gmail.com")
 			.build();
 
 		// 메일 서비스 호출
-		doThrow(new MemberException(UNABLE_TO_SEND_EMAIL)).when(memberService).sendEmailVerification(any(Map.class));
+		doThrow(new MemberException(UNABLE_TO_SEND_EMAIL)).when(memberService).sendEmailVerification(anyString(), anyString());
 
 		given(spec).log().all()
-			.filter(document("이메일 인증 요청 API - 실패: 이메일 서버 이슈",
+			.filter(document("이메일 인증 코드 요청 API - 실패: 이메일 서버 이슈",
 				resourceDetails()
 					.tag("회원 API")
-					.summary("이메일 인증 요청"),
+					.summary("이메일 인증 코드 요청"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)")
 				),
@@ -354,20 +400,20 @@ class MemberControllerTest extends TestConfig {
 	}
 
 	@Test
-	@DisplayName("3-4. 이메일 인증 요청 테스트 - 실패: 필드 유효성")
-	public void memberEmailAuthValidRequestTest() throws Exception {
-		EmailAuthDto emailAuthDto = EmailAuthDto.builder()
+	@DisplayName("3-4. 이메일 인증 코드 요청 테스트 - 실패: 필드 유효성")
+	public void memberEmailAuthRequestValidTest() throws Exception {
+		EmailDto emailAuthDto = EmailDto.builder()
 			.email("")
 			.build();
 
 		// 메일 서비스 호출
-		doThrow(new MemberException(UNABLE_TO_SEND_EMAIL)).when(memberService).sendEmailVerification(any(Map.class));
+		doThrow(new MemberException(UNABLE_TO_SEND_EMAIL)).when(memberService).sendEmailVerification(anyString(), anyString());
 
 		given(spec).log().all()
-			.filter(document("이메일 인증 요청 API - 실패: 필드 유효성",
+			.filter(document("이메일 인증 코드 요청 API - 실패: 필드 유효성",
 				resourceDetails()
 					.tag("회원 API")
-					.summary("이메일 인증 요청"),
+					.summary("이메일 인증 코드 요청"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)")
 				),
@@ -380,6 +426,128 @@ class MemberControllerTest extends TestConfig {
 			.body(emailAuthDto)
 			.when()
 			.post("/v1/member/email/auth/request")
+			.then().log().all()
+			.statusCode(400);
+	}
+
+	@Test
+	@DisplayName("4-1. 이메일 인증 코드 확인 테스트 - 성공")
+	public void memberEmailAuthConfirmTest() throws Exception {
+		EmailAuthDto emailAuthDto = EmailAuthDto.builder()
+			.email("seongo0521@gmail.com")
+			.authCode("111111")
+			.build();
+
+		// 이메일 인증 코드 확인
+		doNothing().when(memberService).emailAuthConfirm(any());
+
+		given(spec).log().all()
+			.filter(document("이메일 인증 확인 API - 성공",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("이메일 인증 확인"),
+				requestFields(
+					fieldWithPath("email").type(STRING).description("이메일(계정)"),
+					fieldWithPath("authCode").type(STRING).description("인증 코드")
+				),
+				responseFields(
+					fieldWithPath("code").type(NUMBER).description("상태 코드"),
+					fieldWithPath("message").type(STRING).description("상태 메시지")
+				)))
+			.contentType(JSON)
+			.body(emailAuthDto)
+			.when()
+			.post("/v1/member/email/auth/confirm")
+			.then().log().all()
+			.statusCode(200);
+	}
+
+	@Test
+	@DisplayName("4-2. 이메일 인증 코드 확인 테스트 - 실패: 인증 코드 요청 필요")
+	public void memberEmailAuthConfirmFail1Test() throws Exception {
+		EmailAuthDto emailAuthDto = EmailAuthDto.builder()
+			.email("seongo0521@gmail.com")
+			.authCode("111111")
+			.build();
+
+		given(spec).log().all()
+			.filter(document("이메일 인증 확인 API - 실패: 인증 코드 요청 필요",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("이메일 인증 확인"),
+				requestFields(
+					fieldWithPath("email").type(STRING).description("이메일(계정)"),
+					fieldWithPath("authCode").type(STRING).description("인증 코드")
+				),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
+				)))
+			.contentType(JSON)
+			.body(emailAuthDto)
+			.when()
+			.post("/v1/member/email/auth/confirm")
+			.then().log().all()
+			.statusCode(400);
+	}
+
+	@Test
+	@DisplayName("4-3. 이메일 인증 코드 확인 테스트 - 실패: 인증 코드 불일치")
+	public void memberEmailAuthConfirmFail2Test() throws Exception {
+		EmailAuthDto emailAuthDto = EmailAuthDto.builder()
+			.email("seongo0521@gmail.com")
+			.authCode("111111")
+			.build();
+
+		doThrow(new MemberException(NOT_MATCHED_AUTH_CODE)).when(memberService).emailAuthConfirm(any());
+
+		given(spec).log().all()
+			.filter(document("이메일 인증 확인 API - 실패: 인증 코드 불일치",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("이메일 인증 확인"),
+				requestFields(
+					fieldWithPath("email").type(STRING).description("이메일(계정)"),
+					fieldWithPath("authCode").type(STRING).description("인증 코드")
+				),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
+				)))
+			.contentType(JSON)
+			.body(emailAuthDto)
+			.when()
+			.post("/v1/member/email/auth/confirm")
+			.then().log().all()
+			.statusCode(401);
+	}
+
+	@Test
+	@DisplayName("4-3. 이메일 인증 코드 확인 테스트 - 실패: 필드 유효성")
+	public void memberEmailAuthConfirmFail3Test() throws Exception {
+		EmailAuthDto emailAuthDto = EmailAuthDto.builder()
+			.email("")
+			.authCode("")
+			.build();
+
+		given(spec).log().all()
+			.filter(document("이메일 인증 확인 API - 실패: 필드 유효성",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("이메일 인증 확인"),
+				requestFields(
+					fieldWithPath("email").type(STRING).description("이메일(계정)"),
+					fieldWithPath("authCode").type(STRING).description("인증 코드")
+				),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지"),
+					subsectionWithPath("validation").type(OBJECT).description("유효하지 않은 필드")
+				)))
+			.contentType(JSON)
+			.body(emailAuthDto)
+			.when()
+			.post("/v1/member/email/auth/confirm")
 			.then().log().all()
 			.statusCode(400);
 	}

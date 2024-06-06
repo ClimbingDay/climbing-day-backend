@@ -1,14 +1,14 @@
 package com.climbingday.member.exception;
 
-import com.climbingday.enums.MemberErrorCode;
+import com.climbingday.enums.BaseErrorCode;
 
 import lombok.Getter;
 
 @Getter
 public class MemberException extends RuntimeException {
-	private final MemberErrorCode errorCode;
+	private final BaseErrorCode errorCode;
 
-	public MemberException(MemberErrorCode errorCode) {
+	public MemberException(BaseErrorCode errorCode) {
 		super(errorCode.getErrorMessage());
 		this.errorCode = errorCode;
 	}

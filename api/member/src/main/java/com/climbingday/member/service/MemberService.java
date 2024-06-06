@@ -1,10 +1,12 @@
 package com.climbingday.member.service;
 
+import static com.climbingday.enums.MailErrorCode.*;
 import static com.climbingday.enums.MemberErrorCode.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,7 @@ import com.climbingday.domain.common.repository.RedisRepository;
 import com.climbingday.domain.member.Member;
 import com.climbingday.domain.member.repository.MemberRepository;
 import com.climbingday.dto.member.EmailAuthDto;
+import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberDto;
 import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberRegisterDto;
@@ -53,18 +56,21 @@ public class MemberService {
 	 */
 	@Transactional
 	public Long registerMember(MemberRegisterDto memberRegisterDto) {
-		// 이메일 중복
+		// 이메일 중복 확인
 		checkEmail(memberRegisterDto.getEmail());
-
+		// 휴대폰 중복 확인
 		if(memberRepository.existsByPhoneNumber(memberRegisterDto.getPhoneNumber())){
 			throw new MemberException(DUPLICATED_MEMBER_PHONE_NUMBER);
 		}
-
 		// 비밀번호 확인
 		validatePassword(memberRegisterDto.getPassword(), memberRegisterDto.getPasswordConfirm());
+		// 이메일 인증 확인
+		emailAuthCheck(memberRegisterDto.getEmail());
 
 		Member member = Member.fromMemberRegisterDto(memberRegisterDto);
 		member.setPassword(passwordEncoder.encode(memberRegisterDto.getPassword()));
+
+		redisRepository.deleteRedisInfo(memberRegisterDto.getEmail());
 
 		return memberRepository.save(member).getId();
 	}
@@ -98,19 +104,55 @@ public class MemberService {
 	}
 
 	/**
-	 * 이메일 인증 요청
+	 * 이메일 인증 여부 체크
 	 */
-	public void emailAuth(EmailAuthDto emailAuthDto) {
-		String email = emailAuthDto.getEmail();
+	public void emailAuthCheck(String email) {
+		Map redisEmailInfo = redisRepository.getEmailCodeAndConfirm(email);
+
+		Optional.ofNullable(redisEmailInfo.get("confirm"))
+			.ifPresentOrElse(
+				confirm -> {
+					if(!confirm.equals("Y"))
+						throw new MemberException(NOT_AUTHENTICATED_EMAIL);
+				},
+				() -> {
+					throw new MemberException(NOT_AUTHENTICATED_EMAIL);
+				}
+			);
+	}
+
+	/**
+	 * 이메일 인증 코드 요청
+	 */
+	public void emailAuth(EmailDto emailDto) {
+		String email = emailDto.getEmail();
 		checkEmail(email);
 
 		String authCode = generateCode();
 
-		Map<String, String> emailInfo = new HashMap<>();
-		emailInfo.put("email", email);
-		emailInfo.put("authCode", authCode);
+		sendEmailVerification(email, authCode);
+	}
 
-		sendEmailVerification(emailInfo);
+	/**
+	 * 이메일 인증 코드 확인 및 인증 상태 변경(Confirm 값 변경)
+	 */
+	public void emailAuthConfirm(EmailAuthDto emailAuthDto) {
+
+		Map redisEmailInfo = redisRepository.getEmailCodeAndConfirm(emailAuthDto.getEmail());
+
+		Optional.ofNullable(redisEmailInfo.get("authCode"))
+			.ifPresentOrElse(
+				authCode -> {
+					if(emailAuthDto.getAuthCode().equals(authCode)) {
+						redisRepository.setEmailCodeAndConfirm(emailAuthDto.getEmail(), (String)authCode, "Y");
+					}else {
+						throw new MemberException(NOT_MATCHED_AUTH_CODE);
+					}
+				},
+				() -> {
+					throw new MemberException(NOT_MATCHED_AUTH_CODE);
+				}
+			);
 	}
 
 	/**
@@ -134,12 +176,12 @@ public class MemberService {
 	 */
 	private void validatePassword(String password, String passwordConfirm) {
 		if (!password.equals(passwordConfirm)) {
-			throw new MemberException(PASSWORD_NOT_MATCHED);
+			throw new MemberException(NOT_MATCHED_PASSWORD);
 		}
 	}
 
 	/**
-	 * 이메일 인증코드 생성
+	 * 이메일 인증 코드 생성
 	 */
 	private String generateCode() {
 		Random random = new Random();
@@ -148,17 +190,23 @@ public class MemberService {
 	}
 
 	/**
-	 * 이메일 인증코드 요청
+	 * 이메일 서버에 이메일 인증 코드 요청
 	 */
-	public void sendEmailVerification(Map<String, String> emailInfo) {
+	public void sendEmailVerification(String email, String authCode) {
 		String url = serviceUrl + "/v1/mail/verification/send";
 
 		try{
+			Map<String, String> emailInfo = new HashMap<>();
+			emailInfo.put("email", email);
+			emailInfo.put("authCode", authCode);
+
 			ResponseEntity<String> response = restTemplate.postForEntity(url, emailInfo, String.class);
 
 			if (!response.getStatusCode().is2xxSuccessful()) {
 				throw new MemberException(UNABLE_TO_SEND_EMAIL);
 			}
+
+			redisRepository.setEmailCodeAndConfirm(email, authCode, "N");
 		}catch (RestClientException e) {
 			throw new MemberException(UNABLE_TO_SEND_EMAIL);
 		}
