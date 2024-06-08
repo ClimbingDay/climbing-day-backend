@@ -56,21 +56,13 @@ public class MemberService {
 	 */
 	@Transactional
 	public Long registerMember(MemberRegisterDto memberRegisterDto) {
-		// 이메일 중복 확인
-		checkEmail(memberRegisterDto.getEmail());
-		// 휴대폰 중복 확인
-		if(memberRepository.existsByPhoneNumber(memberRegisterDto.getPhoneNumber())){
-			throw new MemberException(DUPLICATED_MEMBER_PHONE_NUMBER);
-		}
-		// 비밀번호 확인
-		validatePassword(memberRegisterDto.getPassword(), memberRegisterDto.getPasswordConfirm());
-		// 이메일 인증 확인
-		emailAuthCheck(memberRegisterDto.getEmail());
+		checkEmail(memberRegisterDto.getEmail());														// 이메일 중복 확인
+		validatePassword(memberRegisterDto.getPassword(), memberRegisterDto.getPasswordConfirm());		// 비밀번호 일치 확인
+		checkPhoneNumber(memberRegisterDto.getPhoneNumber());											// 휴대폰 중복 확인
+		checkNickName(memberRegisterDto.getNickName());													// 닉네임 중복 확인
 
 		Member member = Member.fromMemberRegisterDto(memberRegisterDto);
 		member.setPassword(passwordEncoder.encode(memberRegisterDto.getPassword()));
-
-		redisRepository.deleteRedisInfo(memberRegisterDto.getEmail());
 
 		return memberRepository.save(member).getId();
 	}
@@ -163,7 +155,7 @@ public class MemberService {
 	}
 
 	/**
-	 * email 중복체크
+	 * email 중복 체크
 	 */
 	private void checkEmail(String email) {
 		if(memberRepository.existsByEmail(email)){
@@ -172,11 +164,29 @@ public class MemberService {
 	}
 
 	/**
-	 * password, passwordConfirm 체크
+	 * password, passwordConfirm 일치 여부 체크
 	 */
 	private void validatePassword(String password, String passwordConfirm) {
 		if (!password.equals(passwordConfirm)) {
 			throw new MemberException(NOT_MATCHED_PASSWORD);
+		}
+	}
+
+	/**
+	 * phoneNumber 중복 체크
+	 */
+	private void checkPhoneNumber(String phoneNumber) {
+		if(memberRepository.existsByPhoneNumber(phoneNumber)){
+			throw new MemberException(DUPLICATED_MEMBER_PHONE_NUMBER);
+		}
+	}
+
+	/**
+	 * nickName 중복 체크
+	 */
+	private void checkNickName(String nickName) {
+		if(memberRepository.existsByNickName(nickName)) {
+			throw new MemberException(DUPLICATED_MEMBER_NICK_NAME);
 		}
 	}
 

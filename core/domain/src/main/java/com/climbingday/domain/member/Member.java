@@ -26,6 +26,7 @@ import lombok.Setter;
 @Getter
 @Table(uniqueConstraints = {
 	@UniqueConstraint(columnNames = "email"),
+	@UniqueConstraint(columnNames = "nickName"),
 	@UniqueConstraint(columnNames = "phoneNumber")
 })
 @Builder @NoArgsConstructor @AllArgsConstructor
@@ -39,7 +40,7 @@ public class Member extends MutableBaseEntity {
 	@Setter
 	private String password;					// 비밀번호
 
-	private String name;						// 이름
+	private String nickName;					// 닉네임
 
 	private Date birthDate;						// 생년월일
 
@@ -57,7 +58,7 @@ public class Member extends MutableBaseEntity {
 
 		return Member.builder()
 			.email(registerDto.getEmail())
-			.name(registerDto.getName())
+			.nickName(registerDto.getNickName())
 			.phoneNumber(String.join("-", registerDto.getPhoneNumber()))
 			.birthDate(Date.valueOf(registerDto.getBirthDate()))
 			.build();

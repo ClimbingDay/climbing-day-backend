@@ -70,15 +70,12 @@ class MemberControllerTest extends TestConfig {
 	public void memberRegisterTest() throws Exception {
 		MemberRegisterDto registerDto = MemberRegisterDto.builder()
 			.email("test@naver.com")
-			.name("test")
+			.nickName("test")
 			.password("123456")
 			.passwordConfirm("123456")
 			.phoneNumber("010-1234-5678")
 			.birthDate("2000-11-11")
 			.build();
-
-		// 이메일 인증 여부 체크
-		doNothing().when(memberService).emailAuthCheck(anyString());
 
 		given(spec).log().all()
 			.filter(document("회원 API - 성공",
@@ -87,7 +84,7 @@ class MemberControllerTest extends TestConfig {
 					.summary("회원 가입"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)"),
-					fieldWithPath("name").type(STRING).description("이름"),
+					fieldWithPath("nickName").type(STRING).description("닉네임"),
 					fieldWithPath("password").type(STRING).description("패스워드"),
 					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
 					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호"),
@@ -111,7 +108,7 @@ class MemberControllerTest extends TestConfig {
 	public void memberRegisterDuplicatedTest() throws Exception {
 		MemberRegisterDto registerDto = MemberRegisterDto.builder()
 			.email("test@naver.com")
-			.name("test")
+			.nickName("test")
 			.password("123456")
 			.passwordConfirm("123456")
 			.phoneNumber("010-1234-5678")
@@ -125,7 +122,7 @@ class MemberControllerTest extends TestConfig {
 					.summary("회원 가입"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)"),
-					fieldWithPath("name").type(STRING).description("이름"),
+					fieldWithPath("nickName").type(STRING).description("닉네임"),
 					fieldWithPath("password").type(STRING).description("패스워드"),
 					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
 					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호"),
@@ -148,7 +145,7 @@ class MemberControllerTest extends TestConfig {
 	public void memberRegisterValidTest() throws Exception {
 		MemberRegisterDto registerDto = MemberRegisterDto.builder()
 			.email("testnaver.com")
-			.name("")
+			.nickName("")
 			.password("12345")
 			.passwordConfirm("12345")
 			.phoneNumber("0101234-5678")
@@ -162,7 +159,7 @@ class MemberControllerTest extends TestConfig {
 					.summary("회원 가입"),
 				requestFields(
 					fieldWithPath("email").type(STRING).description("이메일(계정)"),
-					fieldWithPath("name").type(STRING).description("이름"),
+					fieldWithPath("nickName").type(STRING).description("닉네임"),
 					fieldWithPath("password").type(STRING).description("패스워드"),
 					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
 					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호"),
@@ -179,45 +176,6 @@ class MemberControllerTest extends TestConfig {
 				.post("/v1/member/register")
 			.then().log().all()
 				.statusCode(400);
-	}
-
-	@Test
-	@DisplayName("1-4. 회원가입 테스트 - 실패: 이메일 인증 x")
-	public void memberRegisterFail3Test() throws Exception {
-		MemberRegisterDto registerDto = MemberRegisterDto.builder()
-			.email("seongo0521@gmail.com")
-			.name("test")
-			.password("123456")
-			.passwordConfirm("123456")
-			.phoneNumber("010-1234-5679")
-			.birthDate("2000-11-11")
-			.build();
-
-		doThrow(new MemberException(NOT_EXIST_EMAIL_INFO)).when(memberService).emailAuthCheck(any());
-
-		given(spec).log().all()
-			.filter(document("회원 API - 실패: 이메일 인증 x",
-				resourceDetails()
-					.tag("회원 API")
-					.summary("회원 가입"),
-				requestFields(
-					fieldWithPath("email").type(STRING).description("이메일(계정)"),
-					fieldWithPath("name").type(STRING).description("이름"),
-					fieldWithPath("password").type(STRING).description("패스워드"),
-					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
-					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호"),
-					fieldWithPath("birthDate").type(STRING).description("생년월일")
-				),
-				responseFields(
-					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
-					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
-				)))
-			.contentType(JSON)
-			.body(registerDto)
-			.when()
-			.post("/v1/member/register")
-			.then().log().all()
-			.statusCode(400);
 	}
 
 	@Test

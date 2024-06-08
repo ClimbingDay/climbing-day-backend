@@ -8,8 +8,9 @@ import lombok.Getter;
 
 @Getter
 public enum MemberErrorCode implements BaseErrorCode {
-	DUPLICATED_MEMBER_EMAIL(409, "이미 존재하는 회원 이메일입니다.", HttpStatus.CONFLICT),
+	DUPLICATED_MEMBER_EMAIL(409, "이미 등록된 회원 이메일입니다.", HttpStatus.CONFLICT),
 	DUPLICATED_MEMBER_PHONE_NUMBER(409, "이미 등록된 휴대폰 번호입니다.", HttpStatus.CONFLICT),
+	DUPLICATED_MEMBER_NICK_NAME(409, "이미 등록된 닉네임입니다.", HttpStatus.CONFLICT),
 	DELETE_MEMBER(400, "탈퇴 또는 삭제된 회원입니다.", HttpStatus.BAD_REQUEST),
 	CHECK_ID_OR_PASSWORD(401, "아이디 또는 비밀번호를 확인해주세요.", HttpStatus.UNAUTHORIZED),
 	NOT_MATCHED_PASSWORD(400, "비밀번호와 비밀번호 확인이 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
