@@ -79,7 +79,7 @@ public class MemberController {
 	@GetMapping("/token/refresh")
 	public ResponseEntity<CDResponse<?>> refreshToken(
 		@AuthenticationPrincipal UserDetailsImpl userDetails,
-		@RequestHeader("Refresh-Token") String headerRefreshToken
+		@RequestHeader("Authorization") String headerRefreshToken
 	) {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(memberService.getNewAccessToken(userDetails, headerRefreshToken)));

@@ -162,6 +162,8 @@ public class MemberService {
 		// 정상적으로 로그인 했는지를 판별하기 위해서 redis에 있는 refreshToken과 비교를 한다.
 		Map redisRefreshToken = redisRepository.getRefreshToken(userDetail.getId());
 
+		headerRefreshToken = headerRefreshToken.substring("Bearer ".length());
+
 		if(headerRefreshToken.equals(String.valueOf(redisRefreshToken.get("refreshToken")))){
 			String accessToken = jwtProvider.createAccessToken(userDetail);
 			String refreshToken = jwtProvider.createRefreshToken(userDetail);

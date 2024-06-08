@@ -65,10 +65,10 @@ public class MemberControllerTokenTest extends TestConfig {
 	@Test
 	@DisplayName("1-1. 토큰 재발급 테스트 - 성공")
 	public void refreshTokenTest() throws Exception {
-		String headerAccessToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3ODQzMDg0LCJleHAiOjE3MTc4NDQ4ODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.ONNzcqkzEa0NZw8kb3uB_pEEEnNNjcmsTbKnIDRBqvutg1xidbO_5FUadscVffJUfxNUENGjjDVmh7w4A18tqQ";
-		String refreshToken = "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3ODQzMDg0LCJleHAiOjE3MTc5MDMwODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.Q7ywSKRv3RJ6hyKbwOxUhfpS8AlrRILznP_6jSRm7NXn_TAjiIjwWTJdd49Mg7KoKHk7lpWpYI1wHzi9vi_fYg";
+		String redisRefreshToken = "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3ODQzMDg0LCJleHAiOjE3MTc5MDMwODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.Q7ywSKRv3RJ6hyKbwOxUhfpS8AlrRILznP_6jSRm7NXn_TAjiIjwWTJdd49Mg7KoKHk7lpWpYI1wHzi9vi_fYg";
+		String refreshToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3ODQzMDg0LCJleHAiOjE3MTc5MDMwODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.Q7ywSKRv3RJ6hyKbwOxUhfpS8AlrRILznP_6jSRm7NXn_TAjiIjwWTJdd49Mg7KoKHk7lpWpYI1wHzi9vi_fYg";
 
-		redisRepository.setRedisRefreshToken(1L, refreshToken, 1111111);
+		redisRepository.setRedisRefreshToken(1L, redisRefreshToken, 1111111);
 
 		given(spec).log().all()
 			.filter(document("토큰 재발급 API - 성공",
@@ -81,8 +81,7 @@ public class MemberControllerTokenTest extends TestConfig {
 					fieldWithPath("data.accessToken").type(STRING).description("액세스 토큰"),
 					fieldWithPath("data.refreshToken").type(STRING).description("리프래쉬 토큰")
 				)))
-			.header("Authorization", headerAccessToken)
-			.header("Refresh-Token", refreshToken)
+			.header("Authorization", refreshToken)
 			.contentType(JSON)
 			.when()
 			.get("/v1/member/token/refresh")

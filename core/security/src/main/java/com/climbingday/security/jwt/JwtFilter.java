@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 	private final String AUTHENTICATION_HEADER = "Authorization";
-	private final String REFRESH_TOKEN_HEADER = "Refresh-Token";
 	private final String AUTHENTICATION_SCHEME = "Bearer ";
 
 	private final JwtProvider jwtProvider;
@@ -36,24 +35,15 @@ public class JwtFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
 		try{
-			String accessToken = extractAccessToken(request);
-			String refreshToken = extractRefreshToken(request);
-
-			if(hasText(refreshToken)) {
-				jwtProvider.validate(refreshToken);
-				SecurityContextHolder.getContext()
-					.setAuthentication(jwtProvider.toAuthentication(refreshToken));
-			}else if(hasText(accessToken)) {
+			String accessToken = extractToken(request);
+			if(hasText(accessToken)) {
 				jwtProvider.validate(accessToken);
 
 				// 토큰 권한과 DB에 존재하는 권한 비교하는 로직 추가 예정
 
 				SecurityContextHolder.getContext()
 					.setAuthentication(jwtProvider.toAuthentication(accessToken));
-			}else {
-				throw new AuthenticationCredentialsNotFoundException("토큰이 존재하지 않습니다.");
 			}
-
 			filterChain.doFilter(request, response);
 		}catch(Exception e) {
 			BaseErrorCode errorCode;
@@ -88,30 +78,15 @@ public class JwtFilter extends OncePerRequestFilter {
 	}
 
 	/**
-	 * Access Token 추출
+	 * 토큰 추출
 	 */
-	private String extractAccessToken(HttpServletRequest request) {
-		String token = "";
+	private String extractToken(HttpServletRequest request) {
 		String bearerToken = request.getHeader(AUTHENTICATION_HEADER);
 
 		if(hasText(bearerToken) && bearerToken.startsWith(AUTHENTICATION_SCHEME)){
-			token = bearerToken.substring(AUTHENTICATION_SCHEME.length());
+			return bearerToken.substring(AUTHENTICATION_SCHEME.length());
 		}
 
-		return token;
-	}
-
-	/**
-	 * Refresh Token 추출
-	 */
-	private String extractRefreshToken(HttpServletRequest request) {
-		String token = "";
-		String bearerToken = request.getHeader(REFRESH_TOKEN_HEADER);
-
-		if(hasText(bearerToken)){
-			token = bearerToken;
-		}
-
-		return token;
+		throw new AuthenticationCredentialsNotFoundException("토큰이 존재하지 않습니다.");
 	}
 }
