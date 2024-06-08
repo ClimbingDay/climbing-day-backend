@@ -4,8 +4,6 @@ import static com.climbingday.enums.member.ERoles.*;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.*;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -26,16 +24,12 @@ import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.CorsProcessor;
-import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.server.ServerWebExchange;
 
 import com.climbingday.security.exception.CustomAccessDeniedHandler;
 import com.climbingday.security.jwt.JwtFilter;
 import com.climbingday.security.jwt.JwtProvider;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -105,7 +99,10 @@ public class SpringSecurityConfig {
 			.securityMatchers(matcher -> matcher
 				.requestMatchers(AuthRequestMatchers()))
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers(AuthRequestMatchers()).hasAuthority(ROLE_ADMIN.name())
+				.requestMatchers(AuthRequestMatchers()).hasAnyAuthority(
+					ROLE_ADMIN.name(),
+					ROLE_USER.name()
+				)
 				.anyRequest().authenticated()
 			)
 			.exceptionHandling(exception -> exception
@@ -138,12 +135,12 @@ public class SpringSecurityConfig {
 	 */
 	private RequestMatcher[] permitAllRequestMatchers() {
 		List<RequestMatcher> requestMatchers = List.of(
-			antMatcher(POST, "/member/login"),			// 로그인
-			antMatcher(POST, "/member/register"),			// 회원가입
+			antMatcher(POST, "/member/login"),						// 로그인
+			antMatcher(POST, "/member/register"),					// 회원가입
 
-			antMatcher(POST, "/member/email/auth/request"),		// 이메일 인증 코드 요청
-			antMatcher(POST, "/member/email/auth/confirm"),		// 이메일 인증 코드 확인
-			antMatcher(POST, "/mail/verification/send"),	// 이메일 메일 보내기
+			antMatcher(POST, "/member/email/auth/request"),			// 이메일 인증 코드 요청
+			antMatcher(POST, "/member/email/auth/confirm"),			// 이메일 인증 코드 확인
+			antMatcher(POST, "/mail/verification/send"),			// 이메일 메일 보내기
 
 			// 스웨거
 			antMatcher(GET, "/swagger-ui.html"),
@@ -160,7 +157,8 @@ public class SpringSecurityConfig {
 	 */
 	private RequestMatcher[] AuthRequestMatchers() {
 		List<RequestMatcher> requestMatchers = List.of(
-			antMatcher(GET, "/admin/member")			// 모든 회원 조회
+			antMatcher(GET, "/admin/member"),						// 모든 회원 조회
+			antMatcher(GET, "/member/token/refresh")				// AccessToken, RefreshToken 재발급
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);

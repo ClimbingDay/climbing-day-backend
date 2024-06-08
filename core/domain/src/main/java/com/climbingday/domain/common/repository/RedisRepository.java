@@ -66,10 +66,13 @@ public class RedisRepository {
 	/**
 	 * GET refresh token - 리프래쉬 토큰 정보 가져오기
 	 */
-	public Object getRefreshToken(Long memberId) {
-		return redisTemplate
-			.opsForValue()
-			.get(String.valueOf(memberId));
+	public Map getRefreshToken(Long memberId) {
+		Optional<Object> optionalResult = getKeyIfPresent(String.valueOf(memberId));
+		if(optionalResult.isPresent()) {
+			return (Map)optionalResult.get();
+		}else {
+			throw new CustomRedisException(NOT_EXIST_REFRESH_TOKEN);
+		}
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package com.climbingday.member.service;
 
+import static com.climbingday.enums.GlobalErrorCode.*;
 import static com.climbingday.enums.MailErrorCode.*;
 import static com.climbingday.enums.MemberErrorCode.*;
 
@@ -152,6 +153,30 @@ public class MemberService {
 	 */
 	public List<MemberDto> getAllMember() {
 		return memberRepository.getAllMember();
+	}
+
+	/**
+	 * 토큰 재발급
+	 */
+	public MemberTokenDto getNewAccessToken(UserDetailsImpl userDetail, String headerRefreshToken) {
+		// 정상적으로 로그인 했는지를 판별하기 위해서 redis에 있는 refreshToken과 비교를 한다.
+		Map redisRefreshToken = redisRepository.getRefreshToken(userDetail.getId());
+
+		if(headerRefreshToken.equals(String.valueOf(redisRefreshToken.get("refreshToken")))){
+			String accessToken = jwtProvider.createAccessToken(userDetail);
+			String refreshToken = jwtProvider.createRefreshToken(userDetail);
+			int refreshExpirationSeconds = jwtProvider.getRefreshExpirationSeconds();
+
+			MemberTokenDto loginTokenDto = MemberTokenDto.builder()
+				.accessToken(accessToken)
+				.refreshToken(refreshToken)
+				.build();
+
+			redisRepository.setRedisRefreshToken(userDetail.getId(), refreshToken, refreshExpirationSeconds);
+			return loginTokenDto;
+		}else {
+			throw new MemberException(VALIDATION_TOKEN_FAILED);
+		}
 	}
 
 	/**

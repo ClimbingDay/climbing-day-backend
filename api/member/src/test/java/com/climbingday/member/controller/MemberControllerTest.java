@@ -1,7 +1,6 @@
 package com.climbingday.member.controller;
 
 import static com.climbingday.enums.MailErrorCode.*;
-import static com.climbingday.enums.RedisErrorCode.*;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.*;
 import static io.restassured.RestAssured.*;

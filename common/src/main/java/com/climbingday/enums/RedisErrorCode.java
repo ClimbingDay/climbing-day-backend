@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 public enum RedisErrorCode implements BaseErrorCode {
 	NOT_EXIST_EMAIL_INFO(400, "이메일 인증 정보가 확인되지 않습니다. 확인 후 다시 시도해주세요.", HttpStatus.BAD_REQUEST),
+	NOT_EXIST_REFRESH_TOKEN(400, "리프래시 토큰 정보가 확인되지 않습니다. 확인 후 다시 시도해주세요.", HttpStatus.BAD_REQUEST),
 	REDIS_EMPTY_KEY(500, "처리 중 에러가 발생했습니다. 정상적인 방법으로 다시 시도해주세요.", HttpStatus.INTERNAL_SERVER_ERROR);
 
 	private final int errorCode;

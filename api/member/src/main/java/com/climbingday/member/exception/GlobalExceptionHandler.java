@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.climbingday.domain.exception.CustomRedisException;
 import com.climbingday.enums.BaseErrorCode;
-import com.climbingday.enums.MemberErrorCode;
 import com.climbingday.response.ErrorResponse;
 import com.climbingday.security.exception.CustomSecurityException;
 
@@ -55,12 +55,21 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-		log.warn(">>>>> validation Failed : {}", ex);
+		log.error(">>>>> validation Failed : {}", ex);
 		BindingResult bindingResult = ex.getBindingResult();
 
 		List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 		ErrorResponse errorResponse = VALIDATION_FAILED.getErrorResponse();
 		fieldErrors.forEach(error -> errorResponse.addValidation(error.getField(), error.getDefaultMessage()));
-		return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
+		return ResponseEntity.status(VALIDATION_FAILED.getStatus()).body(errorResponse);
+	}
+
+	@ExceptionHandler(MissingRequestHeaderException.class)
+	public ResponseEntity<ErrorResponse> handleMIssingRequestHeaderException(MissingRequestHeaderException ex) {
+		log.error(">>>>> requestHeaderException : {}", ex);
+		String headerName = ex.getHeaderName();
+
+		ErrorResponse errorResponse = MISSING_REFRESH_REQUEST_HEADER.getErrorResponse();
+		return ResponseEntity.status(MISSING_REFRESH_REQUEST_HEADER.getStatus()).body(errorResponse);
 	}
 }
