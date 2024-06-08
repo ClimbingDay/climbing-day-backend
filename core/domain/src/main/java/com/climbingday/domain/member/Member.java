@@ -48,7 +48,7 @@ public class Member extends MutableBaseEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
-	private EStatus status = EStatus.PENDING;	// 상태
+	private EStatus status = EStatus.ACTIVE;	// 상태
 
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
