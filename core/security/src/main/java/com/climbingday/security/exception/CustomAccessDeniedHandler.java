@@ -20,8 +20,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		log.error("Access Denied: ", accessDeniedException);
 
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		response.setContentType("application/json;charset=UTF-8");
-		response.getWriter().print("{\"error\": \"접근 거부\", \"message\": \"권한이 없습니다.\"}");
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print("{\"errorCode\": 403, \"errorMessage\": \"접근 권한이 없습니다.\"}");
 		response.getWriter().flush();
 	}
 }

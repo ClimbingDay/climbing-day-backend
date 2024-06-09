@@ -1,10 +1,9 @@
 package com.climbingday.member.controller;
 
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.*;
 import static io.restassured.RestAssured.*;
 import static io.restassured.http.ContentType.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -16,19 +15,16 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.climbingday.domain.common.repository.RedisRepository;
-import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.infra.config.TestConfig;
-import com.climbingday.member.service.MemberService;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -42,17 +38,14 @@ public class MemberControllerTokenTest extends TestConfig {
 	private RequestSpecification spec;
 
 	@SpyBean
-	private MemberService memberService;
-
-	@SpyBean
 	private RedisRepository redisRepository;
-
-	@Autowired
-	private RedisTemplate<String, Object> redisTemplate;
 
 	// 테스트 시 랜덤으로 설정된 port 를 가져옴
 	@LocalServerPort
 	private int port;
+
+	private final String redisRefreshToken = "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3OTA3Nzg0LCJleHAiOjE3MTc5OTQxODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.prjUjKKjEsg4GCPC9u5OhawvbJWmxHLlmjMJWaPzqBKzoh-_XOf48i5qOrimTVfp29hnc7RNLILAtJ-B2BBVAg";
+	private final String refreshToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3OTA3Nzg0LCJleHAiOjE3MTc5OTQxODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.prjUjKKjEsg4GCPC9u5OhawvbJWmxHLlmjMJWaPzqBKzoh-_XOf48i5qOrimTVfp29hnc7RNLILAtJ-B2BBVAg";
 
 	@BeforeEach
 	void setup(RestDocumentationContextProvider provider) {
@@ -64,10 +57,8 @@ public class MemberControllerTokenTest extends TestConfig {
 
 	@Test
 	@DisplayName("1-1. 토큰 재발급 테스트 - 성공")
+	@Transactional
 	public void refreshTokenTest() throws Exception {
-		String redisRefreshToken = "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3ODQzMDg0LCJleHAiOjE3MTc5MDMwODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.Q7ywSKRv3RJ6hyKbwOxUhfpS8AlrRILznP_6jSRm7NXn_TAjiIjwWTJdd49Mg7KoKHk7lpWpYI1wHzi9vi_fYg";
-		String refreshToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3ODQzMDg0LCJleHAiOjE3MTc5MDMwODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.Q7ywSKRv3RJ6hyKbwOxUhfpS8AlrRILznP_6jSRm7NXn_TAjiIjwWTJdd49Mg7KoKHk7lpWpYI1wHzi9vi_fYg";
-
 		redisRepository.setRedisRefreshToken(1L, redisRefreshToken, 1111111);
 
 		given(spec).log().all()
@@ -83,15 +74,105 @@ public class MemberControllerTokenTest extends TestConfig {
 				)))
 			.header("Authorization", refreshToken)
 			.contentType(JSON)
-			.when()
+		.when()
 			.get("/v1/member/token/refresh")
-			.then().log().all()
+		.then().log().all()
 			.statusCode(200);
 	}
 
 	@Test
-	@DisplayName("1-2. 토큰 재발급 테스트 - 실패")
-	public void refreshTokenFailTest() throws Exception {
+	@DisplayName("1-2. 토큰 재발급 테스트 - 실패: 리프래시 토큰 불일치")
+	@Transactional
+	public void refreshTokenFail1Test() throws Exception {
+		redisRepository.setRedisRefreshToken(1L, redisRefreshToken + "error", 1111111);
 
+		given(spec).log().all()
+			.filter(document("토큰 재발급 API - 실패: 리프래시 토큰 불일치",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("토큰 재발급"),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
+				)))
+			.header("Authorization", refreshToken)
+			.contentType(JSON)
+		.when()
+			.get("/v1/member/token/refresh")
+		.then().log().all()
+			.statusCode(401);
+	}
+
+	@Test
+	@DisplayName("1-3. 토큰 재발급 테스트 - 실패: 토큰 없음")
+	@Transactional
+	public void refreshTokenFail2Test() throws Exception {
+		redisRepository.setRedisRefreshToken(1L, redisRefreshToken, 1111111);
+
+		given(spec).log().all()
+			.filter(document("토큰 재발급 API - 실패: 토큰 없음",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("토큰 재발급"),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
+				)))
+			.contentType(JSON)
+		.when()
+			.get("/v1/member/token/refresh")
+		.then().log().all()
+			.statusCode(401);
+	}
+
+	@Test
+	@DisplayName("1-4. 토큰 재발급 테스트 - 실패: 토큰 유효기한 만료")
+	@Transactional
+	public void refreshTokenFail3Test() throws Exception {
+		String redisRefreshToken = "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3ODQzMDg0LCJleHAiOjE3MTc5MDMwODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.Q7ywSKRv3RJ6hyKbwOxUhfpS8AlrRILznP_6jSRm7NXn_TAjiIjwWTJdd49Mg7KoKHk7lpWpYI1wHzi9vi_fYg";
+		String refreshToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE3ODQzMDg0LCJleHAiOjE3MTc5MDMwODQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.Q7ywSKRv3RJ6hyKbwOxUhfpS8AlrRILznP_6jSRm7NXn_TAjiIjwWTJdd49Mg7KoKHk7lpWpYI1wHzi9vi_fYg";
+		redisRepository.setRedisRefreshToken(1L, redisRefreshToken, 1111111);
+
+		given(spec).log().all()
+			.filter(document("토큰 재발급 API - 실패: 토큰 유효기한 만료",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("토큰 재발급"),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
+				)))
+			.header("Authorization", refreshToken)
+			.contentType(JSON)
+		.when()
+			.get("/v1/member/token/refresh")
+		.then().log().all()
+			.statusCode(401);
+	}
+
+
+	@Test
+	@DisplayName("1-5. 토큰 재발급 테스트 - 실패: 권한 없음")
+	@Transactional
+	public void refreshTokenFail4Test() throws Exception {
+		String redisRefreshToken = "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Miwic3ViIjoiZ3Vlc3RAZ21haWwuY29tIiwiaWF0IjoxNzE3OTA4NjIzLCJleHAiOjE3MTc5OTUwMjMsInJvbGVzIjoiUk9MRV9HVUVTVCJ9.mzCWctdOpxFiQis-tSFbkMSJRi6xNY9_Vczm2DtKt9iehNhBAUXt7IX0O9L8-njvVmaWoDgii8RlT59atAuocw";
+		String refreshToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Miwic3ViIjoiZ3Vlc3RAZ21haWwuY29tIiwiaWF0IjoxNzE3OTA4NjIzLCJleHAiOjE3MTc5OTUwMjMsInJvbGVzIjoiUk9MRV9HVUVTVCJ9.mzCWctdOpxFiQis-tSFbkMSJRi6xNY9_Vczm2DtKt9iehNhBAUXt7IX0O9L8-njvVmaWoDgii8RlT59atAuocw";
+		redisRepository.setRedisRefreshToken(2L, redisRefreshToken, 1111111);
+
+		given(spec).log().all()
+			.filter(document("토큰 재발급 API - 실패: 권한 없음",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("토큰 재발급"),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
+				)))
+			.header("Authorization", refreshToken)
+			.contentType(JSON)
+			.when()
+			.get("/v1/member/token/refresh")
+			.then().log().all()
+			.statusCode(403);
 	}
 }
