@@ -88,4 +88,10 @@ public class MemberControllerTokenTest extends TestConfig {
 			.then().log().all()
 			.statusCode(200);
 	}
+
+	@Test
+	@DisplayName("1-2. 토큰 재발급 테스트 - 실패")
+	public void refreshTokenFailTest() throws Exception {
+
+	}
 }

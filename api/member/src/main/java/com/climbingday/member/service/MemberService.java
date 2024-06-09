@@ -82,18 +82,11 @@ public class MemberService {
 
 		UserDetailsImpl userDetail = (UserDetailsImpl) authenticated.getPrincipal();
 
-		String accessToken = jwtProvider.createAccessToken(userDetail);
-		String refreshToken = jwtProvider.createRefreshToken(userDetail);
+		MemberTokenDto tokenDto = createToken(userDetail);
 		int refreshExpirationSeconds = jwtProvider.getRefreshExpirationSeconds();
+		redisRepository.setRedisRefreshToken(userDetail.getId(), tokenDto.getRefreshToken(), refreshExpirationSeconds);
 
-		MemberTokenDto loginTokenDto = MemberTokenDto.builder()
-			.accessToken(accessToken)
-			.refreshToken(refreshToken)
-			.build();
-
-		redisRepository.setRedisRefreshToken(userDetail.getId(), refreshToken, refreshExpirationSeconds);
-
-		return loginTokenDto;
+		return tokenDto;
 	}
 
 	/**
@@ -165,17 +158,10 @@ public class MemberService {
 		headerRefreshToken = headerRefreshToken.substring("Bearer ".length());
 
 		if(headerRefreshToken.equals(String.valueOf(redisRefreshToken.get("refreshToken")))){
-			String accessToken = jwtProvider.createAccessToken(userDetail);
-			String refreshToken = jwtProvider.createRefreshToken(userDetail);
+			MemberTokenDto tokenDto = createToken(userDetail);
 			int refreshExpirationSeconds = jwtProvider.getRefreshExpirationSeconds();
-
-			MemberTokenDto loginTokenDto = MemberTokenDto.builder()
-				.accessToken(accessToken)
-				.refreshToken(refreshToken)
-				.build();
-
-			redisRepository.setRedisRefreshToken(userDetail.getId(), refreshToken, refreshExpirationSeconds);
-			return loginTokenDto;
+			redisRepository.setRedisRefreshToken(userDetail.getId(), tokenDto.getRefreshToken(), refreshExpirationSeconds);
+			return tokenDto;
 		}else {
 			throw new MemberException(VALIDATION_TOKEN_FAILED);
 		}
@@ -247,5 +233,18 @@ public class MemberService {
 		}catch (RestClientException e) {
 			throw new MemberException(UNABLE_TO_SEND_EMAIL);
 		}
+	}
+
+	/**
+	 * 토큰 생성(Access Token, Refresh Token)
+	 */
+	private MemberTokenDto createToken(UserDetailsImpl userDetail) {
+		String accessToken = jwtProvider.createAccessToken(userDetail);
+		String refreshToken = jwtProvider.createRefreshToken(userDetail);
+
+		return MemberTokenDto.builder()
+			.accessToken(accessToken)
+			.refreshToken(refreshToken)
+			.build();
 	}
 }
