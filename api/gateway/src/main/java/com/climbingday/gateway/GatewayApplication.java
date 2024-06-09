@@ -16,11 +16,14 @@ public class GatewayApplication {
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder,
 		@Value("${member-service-url}") String memberServiceUrl,
+		@Value("${member-service-url}") String centerServiceUrl,
 		@Value("${mail-service-url}") String mailServiceUrl
 	) {
 		return builder.routes()
 			.route("api-member", r -> r.path("/v1/member/**")
 				.uri(memberServiceUrl))
+			.route("api-center", r -> r.path("/v1/center/**")
+				.uri(centerServiceUrl))
 			.route("api-mail", r -> r.path("/v1/mail/**")
 				.uri(mailServiceUrl))
 			.build();

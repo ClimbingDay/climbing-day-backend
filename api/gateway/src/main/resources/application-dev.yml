@@ -1,2 +1,3 @@
 member-service-url: http://api-member:8081
+center-service-url: http://api-center:8082
 mail-service-url: http://api-mail:8089
