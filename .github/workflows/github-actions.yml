@@ -37,6 +37,9 @@ jobs:
             -   name: Member API Build with Gradle
                 run: |
                     ./gradlew -p api/member build
+            -   name: Center API Build with Gradle
+                run: |
+                    ./gradlew -p api/center build
 
             # 멀티플랫폼 이미지 빌드 환경 설정
             -   name: Set up QEMU
@@ -81,3 +84,13 @@ jobs:
                     platforms: linux/amd64,linux/arm64
                     push: true
                     tags: ${{ secrets.DOCKER_USERNAME }}/climbing-day-member:latest
+
+            # api/center
+            -   name: Center API > Build and Push Docker images
+                uses: docker/build-push-action@v5
+                with:
+                    context: api/center
+                    file: api/center/Dockerfile
+                    platforms: linux/amd64,linux/arm64
+                    push: true
+                    tags: ${{ secrets.DOCKER_USERNAME }}/climbing-day-center:latest
