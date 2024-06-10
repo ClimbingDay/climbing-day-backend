@@ -49,9 +49,6 @@ class MemberControllerTest extends TestConfig {
 	@SpyBean
 	private MemberService memberService;
 
-	@Autowired
-	private RedisTemplate<String, Object> redisTemplate;
-
 	// 테스트 시 랜덤으로 설정된 port 를 가져옴
 	@LocalServerPort
 	private int port;
