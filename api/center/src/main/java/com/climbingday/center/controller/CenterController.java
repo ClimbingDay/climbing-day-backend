@@ -23,7 +23,7 @@ public class CenterController {
 
 	@GetMapping
 	public ResponseEntity<CDResponse<?>> getCenter(
-		@PageableDefault(size = 1) Pageable pageable
+		@PageableDefault(size = 10) Pageable pageable
 	) {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(centerService.getCenterPage(pageable)));

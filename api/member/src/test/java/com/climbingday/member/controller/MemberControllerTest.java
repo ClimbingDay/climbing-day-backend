@@ -36,6 +36,7 @@ import com.climbingday.member.service.MemberService;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
 @ExtendWith(RestDocumentationExtension.class)
@@ -199,9 +200,9 @@ class MemberControllerTest extends TestConfig {
 				)))
 			.contentType(JSON)
 			.body(memberLoginDto)
-		.when()
+			.when()
 			.post("/v1/member/login")
-		.then().log().all()
+			.then().log().all()
 			.statusCode(200);
 	}
 
