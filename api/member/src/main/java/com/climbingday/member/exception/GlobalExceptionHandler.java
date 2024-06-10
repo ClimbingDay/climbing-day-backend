@@ -12,7 +12,7 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.climbingday.domain.exception.CustomRedisException;
+import com.climbingday.domain.common.exception.CustomRedisException;
 import com.climbingday.enums.BaseErrorCode;
 import com.climbingday.response.ErrorResponse;
 import com.climbingday.security.exception.CustomSecurityException;

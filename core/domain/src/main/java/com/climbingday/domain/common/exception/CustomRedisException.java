@@ -1,4 +1,4 @@
-package com.climbingday.domain.exception;
+package com.climbingday.domain.common.exception;
 
 import com.climbingday.enums.BaseErrorCode;
 

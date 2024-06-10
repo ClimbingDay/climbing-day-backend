@@ -11,7 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
-import com.climbingday.domain.exception.CustomRedisException;
+import com.climbingday.domain.common.exception.CustomRedisException;
 
 import lombok.RequiredArgsConstructor;
 

@@ -16,7 +16,7 @@ public class GatewayApplication {
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder,
 		@Value("${member-service-url}") String memberServiceUrl,
-		@Value("${member-service-url}") String centerServiceUrl,
+		@Value("${center-service-url}") String centerServiceUrl,
 		@Value("${mail-service-url}") String mailServiceUrl
 	) {
 		return builder.routes()

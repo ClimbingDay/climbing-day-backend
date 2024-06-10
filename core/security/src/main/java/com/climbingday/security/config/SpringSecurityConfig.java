@@ -146,7 +146,10 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/swagger-ui.html"),
 			antMatcher(GET, "/swagger-ui/**"),
 			antMatcher(GET, "/urls.json"),
-			antMatcher(GET, "/openapi3.yaml")
+			antMatcher(GET, "/openapi3.yaml"),
+
+
+			antMatcher(GET, "/center")
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);
