@@ -1,0 +1,142 @@
+openapi: 3.0.1
+info:
+  title: Climbing-day-member-swagger API Documentation
+  description: Spring REST Docs with SwaggerUI
+  version: 0.0.1
+servers:
+- url: http://localhost:8080
+tags: []
+paths:
+  /v1/center/register:
+    post:
+      tags:
+      - 암장 API
+      summary: 암장 등록
+      description: 암장 등록
+      operationId: '암장 등록 API - '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1-center-register922229262'
+            examples:
+              암장 등록 API - 성공:
+                value: "{\"name\":\"암장이름\",\"phoneNum\":\"02-111-1111\",\"address\"\
+                  :\"암장주소\",\"latitude\":111.2222,\"longitude\":111.2222,\"openTime\"\
+                  :\"0:0\",\"closeTime\":\"23:59\",\"description\":\"설명\",\"notice\"\
+                  :\"공지\"}"
+              '암장 등록 API - 실패: 중복 암장이름':
+                value: "{\"name\":\"암장이름\",\"phoneNum\":\"02-111-1111\",\"address\"\
+                  :\"암장주소\",\"latitude\":111.2222,\"longitude\":111.2222,\"openTime\"\
+                  :\"0:0\",\"closeTime\":\"23:59\",\"description\":\"설명\",\"notice\"\
+                  :\"공지\"}"
+              '암장 등록 API - 실패: 필드 유효성':
+                value: "{\"name\":\"\",\"phoneNum\":\"\",\"address\":\"\",\"latitude\"\
+                  :111.2222,\"longitude\":111.2222,\"openTime\":\"0:0\",\"closeTime\"\
+                  :\"23:59\",\"description\":\"\",\"notice\":\"\"}"
+      responses:
+        "201":
+          description: "201"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-center-register-2054154011'
+              examples:
+                암장 등록 API - 성공:
+                  value: "{\"code\":201,\"message\":\"정상적으로 생성되었습니다.\",\"data\":{\"\
+                    id\":1}}"
+        "409":
+          description: "409"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-center-register-946372771'
+              examples:
+                '암장 등록 API - 실패: 중복 암장이름':
+                  value: "{\"errorCode\":409,\"errorMessage\":\"이미 암장이름입니다.\"}"
+        "400":
+          description: "400"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-center-register-1534697879'
+              examples:
+                '암장 등록 API - 실패: 필드 유효성':
+                  value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
+                    .\",\"validation\":{\"address\":\"주소는 필수 항목입니다.\",\"name\":\"암\
+                    장이름은 필수 항목입니다.\",\"phoneNum\":\"전화번호를 올바르게 입력해주세요\"}}"
+      security:
+      - bearerAuthJWT: []
+components:
+  schemas:
+    v1-center-register-2054154011:
+      type: object
+      properties:
+        code:
+          type: number
+          description: 상태 코드
+        data:
+          type: object
+          properties:
+            id:
+              type: number
+              description: 암장 고유번호
+        message:
+          type: string
+          description: 상태 메시지
+    v1-center-register922229262:
+      type: object
+      properties:
+        address:
+          type: string
+          description: 주소
+        latitude:
+          type: number
+          description: 위도
+        closeTime:
+          type: string
+          description: 영업종료시간
+        name:
+          type: string
+          description: 암장 이름
+        description:
+          type: string
+          description: 소개
+        phoneNum:
+          type: string
+          description: 전화번호
+        openTime:
+          type: string
+          description: 영업시작시간
+        notice:
+          type: string
+          description: 공지사항
+        longitude:
+          type: number
+          description: 경도
+    v1-center-register-946372771:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+          description: 상태 메시지
+        errorCode:
+          type: number
+          description: 상태 코드
+    v1-center-register-1534697879:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+          description: 상태 메시지
+        errorCode:
+          type: number
+          description: 상태 코드
+        validation:
+          type: object
+          description: 유효하지 않은 필드
+  securitySchemes:
+    bearerAuthJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

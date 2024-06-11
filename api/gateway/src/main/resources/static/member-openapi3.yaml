@@ -46,8 +46,8 @@ paths:
               examples:
                 로그인 API - 성공:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTgxMTQ3NjQsImV4cCI6MTcxODExNjU2NCwicm9sZXMiOiJST0xFX1VTRVIifQ.siIzZKUdpWoi_7FlvBsKEb6VMpF9QpCCmBa3-6Kv_cEO-9UB_ZmKaaDUtn9L1wMrjg47t4WMF8VIScrjEYbu_A\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTgxMTQ3NjQsImV4cCI6MTcxODIwMTE2NCwicm9sZXMiOiJST0xFX1VTRVIifQ.-Z1QMSIFwmtrqdL4dm6Xo1C152FIm5X3QcVBPd0_5vTGIJn_pUUzWP1jxapjWuLwmAiv83ivxs-CVrYfLc8N3w\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTgxMTY1MzgsImV4cCI6MTcxODExODMzOCwicm9sZXMiOiJST0xFX1VTRVIifQ.O13i_tXuD5z4rvGQQaVq_HvrQOJGcKMSn0PzcgP8rQvfvRe6l8VQbCTLeD8PgRRKXQqwZdebInZWzsw2A3Wg1Q\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTgxMTY1MzgsImV4cCI6MTcxODIwMjkzOCwicm9sZXMiOiJST0xFX1VTRVIifQ.hWyFyAYt8CEAv-Tl5M77dLeIaVtLIQDmt98tuGSNfIBf8X0WXjCJdhLVMyTac-l5WPy9NCTY31bHLdDr3j7rzA\"\
                     }}"
         "400":
           description: "400"
@@ -136,8 +136,8 @@ paths:
               examples:
                 토큰 재발급 API - 성공:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4MTE0NzU0LCJleHAiOjE3MTgxMTY1NTQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.y6X1P8T8Qv2dFHBD63jb0NywJdI_NZa8glc7G7cjPy5WpJRli2pqc16_JbYkSaBg9uXkgISw20-EoyOgym_VgQ\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4MTE0NzU0LCJleHAiOjE3MTgyMDExNTQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.b4XIfW_h9FQLa67BldKC-uRNcVms3aPy08FvGqMgfsLj2vtXVedvMaMnQby4678BFvsmo7JyxiRAjf9KjLZ-AA\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4MTE2NTQ4LCJleHAiOjE3MTgxMTgzNDgsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.rw-lxSZvQs3e-waRG5Du4n8mGZJZ7L2DT9u7T1VdjLpsclABVVwpvGGg7Iz2WqXMK5a-YlVdC8d5YNaBw38cUw\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4MTE2NTQ4LCJleHAiOjE3MTgyMDI5NDgsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.M6oHF1huVmSnmNNH0CrEPiXzNktHrK0nH5RX5YMuhDaFXkmUpWdubOUpyFYj76Qyq_goUYnFl1Qo2E14DjJSyQ\"\
                     }}"
         "403":
           description: "403"
@@ -214,7 +214,7 @@ paths:
                 '이메일 인증 코드 확인 API - 실패: 필드 유효성':
                   value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
                     .\",\"validation\":{\"authCode\":\"인증 코드는 필수 항목입니다.\",\"email\"\
-                    :\"이메일은 필수 항목입니다.\"}}"
+                    :\"유효하지 않은 이메일 형식입니다.\"}}"
                 '이메일 인증 코드 확인 API - 실패: 인증 코드 요청 필요':
                   value: "{\"errorCode\":400,\"errorMessage\":\"이메일 인증 정보가 확인되지 않습\
                     니다. 확인 후 다시 시도해주세요.\"}"
@@ -223,7 +223,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-auth-request1575598845'
+                $ref: '#/components/schemas/v1-member-email-auth-confirm1575598845'
               examples:
                 이메일 인증 코드 확인 API - 성공:
                   value: "{\"code\":200,\"message\":\"이메일 인증이 정상적으로 처리되었습니다.\"}"
@@ -264,7 +264,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-auth-request1575598845'
+                $ref: '#/components/schemas/v1-member-email-auth-confirm1575598845'
               examples:
                 이메일 인증 코드 요청 API - 성공:
                   value: "{\"code\":200,\"message\":\"인증 메일이 정상적으로 발송되었습니다.\"}"
@@ -307,7 +307,7 @@ components:
         message:
           type: string
           description: 상태 메시지
-    v1-member-email-auth-request1575598845:
+    v1-member-email-auth-confirm1575598845:
       type: object
       properties:
         code:

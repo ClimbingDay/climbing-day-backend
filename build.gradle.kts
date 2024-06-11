@@ -58,10 +58,24 @@ subprojects {
 
 tasks.register<Copy>("generatedDocs") {
 	dependsOn(":api:member:openapi3")
+	dependsOn(":api:center:openapi3")
 
 	val memberBuildDir = project(":api:member").layout.buildDirectory
+	val centerBuildDir = project(":api:center").layout.buildDirectory
 
 	// member
-	from(memberBuildDir.file("api-spec/openapi3.yaml"))
+	from(memberBuildDir.file("api-spec/openapi3.yaml")) {
+		rename { fileName ->
+			fileName.replace("openapi3.yaml", "member-openapi3.yaml")
+		}
+	}
+	into(project(":api:gateway").file("src/main/resources/static"))
+
+	// center
+	from(centerBuildDir.file("api-spec/openapi3.yaml")){
+		rename { fileName ->
+			fileName.replace("openapi3.yaml", "center-openapi3.yaml")
+		}
+	}
 	into(project(":api:gateway").file("src/main/resources/static"))
 }

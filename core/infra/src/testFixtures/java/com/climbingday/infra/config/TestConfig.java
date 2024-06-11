@@ -6,6 +6,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.MountableFile;
 
 @Testcontainers
 public class TestConfig {
@@ -21,7 +22,9 @@ public class TestConfig {
 	static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8")
 		.withUsername(SQL_USER_NAME)
 		.withPassword(SQL_PASSWORD)
-		.withDatabaseName(SQL_DATABASE_NAME);
+		.withDatabaseName(SQL_DATABASE_NAME)
+		.withCopyFileToContainer(MountableFile.forClasspathResource("db/initdb.d/1-schema.sql"), "/docker-entrypoint-initdb.d/1-schema.sql")
+		.withCopyFileToContainer(MountableFile.forClasspathResource("db/initdb.d/2-data.sql"), "/docker-entrypoint-initdb.d/2-data.sql");
 
 	@Container
 	static GenericContainer<?> redisContainer = new GenericContainer<>("redis:7.2-alpine")

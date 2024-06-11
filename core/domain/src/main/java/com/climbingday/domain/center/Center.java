@@ -4,6 +4,7 @@ import java.time.LocalTime;
 
 import com.climbingday.domain.MutableBaseEntity;
 import com.climbingday.domain.member.Member;
+import com.climbingday.dto.center.CenterRegisterDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,11 +37,9 @@ public class Center extends MutableBaseEntity {
 
 	private double longitude;					// 암장 경도
 
-	@Builder.Default
-	private LocalTime openTime = LocalTime.of(0, 0);	// 암장 시작 시간
+	private String openTime;					// 암장 시작 시간
 
-	@Builder.Default
-	private LocalTime closeTime = LocalTime.of(0, 0);	// 암장 종료 시간
+	private String closeTime;					// 암장 종료 시간
 
 	private String description; 				// 암장 소개
 
@@ -50,4 +49,19 @@ public class Center extends MutableBaseEntity {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
+	public static Center fromCenterRegisterDto(CenterRegisterDto centerRegisterDto, Member member) {
+
+		return Center.builder()
+			.name(centerRegisterDto.getName())
+			.phoneNum(centerRegisterDto.getPhoneNum())
+			.address(centerRegisterDto.getAddress())
+			.latitude(centerRegisterDto.getLatitude())
+			.longitude(centerRegisterDto.getLongitude())
+			.openTime(centerRegisterDto.getOpenTime())
+			.closeTime(centerRegisterDto.getCloseTime())
+			.description(centerRegisterDto.getDescription())
+			.notice(centerRegisterDto.getNotice())
+			.member(member)
+			.build();
+	}
 }

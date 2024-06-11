@@ -35,7 +35,7 @@ step2() {
     echo "Step2: 프로젝트 관련 최신 이미지 파일 불러오기"
 
     BASE_REPOSITORY="seongolee/climbing-day-"
-    SERVICES=("gateway" "mail" "member")
+    SERVICES=("gateway" "mail" "member" "center")
     TAG="latest"
 
      # 배열에 있는 각 서비스에 대해 Docker 이미지 불러오기

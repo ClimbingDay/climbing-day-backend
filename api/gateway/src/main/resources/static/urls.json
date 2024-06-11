@@ -1,3 +1,4 @@
 [
-  { "url": "./openapi3.yaml", "name": "member-api" }
+  { "url": "./member-openapi3.yaml", "name": "member-api" },
+  { "url": "./center-openapi3.yaml", "name": "center-api" }
 ]

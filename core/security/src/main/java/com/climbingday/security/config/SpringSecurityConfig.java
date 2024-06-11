@@ -146,10 +146,7 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/swagger-ui.html"),
 			antMatcher(GET, "/swagger-ui/**"),
 			antMatcher(GET, "/urls.json"),
-			antMatcher(GET, "/openapi3.yaml"),
-
-
-			antMatcher(GET, "/center")
+			antMatcher(GET, "/openapi3.yaml")
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);
@@ -160,6 +157,8 @@ public class SpringSecurityConfig {
 	 */
 	private RequestMatcher[] AuthRequestMatchers() {
 		List<RequestMatcher> requestMatchers = List.of(
+			antMatcher(POST, "/center/register"),					// 암장 등록
+			antMatcher(GET, "/center"),							// 암장 조회
 			antMatcher(GET, "/admin/member"),						// 모든 회원 조회
 			antMatcher(GET, "/member/token/refresh")				// AccessToken, RefreshToken 재발급
 		);
