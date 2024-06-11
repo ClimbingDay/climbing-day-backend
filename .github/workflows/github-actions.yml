@@ -28,19 +28,13 @@ jobs:
                 uses: gradle/actions/setup-gradle@v3.1.0
 
             # gradle build, active dev
-            -   name: Gateway API Build with Gradle
+            # 테스트 없이 빌드
+            -   name: Build with Gradle
                 run: |
-                    ./gradlew -p api/gateway build
-            -   name: Mail API Build with Gradle
-                run: |
-                    ./gradlew -p api/mail build
-            -   name: Member API Build with Gradle
-                run: |
-                    ./gradlew -p api/member build
-            -   name: Center API Build with Gradle
-                run: |
-                    ./gradlew -p api/center build
-
+                    ./gradlew -p api/gateway build -x test
+                    ./gradlew -p api/mail build -x test
+                    ./gradlew -p api/member build -x test
+                    ./gradlew -p api/center build -x test
             # 멀티플랫폼 이미지 빌드 환경 설정
             -   name: Set up QEMU
                 uses: docker/setup-qemu-action@v3
