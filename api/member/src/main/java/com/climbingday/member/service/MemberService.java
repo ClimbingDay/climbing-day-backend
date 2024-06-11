@@ -144,6 +144,7 @@ public class MemberService {
 	/**
 	 * 회원 조회
 	 */
+	@Transactional(readOnly = true)
 	public List<MemberDto> getAllMember() {
 		return memberRepository.getAllMember();
 	}
