@@ -136,11 +136,15 @@ public class SpringSecurityConfig {
 	private RequestMatcher[] permitAllRequestMatchers() {
 		List<RequestMatcher> requestMatchers = List.of(
 			antMatcher(POST, "/member/login"),						// 로그인
-			antMatcher(POST, "/member/register"),					// 회원가입
+			antMatcher(POST, "/member/register"),						// 회원가입
+			antMatcher(GET, "/member/email/check"),					// 이메일 중복확인
+			antMatcher(GET, "/member/phone-num/check"),				// 휴대폰 번호 중복확인
+			antMatcher(GET, "/member/nick-name/check"),				// 닉네임 중복확인
+
 
 			antMatcher(POST, "/member/email/auth/request"),			// 이메일 인증 코드 요청
 			antMatcher(POST, "/member/email/auth/confirm"),			// 이메일 인증 코드 확인
-			antMatcher(POST, "/mail/verification/send"),			// 이메일 메일 보내기
+			antMatcher(POST, "/mail/verification/send"),				// 이메일 메일 보내기
 
 			// 스웨거
 			antMatcher(GET, "/swagger-ui.html"),

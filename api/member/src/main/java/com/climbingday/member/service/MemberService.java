@@ -171,7 +171,7 @@ public class MemberService {
 	/**
 	 * email 중복 체크
 	 */
-	private void checkEmail(String email) {
+	public void checkEmail(String email) {
 		if(memberRepository.existsByEmail(email)){
 			throw new MemberException(DUPLICATED_MEMBER_EMAIL);
 		}
@@ -189,7 +189,7 @@ public class MemberService {
 	/**
 	 * phoneNumber 중복 체크
 	 */
-	private void checkPhoneNumber(String phoneNumber) {
+	public void checkPhoneNumber(String phoneNumber) {
 		if(memberRepository.existsByPhoneNumber(phoneNumber)){
 			throw new MemberException(DUPLICATED_MEMBER_PHONE_NUMBER);
 		}
@@ -198,7 +198,7 @@ public class MemberService {
 	/**
 	 * nickName 중복 체크
 	 */
-	private void checkNickName(String nickName) {
+	public void checkNickName(String nickName) {
 		if(memberRepository.existsByNickName(nickName)) {
 			throw new MemberException(DUPLICATED_MEMBER_NICK_NAME);
 		}

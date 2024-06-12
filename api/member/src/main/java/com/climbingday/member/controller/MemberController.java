@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.climbingday.dto.member.EmailAuthDto;
@@ -83,5 +84,44 @@ public class MemberController {
 	) {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(memberService.getNewAccessToken(userDetails, headerRefreshToken)));
+	}
+
+	/**
+	 * 이메일 중복 체크
+	 */
+	@GetMapping("/email/check")
+	public ResponseEntity<CDResponse<?>> emailCheck(
+		@RequestParam String email
+	) {
+		memberService.checkEmail(email);
+
+		return ResponseEntity.status(AVAILABLE_EMAIL.getStatus())
+			.body(new CDResponse<>(AVAILABLE_EMAIL));
+	}
+
+	/**
+	 * 휴대폰 중복 체크
+	 */
+	@GetMapping("/phone-num/check")
+	public ResponseEntity<CDResponse<?>> phoneNumCheck(
+		@RequestParam String phoneNum
+	) {
+		memberService.checkPhoneNumber(phoneNum);
+
+		return ResponseEntity.status(AVAILABLE_PHONE_NUM.getStatus())
+			.body(new CDResponse<>(AVAILABLE_PHONE_NUM));
+	}
+
+	/**
+	 * 닉네임 중복 체크
+	 */
+	@GetMapping("/nick-name/check")
+	public ResponseEntity<CDResponse<?>> nickNameCheck(
+		@RequestParam String nickName
+	) {
+		memberService.checkNickName(nickName);
+
+		return ResponseEntity.status(AVAILABLE_NICK_NAME.getStatus())
+			.body(new CDResponse<>(AVAILABLE_NICK_NAME));
 	}
 }
