@@ -68,8 +68,8 @@ class MemberControllerTest extends TestConfig {
 		MemberRegisterDto registerDto = MemberRegisterDto.builder()
 			.email("test@naver.com")
 			.nickName("test")
-			.password("123456")
-			.passwordConfirm("123456")
+			.password("a12345!@#")
+			.passwordConfirm("a12345!@#")
 			.phoneNumber("010-1234-5678")
 			.birthDate("2000-11-11")
 			.build();
@@ -106,8 +106,8 @@ class MemberControllerTest extends TestConfig {
 		MemberRegisterDto registerDto = MemberRegisterDto.builder()
 			.email("test@naver.com")
 			.nickName("test")
-			.password("123456")
-			.passwordConfirm("123456")
+			.password("a12345!@#")
+			.passwordConfirm("a12345!@#")
 			.phoneNumber("010-1234-5678")
 			.birthDate("2000-11-11")
 			.build();
@@ -180,7 +180,7 @@ class MemberControllerTest extends TestConfig {
 	public void memberLoginTest() throws Exception {
 		MemberLoginDto memberLoginDto = MemberLoginDto.builder()
 			.email("test@naver.com")
-			.password("123456")
+			.password("a12345!@#")
 			.build();
 
 		given(spec).log().all()
@@ -211,7 +211,7 @@ class MemberControllerTest extends TestConfig {
 	public void memberLoginNotMatchTest() throws Exception {
 		MemberLoginDto memberLoginDto = MemberLoginDto.builder()
 			.email("test@naver.com")
-			.password("1234567")
+			.password("a12345!@#@")
 			.build();
 
 		given(spec).log().all()

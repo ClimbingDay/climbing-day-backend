@@ -21,9 +21,9 @@ paths:
               $ref: '#/components/schemas/v1-member-login965174184'
             examples:
               '로그인 API - 실패: 로그인 정보':
-                value: "{\"email\":\"test@naver.com\",\"password\":\"1234567\"}"
+                value: "{\"email\":\"test@naver.com\",\"password\":\"a12345!@#@\"}"
               로그인 API - 성공:
-                value: "{\"email\":\"test@naver.com\",\"password\":\"123456\"}"
+                value: "{\"email\":\"test@naver.com\",\"password\":\"a12345!@#\"}"
               '로그인 API - 실패: 필드 유효성':
                 value: "{\"email\":\"testnaver.com\",\"password\":\"12345\"}"
       responses:
@@ -32,7 +32,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '로그인 API - 실패: 로그인 정보':
                   value: "{\"errorCode\":401,\"errorMessage\":\"아이디 또는 비밀번호를 확인해주세\
@@ -42,24 +42,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-token-refresh1698192666'
+                $ref: '#/components/schemas/v1-member-login1698192666'
               examples:
                 로그인 API - 성공:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTgyMDQwNTQsImV4cCI6MTcxODIwNTg1NCwicm9sZXMiOiJST0xFX1VTRVIifQ.dsYzb18k69oZknW5Xl3FuVaiB4UFne9JfrldbFqeuoH7Zu7jCKJhoxvAmZL1BRTBSOgnTueoj1EYLqyaReuiAQ\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTgyMDQwNTQsImV4cCI6MTcxODI5MDQ1NCwicm9sZXMiOiJST0xFX1VTRVIifQ.p01XvULFOvndiNRSbt9uFXpA5MFwY1Vdz_66x6wxrBGuT_vuZMEe5LAoxRtlFlZSxjpdhoqfWeHrImzhnW1esw\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTgyNzg3MjQsImV4cCI6MTcxODI4MDUyNCwicm9sZXMiOiJST0xFX1VTRVIifQ.3PfT5W5pyc9qKzTXr6s7DzPZYaR1TLVFnfQLg5oN2uIHAzPP2KvcqE-wra5g0nRbhkR1qnL4b34eBPMnw720mw\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTgyNzg3MjQsImV4cCI6MTcxODM2NTEyNCwicm9sZXMiOiJST0xFX1VTRVIifQ.x7kYjAQMBGztkmYH91o-mwjdv4b8g7dZ8omxbmwC1FhrgaBTcz-550GaI1DZYNXz6I8X015BktnDzWzXtUINmQ\"\
                     }}"
         "400":
           description: "400"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-register-1534697879'
+                $ref: '#/components/schemas/v1-member-login-1534697879'
               examples:
                 '로그인 API - 실패: 필드 유효성':
                   value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
-                    .\",\"validation\":{\"password\":\"비밀번호는 최소 6자 이상 입력해주세요.\",\"\
-                    email\":\"유효하지 않은 이메일 형식입니다.\"}}"
+                    .\",\"validation\":{\"password\":\"유효하지 않은 비밀번호 형식입니다.\",\"email\"\
+                    :\"유효하지 않은 이메일 형식입니다.\"}}"
   /v1/member/register:
     post:
       tags:
@@ -79,26 +79,25 @@ paths:
                   ,\"birthDate\":\"200011-11\"}"
               회원 API - 성공:
                 value: "{\"email\":\"test@naver.com\",\"nickName\":\"test\",\"password\"\
-                  :\"123456\",\"passwordConfirm\":\"123456\",\"phoneNumber\":\"010-1234-5678\"\
-                  ,\"birthDate\":\"2000-11-11\"}"
+                  :\"a12345!@#\",\"passwordConfirm\":\"a12345!@#\",\"phoneNumber\"\
+                  :\"010-1234-5678\",\"birthDate\":\"2000-11-11\"}"
               '회원 API - 실패: 중복 회원':
                 value: "{\"email\":\"test@naver.com\",\"nickName\":\"test\",\"password\"\
-                  :\"123456\",\"passwordConfirm\":\"123456\",\"phoneNumber\":\"010-1234-5678\"\
-                  ,\"birthDate\":\"2000-11-11\"}"
+                  :\"a12345!@#\",\"passwordConfirm\":\"a12345!@#\",\"phoneNumber\"\
+                  :\"010-1234-5678\",\"birthDate\":\"2000-11-11\"}"
       responses:
         "400":
           description: "400"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-register-1534697879'
+                $ref: '#/components/schemas/v1-member-login-1534697879'
               examples:
                 '회원 API - 실패: 필드 유효성':
                   value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
-                    .\",\"validation\":{\"password\":\"비밀번호는 최소 6자 이상 입력해주세요.\",\"\
-                    passwordConfirm\":\"비밀번호 확인은 최소 6자 이상 입력해주세요.\",\"nickName\":\"\
-                    닉네임은 필수 항목입니다.\",\"birthDate\":\"생년월일을 올바르게 입력해주세요.\",\"email\"\
-                    :\"유효하지 않은 이메일 형식입니다.\"}}"
+                    .\",\"validation\":{\"password\":\"유효하지 않은 비밀번호 형식입니다.\",\"passwordConfirm\"\
+                    :\"유효하지 않은 비밀번호 형식입니다.\",\"nickName\":\"닉네임은 필수 항목입니다.\",\"birthDate\"\
+                    :\"생년월일을 올바르게 입력해주세요.\",\"email\":\"유효하지 않은 이메일 형식입니다.\"}}"
         "201":
           description: "201"
           content:
@@ -114,7 +113,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '회원 API - 실패: 중복 회원':
                   value: "{\"errorCode\":409,\"errorMessage\":\"이미 등록된 회원 이메일입니다.\"\
@@ -141,7 +140,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '이메일 중복체크 API - 실패: 이미 존재하는 이메일':
                   value: "{\"errorCode\":409,\"errorMessage\":\"이미 등록된 회원 이메일입니다.\"\
@@ -168,7 +167,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '닉네임 중복체크 API - 실패: 이미 존재하는 닉네임':
                   value: "{\"errorCode\":409,\"errorMessage\":\"이미 등록된 닉네임입니다.\"}"
@@ -185,7 +184,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '핸드폰 번호 중복체크 API - 실패: 이미 존재하는 휴대폰 번호':
                   value: "{\"errorCode\":409,\"errorMessage\":\"이미 등록된 휴대폰 번호입니다.\"\
@@ -212,19 +211,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-token-refresh1698192666'
+                $ref: '#/components/schemas/v1-member-login1698192666'
               examples:
                 토큰 재발급 API - 성공:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4MjA0MDY0LCJleHAiOjE3MTgyMDU4NjQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.jf5SUXnvbSpAEk1x-bv_nFbR6UCpX5sC5GgjvqzCmUSejGCWB-qmChwSA1rDkJ1SquZJYvn6fNaLmWucCslxPg\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4MjA0MDY0LCJleHAiOjE3MTgyOTA0NjQsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.AfStBCJmGA8O8Yw7k357o5qWrXtZveBXl8IMOzKnyjxu02in0oigWQBtIgEy8413Goh3DSMUVFYMtLOMyxAbkg\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4Mjc4NzMzLCJleHAiOjE3MTgyODA1MzMsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.rrx--WxMN-u2QQFlGLw58AJ7NNFt_8t0mM5R1FGJLz560zVRKR0anAcO1CYLVqsFKn575kXiCJIK-Xg9LADROg\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4Mjc4NzMzLCJleHAiOjE3MTgzNjUxMzMsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.vtjlcvCcwSIAm-wLGyL06NvmHwSZXidO8v-AhFofuh-RAEjZMMC_KklzJ4nsbHecLgYHRzq10LmENyjrUNpUSg\"\
                     }}"
         "403":
           description: "403"
           content:
             application/json;charset=UTF-8:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '토큰 재발급 API - 실패: 권한 없음':
                   value: "{\"errorCode\": 403, \"errorMessage\": \"접근 권한이 없습니다.\"}"
@@ -233,7 +232,7 @@ paths:
           content:
             application/json;charset=UTF-8:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '토큰 재발급 API - 실패: 토큰 없음':
                   value: "{\"errorCode\":401,\"errorMessage\":\"토큰이 존재하지 않습니다.\"}"
@@ -242,7 +241,7 @@ paths:
                     .\"}"
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '토큰 재발급 API - 실패: 리프래시 토큰 불일치':
                   value: "{\"errorCode\":401,\"errorMessage\":\"정상적인 토큰이 아닙니다. 확인\
@@ -279,7 +278,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '이메일 인증 코드 확인 API - 실패: 인증 코드 불일치':
                   value: "{\"errorCode\":401,\"errorMessage\":\"인증 코드가 일치하지 않습니다.\"\
@@ -289,7 +288,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-register-1534697879'
+                $ref: '#/components/schemas/v1-member-login-1534697879'
               examples:
                 '이메일 인증 코드 확인 API - 실패: 필드 유효성':
                   value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
@@ -334,7 +333,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-register-1534697879'
+                $ref: '#/components/schemas/v1-member-login-1534697879'
               examples:
                 '이메일 인증 코드 요청 API - 실패: 필드 유효성':
                   value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
@@ -353,7 +352,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '이메일 인증 코드 요청 API - 실패: 이메일 서버 이슈':
                   value: "{\"errorCode\":504,\"errorMessage\":\"이메일 전송에 실패했습니다.\"}"
@@ -362,14 +361,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-member-email-check-946372771'
+                $ref: '#/components/schemas/v1-member-login-946372771'
               examples:
                 '이메일 인증 코드 요청 API - 실패: 이미 등록 된 이메일':
                   value: "{\"errorCode\":409,\"errorMessage\":\"이미 등록된 회원 이메일입니다.\"\
                     }"
 components:
   schemas:
-    v1-member-token-refresh1698192666:
+    v1-member-login1698192666:
       type: object
       properties:
         code:
@@ -417,7 +416,7 @@ components:
         email:
           type: string
           description: 이메일(계정)
-    v1-member-email-check-946372771:
+    v1-member-login-946372771:
       type: object
       properties:
         errorMessage:
@@ -456,7 +455,16 @@ components:
         email:
           type: string
           description: 이메일(계정)
-    v1-member-register-1534697879:
+    v1-member-login965174184:
+      type: object
+      properties:
+        password:
+          type: string
+          description: 패스워드
+        email:
+          type: string
+          description: 이메일(계정)
+    v1-member-login-1534697879:
       type: object
       properties:
         errorMessage:
@@ -468,15 +476,6 @@ components:
         validation:
           type: object
           description: 유효하지 않은 필드
-    v1-member-login965174184:
-      type: object
-      properties:
-        password:
-          type: string
-          description: 패스워드
-        email:
-          type: string
-          description: 이메일(계정)
   securitySchemes:
     bearerAuthJWT:
       type: http

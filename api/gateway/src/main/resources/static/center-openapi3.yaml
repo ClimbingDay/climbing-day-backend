@@ -64,7 +64,7 @@ paths:
                 '암장 등록 API - 실패: 필드 유효성':
                   value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
                     .\",\"validation\":{\"address\":\"주소는 필수 항목입니다.\",\"name\":\"암\
-                    장이름은 필수 항목입니다.\",\"phoneNum\":\"전화번호는 필수 항목입니다.\"}}"
+                    장이름은 필수 항목입니다.\",\"phoneNum\":\"전화번호를 올바르게 입력해주세요\"}}"
       security:
       - bearerAuthJWT: []
 components:
