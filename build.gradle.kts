@@ -56,7 +56,10 @@ subprojects {
 	}
 }
 
-tasks.register<Copy>("generatedDocs") {
+/**
+ * all 테스트 및 api 문서 생성
+ */
+tasks.register<Copy>("allGeneratedDocs") {
 	dependsOn(":api:member:openapi3")
 	dependsOn(":api:center:openapi3")
 
@@ -70,6 +73,40 @@ tasks.register<Copy>("generatedDocs") {
 		}
 	}
 	into(project(":api:gateway").file("src/main/resources/static"))
+
+	// center
+	from(centerBuildDir.file("api-spec/openapi3.yaml")){
+		rename { fileName ->
+			fileName.replace("openapi3.yaml", "center-openapi3.yaml")
+		}
+	}
+	into(project(":api:gateway").file("src/main/resources/static"))
+}
+
+/**
+ * member 테스트 및 api 문서 생성
+ */
+tasks.register<Copy>("memberGeneratedDocs") {
+	dependsOn(":api:member:openapi3")
+
+	val memberBuildDir = project(":api:member").layout.buildDirectory
+
+	// member
+	from(memberBuildDir.file("api-spec/openapi3.yaml")) {
+		rename { fileName ->
+			fileName.replace("openapi3.yaml", "member-openapi3.yaml")
+		}
+	}
+	into(project(":api:gateway").file("src/main/resources/static"))
+}
+
+/**
+ * center 테스트 및 api 문서 생성
+ */
+tasks.register<Copy>("centerGeneratedDocs") {
+	dependsOn(":api:center:openapi3")
+
+	val centerBuildDir = project(":api:center").layout.buildDirectory
 
 	// center
 	from(centerBuildDir.file("api-spec/openapi3.yaml")){
