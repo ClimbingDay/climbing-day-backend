@@ -82,9 +82,7 @@ public class GlobalExceptionHandler {
 		log.error(">>>>> MissingServletRequestParameterException : {}", ex);
 		ErrorResponse errorResponse = MISSING_REQUEST_PARAM.getErrorResponse();
 
-		String missingParam = ex.getParameterName();
-		errorResponse.addMissingParams(missingParam, missingParam + " " + MISSING_REQUEST_PARAM.getErrorMessage());
-
+		errorResponse.addMissingParams(ex.getParameterName());
 		return ResponseEntity.status(MISSING_REQUEST_PARAM.getStatus()).body(errorResponse);
 	}
 }
