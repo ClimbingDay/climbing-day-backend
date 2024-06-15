@@ -24,7 +24,7 @@ public class ErrorResponse {
 		validation.put(field, message);
 	}
 
-	public void addMissingParams(String param, String message) {
-		missingParams.put(param, message);
+	public void addMissingParams(String param) {
+		missingParams.put(param, param + " 값이 확인되지 않습니다.");
 	}
 }
