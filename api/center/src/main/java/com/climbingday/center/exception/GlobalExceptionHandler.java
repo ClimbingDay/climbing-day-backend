@@ -4,7 +4,6 @@ import static com.climbingday.enums.GlobalErrorCode.*;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.climbingday.domain.common.exception.CustomRedisException;
 import com.climbingday.enums.BaseErrorCode;
 import com.climbingday.response.ErrorResponse;
 import com.climbingday.security.exception.CustomSecurityException;
