@@ -11,6 +11,7 @@ public enum GlobalErrorCode implements BaseErrorCode {
 	VALIDATION_FAILED(400,"입력값에 대한 검증에 실패했습니다.", HttpStatus.BAD_REQUEST),
 	INTERNAL_SERVER_ERROR(500,"서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.", HttpStatus.INTERNAL_SERVER_ERROR),
 	MISSING_REFRESH_REQUEST_HEADER(400, "헤더에 리프래시 토큰이 없습니다.", HttpStatus.BAD_REQUEST),
+	MISSING_REQUEST_PARAM(400, "파라미터 값이 확인되지 않습니다. 확인 후 다시 시도해주세요.", HttpStatus.BAD_REQUEST),
 
 	//jwt
 	VALIDATION_TOKEN_FAILED(401, "정상적인 토큰이 아닙니다. 확인 후 다시 시도해주세요.", HttpStatus.UNAUTHORIZED),
