@@ -7,6 +7,42 @@ servers:
 - url: http://localhost:8080
 tags: []
 paths:
+  /v1/center:
+    get:
+      tags:
+      - 암장 API
+      summary: 암장 조회
+      description: 암장 조회
+      operationId: 암장 조회 API - 성공
+      parameters:
+      - name: page
+        in: query
+        description: 조회할 페이지 번호
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-center1117171008'
+              examples:
+                암장 조회 API - 성공:
+                  value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"content\"\
+                    :[{\"id\":1,\"name\":\"암장이름\",\"phoneNum\":\"02-111-1111\",\"\
+                    address\":\"암장주소\",\"latitude\":111.2222,\"longitude\":111.2222,\"\
+                    openTime\":\"0:0\",\"closeTime\":\"23:59\",\"description\":\"설\
+                    명\",\"notice\":\"공지\",\"memberNickName\":\"admin\"}],\"pageable\"\
+                    :{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"empty\":true,\"\
+                    sorted\":false,\"unsorted\":true},\"offset\":0,\"paged\":true,\"\
+                    unpaged\":false},\"totalPages\":1,\"last\":true,\"totalElements\"\
+                    :1,\"size\":10,\"number\":0,\"sort\":{\"empty\":true,\"sorted\"\
+                    :false,\"unsorted\":true},\"first\":true,\"numberOfElements\"\
+                    :1,\"empty\":false}}"
+      security:
+      - bearerAuthJWT: []
   /v1/center/register:
     post:
       tags:
@@ -64,7 +100,7 @@ paths:
                 '암장 등록 API - 실패: 필드 유효성':
                   value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
                     .\",\"validation\":{\"address\":\"주소는 필수 항목입니다.\",\"name\":\"암\
-                    장이름은 필수 항목입니다.\",\"phoneNum\":\"전화번호를 올바르게 입력해주세요\"}}"
+                    장이름은 필수 항목입니다.\",\"phoneNum\":\"전화번호는 필수 항목입니다.\"}}"
       security:
       - bearerAuthJWT: []
 components:
@@ -114,6 +150,18 @@ components:
         longitude:
           type: number
           description: 경도
+    v1-center1117171008:
+      type: object
+      properties:
+        code:
+          type: number
+          description: 상태 코드
+        data:
+          type: object
+          description: "암장 정보, 페이징 정보"
+        message:
+          type: string
+          description: 상태 메시지
     v1-center-register-946372771:
       type: object
       properties:

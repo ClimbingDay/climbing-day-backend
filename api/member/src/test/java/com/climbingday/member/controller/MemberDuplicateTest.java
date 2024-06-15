@@ -7,6 +7,7 @@ import static io.restassured.http.ContentType.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +55,9 @@ public class MemberDuplicateTest extends TestConfig {
 				resourceDetails()
 					.tag("회원 API")
 					.summary("이메일 중복체크"),
+				queryParameters(
+					parameterWithName("email").description("중복 확인할 이메일").optional()
+				),
 				responseFields(
 					fieldWithPath("code").type(NUMBER).description("상태 코드"),
 					fieldWithPath("message").type(STRING).description("상태 메시지")
@@ -74,15 +78,18 @@ public class MemberDuplicateTest extends TestConfig {
 				resourceDetails()
 					.tag("회원 API")
 					.summary("이메일 중복체크"),
+				queryParameters(
+					parameterWithName("email").description("중복 확인할 이메일").optional()
+				),
 				responseFields(
 					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
 					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
 				)))
 			.queryParam("email", "admin@gmail.com")
 			.contentType(JSON)
-			.when()
+		.when()
 			.get("/v1/member/email/check")
-			.then().log().all()
+		.then().log().all()
 			.statusCode(409);
 	}
 
@@ -94,15 +101,18 @@ public class MemberDuplicateTest extends TestConfig {
 				resourceDetails()
 					.tag("회원 API")
 					.summary("핸드폰 번호 중복체크"),
+				queryParameters(
+					parameterWithName("phoneNum").description("중복 확인할 핸드폰 번호").optional()
+				),
 				responseFields(
 					fieldWithPath("code").type(NUMBER).description("상태 코드"),
 					fieldWithPath("message").type(STRING).description("상태 메시지")
 				)))
 			.queryParam("phoneNum", "010-122-1111")
 			.contentType(JSON)
-			.when()
+		.when()
 			.get("/v1/member/phone-num/check")
-			.then().log().all()
+		.then().log().all()
 			.statusCode(200);
 	}
 
@@ -114,15 +124,18 @@ public class MemberDuplicateTest extends TestConfig {
 				resourceDetails()
 					.tag("회원 API")
 					.summary("핸드폰 번호 중복체크"),
+				queryParameters(
+					parameterWithName("phoneNum").description("중복 확인할 핸드폰 번호").optional()
+				),
 				responseFields(
 					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
 					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
 				)))
 			.queryParam("phoneNum", "010-000-0000")
 			.contentType(JSON)
-			.when()
+		.when()
 			.get("/v1/member/phone-num/check")
-			.then().log().all()
+		.then().log().all()
 			.statusCode(409);
 	}
 
@@ -134,6 +147,9 @@ public class MemberDuplicateTest extends TestConfig {
 				resourceDetails()
 					.tag("회원 API")
 					.summary("닉네임 중복체크"),
+				queryParameters(
+					parameterWithName("nickName").description("중복 확인할 닉네임").optional()
+				),
 				responseFields(
 					fieldWithPath("code").type(NUMBER).description("상태 코드"),
 					fieldWithPath("message").type(STRING).description("상태 메시지")
@@ -154,6 +170,9 @@ public class MemberDuplicateTest extends TestConfig {
 				resourceDetails()
 					.tag("회원 API")
 					.summary("닉네임 중복체크"),
+				queryParameters(
+					parameterWithName("nickName").description("중복 확인할 닉네임").optional()
+				),
 				responseFields(
 					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
 					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")

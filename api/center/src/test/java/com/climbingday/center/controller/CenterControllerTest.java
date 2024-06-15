@@ -7,12 +7,8 @@ import static io.restassured.http.ContentType.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.*;
-
-import java.io.Serializable;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -194,25 +190,29 @@ class CenterControllerTest extends TestConfig {
 			.statusCode(400);
 	}
 
-	// @Test
-	// @DisplayName("2-1. 암장 조회 - 성공")
-	// @Transactional
-	// public void getCenterAllTest() {
-	// 	given(spec).log().all()
-	// 		.filter(document("암장 조회 API - 성공",
-	// 			resourceDetails()
-	// 				.tag("암장 API")
-	// 				.summary("암장 조회"),
-	// 			responseFields(
-	// 				fieldWithPath("code").type(NUMBER).description("상태 코드"),
-	// 				fieldWithPath("message").type(STRING).description("상태 메시지"),
-	// 				subsectionWithPath("data").type(OBJECT).description("암장 정보, 페이징 정보")
-	// 			)))
-	// 		.contentType(JSON)
-	// 		.param("page", 0)
-	// 		.when()
-	// 		.get("/v1/member/token/refresh")
-	// 		.then().log().all()
-	// 		.statusCode(200);
-	// }
+	@Test
+	@DisplayName("2-1. 암장 조회 - 성공")
+	@Transactional
+	public void getCenterAllTest() {
+		given(spec).log().all()
+			.filter(document("암장 조회 API - 성공",
+				resourceDetails()
+					.tag("암장 API")
+					.summary("암장 조회"),
+				queryParameters(
+					parameterWithName("page").description("조회할 페이지 번호").optional()
+				),
+				responseFields(
+					fieldWithPath("code").type(NUMBER).description("상태 코드"),
+					fieldWithPath("message").type(STRING).description("상태 메시지"),
+					subsectionWithPath("data").type(OBJECT).description("암장 정보, 페이징 정보")
+				)))
+			.contentType(JSON)
+			.header("Authorization", refreshToken)
+			.queryParam("page", 0)
+		.when()
+			.get("/v1/center")
+		.then().log().all()
+			.statusCode(200);
+	}
 }
