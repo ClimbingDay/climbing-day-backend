@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,6 +20,9 @@ import com.climbingday.security.exception.CustomSecurityException;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Member Exception Handler
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -71,5 +75,16 @@ public class GlobalExceptionHandler {
 
 		ErrorResponse errorResponse = MISSING_REFRESH_REQUEST_HEADER.getErrorResponse();
 		return ResponseEntity.status(MISSING_REFRESH_REQUEST_HEADER.getStatus()).body(errorResponse);
+	}
+
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public ResponseEntity<ErrorResponse> handleMissingParams(MissingServletRequestParameterException ex) {
+		log.error(">>>>> MissingServletRequestParameterException : {}", ex);
+		ErrorResponse errorResponse = MISSING_REQUEST_PARAM.getErrorResponse();
+
+		String missingParam = ex.getParameterName();
+		errorResponse.addMissingParams(missingParam, missingParam + " " + MISSING_REQUEST_PARAM.getErrorMessage());
+
+		return ResponseEntity.status(MISSING_REQUEST_PARAM.getStatus()).body(errorResponse);
 	}
 }
