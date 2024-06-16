@@ -13,7 +13,7 @@ paths:
       - 암장 API
       summary: 암장 조회
       description: 암장 조회
-      operationId: 암장 조회 API - 성공
+      operationId: '암장 조회 API - '
       parameters:
       - name: page
         in: query
@@ -36,11 +36,22 @@ paths:
                     openTime\":\"0:0\",\"closeTime\":\"23:59\",\"description\":\"설\
                     명\",\"notice\":\"공지\",\"memberNickName\":\"admin\"}],\"pageable\"\
                     :{\"pageNumber\":0,\"pageSize\":10,\"sort\":{\"empty\":true,\"\
-                    sorted\":false,\"unsorted\":true},\"offset\":0,\"paged\":true,\"\
-                    unpaged\":false},\"totalPages\":1,\"last\":true,\"totalElements\"\
-                    :1,\"size\":10,\"number\":0,\"sort\":{\"empty\":true,\"sorted\"\
-                    :false,\"unsorted\":true},\"first\":true,\"numberOfElements\"\
-                    :1,\"empty\":false}}"
+                    unsorted\":true,\"sorted\":false},\"offset\":0,\"paged\":true,\"\
+                    unpaged\":false},\"totalElements\":1,\"last\":true,\"totalPages\"\
+                    :1,\"size\":10,\"number\":0,\"sort\":{\"empty\":true,\"unsorted\"\
+                    :true,\"sorted\":false},\"numberOfElements\":1,\"first\":true,\"\
+                    empty\":false}}"
+        "400":
+          description: "400"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-center-44175865'
+              examples:
+                '암장 조회 API - 실패: Parameter 누락':
+                  value: "{\"errorCode\":400,\"errorMessage\":\"파라미터 값이 정상적이지 않습니다\
+                    . 확인 후 다시 시도해주세요.\",\"missingParams\":{\"page\":\"page 값이 확인되지\
+                    \ 않습니다.\"}}"
       security:
       - bearerAuthJWT: []
   /v1/center/register:
@@ -100,7 +111,7 @@ paths:
                 '암장 등록 API - 실패: 필드 유효성':
                   value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
                     .\",\"validation\":{\"address\":\"주소는 필수 항목입니다.\",\"name\":\"암\
-                    장이름은 필수 항목입니다.\",\"phoneNum\":\"전화번호는 필수 항목입니다.\"}}"
+                    장이름은 필수 항목입니다.\",\"phoneNum\":\"전화번호를 올바르게 입력해주세요\"}}"
       security:
       - bearerAuthJWT: []
 components:
@@ -168,6 +179,18 @@ components:
         errorMessage:
           type: string
           description: 상태 메시지
+        errorCode:
+          type: number
+          description: 상태 코드
+    v1-center-44175865:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+          description: 상태 메시지
+        missingParams:
+          type: object
+          description: 누락된 파라미터
         errorCode:
           type: number
           description: 상태 코드

@@ -94,6 +94,29 @@ public class MemberDuplicateTest extends TestConfig {
 	}
 
 	@Test
+	@DisplayName("1-3. 이메일 중복체크 - 실패: parameter 누락")
+	public void memberEmailCheck3Test() throws Exception {
+		given(spec).log().all()
+			.filter(document("이메일 중복체크 API - 실패: parameter 누락",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("이메일 중복체크"),
+				queryParameters(
+					parameterWithName("email").description("중복 확인할 이메일").optional()
+				),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지"),
+					subsectionWithPath("missingParams").type(OBJECT).description("누락된 파라미터")
+				)))
+			.contentType(JSON)
+		.when()
+			.get("/v1/member/email/check")
+		.then().log().all()
+			.statusCode(400);
+	}
+
+	@Test
 	@DisplayName("2-1. 핸드폰 번호 중복체크 - 성공")
 	public void memberPhoneNumCheck1Test() throws Exception {
 		given(spec).log().all()
@@ -140,6 +163,29 @@ public class MemberDuplicateTest extends TestConfig {
 	}
 
 	@Test
+	@DisplayName("2-3. 핸드폰 번호 중복체크 - 실패: Parameter 누락")
+	public void memberPhoneNumCheck3Test() throws Exception {
+		given(spec).log().all()
+			.filter(document("핸드폰 번호 중복체크 API - 실패: Parameter 누락",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("핸드폰 번호 중복체크"),
+				queryParameters(
+					parameterWithName("phoneNum").description("중복 확인할 핸드폰 번호").optional()
+				),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지"),
+					subsectionWithPath("missingParams").type(OBJECT).description("누락된 파라미터")
+				)))
+			.contentType(JSON)
+		.when()
+			.get("/v1/member/phone-num/check")
+		.then().log().all()
+			.statusCode(400);
+	}
+
+	@Test
 	@DisplayName("3-1. 닉네임 중복체크 - 성공")
 	public void memberNickNameCheck1Test() throws Exception {
 		given(spec).log().all()
@@ -183,6 +229,29 @@ public class MemberDuplicateTest extends TestConfig {
 			.get("/v1/member/nick-name/check")
 		.then().log().all()
 			.statusCode(409);
+	}
+
+	@Test
+	@DisplayName("3-3. 닉네임 중복체크 - 실패: Parameter 누락")
+	public void memberNickNameCheck3Test() throws Exception {
+		given(spec).log().all()
+			.filter(document("닉네임 중복체크 API - 실패: Parameter 누락",
+				resourceDetails()
+					.tag("회원 API")
+					.summary("닉네임 중복체크"),
+				queryParameters(
+					parameterWithName("nickName").description("중복 확인할 닉네임").optional()
+				),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지"),
+					subsectionWithPath("missingParams").type(OBJECT).description("누락된 파라미터")
+				)))
+			.contentType(JSON)
+			.when()
+			.get("/v1/member/nick-name/check")
+			.then().log().all()
+			.statusCode(400);
 	}
 }
 

@@ -193,7 +193,7 @@ class CenterControllerTest extends TestConfig {
 	@Test
 	@DisplayName("2-1. 암장 조회 - 성공")
 	@Transactional
-	public void getCenterAllTest() {
+	public void getCenterAll1Test() {
 		given(spec).log().all()
 			.filter(document("암장 조회 API - 성공",
 				resourceDetails()
@@ -214,5 +214,30 @@ class CenterControllerTest extends TestConfig {
 			.get("/v1/center")
 		.then().log().all()
 			.statusCode(200);
+	}
+
+	@Test
+	@DisplayName("2-2. 암장 조회 - 실패: Parameter 누락")
+	@Transactional
+	public void getCenterAll2Test() {
+		given(spec).log().all()
+			.filter(document("암장 조회 API - 실패: Parameter 누락",
+				resourceDetails()
+					.tag("암장 API")
+					.summary("암장 조회"),
+				queryParameters(
+					parameterWithName("page").description("조회할 페이지 번호").optional()
+				),
+				responseFields(
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지"),
+					subsectionWithPath("missingParams").type(OBJECT).description("누락된 파라미터")
+				)))
+			.contentType(JSON)
+			.header("Authorization", refreshToken)
+		.when()
+			.get("/v1/center")
+		.then().log().all()
+			.statusCode(400);
 	}
 }
