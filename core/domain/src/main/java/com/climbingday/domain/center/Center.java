@@ -43,6 +43,8 @@ public class Center extends MutableBaseEntity {
 
 	private String notice;						// 암장 공지사항
 
+	private String profileImage;				// 암장 이미지
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;						// 암장 관리자
