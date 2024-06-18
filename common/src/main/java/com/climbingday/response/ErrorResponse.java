@@ -1,6 +1,7 @@
 package com.climbingday.response;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,6 +15,7 @@ public class ErrorResponse {
 	private final String errorMessage;
 	private final Map<String, String> validation = new HashMap<>();
 	private final Map<String, String> missingParams = new HashMap<>();
+	private final Map<String, String> missingParts = new HashMap<>();
 
 	public ErrorResponse(int errorCode, String errorMessage) {
 		this.errorCode = errorCode;
@@ -26,5 +28,9 @@ public class ErrorResponse {
 
 	public void addMissingParams(String param) {
 		missingParams.put(param, param + " 값이 확인되지 않습니다.");
+	}
+
+	public void addMissingParts(String part) {
+		missingParts.put(part, part + " 값이 확인되지 않습니다.");
 	}
 }
