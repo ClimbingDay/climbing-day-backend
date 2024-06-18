@@ -141,6 +141,7 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/member/phone-num/check"),				// 휴대폰 번호 중복확인
 			antMatcher(GET, "/member/nick-name/check"),				// 닉네임 중복확인
 
+			antMatcher(GET, "/center"),								// 암장 조회
 
 			antMatcher(POST, "/member/email/auth/request"),			// 이메일 인증 코드 요청
 			antMatcher(POST, "/member/email/auth/confirm"),			// 이메일 인증 코드 확인
@@ -162,7 +163,6 @@ public class SpringSecurityConfig {
 	private RequestMatcher[] AuthRequestMatchers() {
 		List<RequestMatcher> requestMatchers = List.of(
 			antMatcher(POST, "/center/register"),					// 암장 등록
-			antMatcher(GET, "/center"),							// 암장 조회
 			antMatcher(GET, "/admin/member"),						// 모든 회원 조회
 			antMatcher(GET, "/member/token/refresh")				// AccessToken, RefreshToken 재발급
 		);
