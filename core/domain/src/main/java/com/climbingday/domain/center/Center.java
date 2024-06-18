@@ -1,7 +1,5 @@
 package com.climbingday.domain.center;
 
-import java.time.LocalTime;
-
 import com.climbingday.domain.MutableBaseEntity;
 import com.climbingday.domain.member.Member;
 import com.climbingday.dto.center.CenterRegisterDto;
@@ -47,7 +45,7 @@ public class Center extends MutableBaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
-	private Member member;
+	private Member member;						// 암장 관리자
 
 	public static Center fromCenterRegisterDto(CenterRegisterDto centerRegisterDto, Member member) {
 
