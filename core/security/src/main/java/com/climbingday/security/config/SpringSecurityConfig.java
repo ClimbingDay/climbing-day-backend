@@ -97,12 +97,12 @@ public class SpringSecurityConfig {
 		httpSecuritySetting(http);
 		http
 			.securityMatchers(matcher -> matcher
-				.requestMatchers(AuthRequestMatchers()))
+				.requestMatchers(adminAuthRequestMatchers())
+				.requestMatchers(userAuthRequestMatchers())
+			)
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers(AuthRequestMatchers()).hasAnyAuthority(
-					ROLE_ADMIN.name(),
-					ROLE_USER.name()
-				)
+				.requestMatchers(adminAuthRequestMatchers()).hasAuthority(ROLE_ADMIN.name())
+				.requestMatchers(userAuthRequestMatchers()).hasAuthority(ROLE_USER.name())
 				.anyRequest().authenticated()
 			)
 			.exceptionHandling(exception -> exception
@@ -116,7 +116,7 @@ public class SpringSecurityConfig {
 	 * 설정하지 않은 http 거부
 	 */
 	@Bean
-	@Order(2)
+	@Order(3)
 	public SecurityFilterChain otherFilterChain(HttpSecurity http) throws Exception {
 		httpSecuritySetting(http);
 		http
@@ -158,13 +158,23 @@ public class SpringSecurityConfig {
 	}
 
 	/**
-	 * Auth endpoint
+	 * user auth endpoint
 	 */
-	private RequestMatcher[] AuthRequestMatchers() {
+	private RequestMatcher[] userAuthRequestMatchers() {
 		List<RequestMatcher> requestMatchers = List.of(
-			antMatcher(POST, "/center/register"),					// 암장 등록
 			antMatcher(GET, "/admin/member"),						// 모든 회원 조회
 			antMatcher(GET, "/member/token/refresh")				// AccessToken, RefreshToken 재발급
+		);
+
+		return requestMatchers.toArray(RequestMatcher[]::new);
+	}
+
+	/**
+	 * admin auth endpoint
+	 */
+	private RequestMatcher[] adminAuthRequestMatchers() {
+		List<RequestMatcher> requestMatchers = List.of(
+			antMatcher(POST, "/center/register")					// 암장 등록
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);
