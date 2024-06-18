@@ -46,6 +46,8 @@ public class Member extends MutableBaseEntity {
 
 	private String phoneNumber;					// 전화번호
 
+	private String profileImage;				// 프로필 이미지
+
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
 	private EStatus status = EStatus.ACTIVE;	// 상태
@@ -53,6 +55,8 @@ public class Member extends MutableBaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
 	private ERoles roles = ERoles.ROLE_USER;	// 역할(권한)
+
+
 
 	public static Member fromMemberRegisterDto(MemberRegisterDto registerDto) {
 
