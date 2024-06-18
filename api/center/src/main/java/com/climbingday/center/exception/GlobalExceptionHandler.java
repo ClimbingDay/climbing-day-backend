@@ -12,6 +12,7 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import com.climbingday.enums.BaseErrorCode;
 import com.climbingday.response.ErrorResponse;
@@ -70,11 +71,20 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public ResponseEntity<ErrorResponse> handleMissingParams(MissingServletRequestParameterException ex) {
+	public ResponseEntity<ErrorResponse> handleMissingParamsException(MissingServletRequestParameterException ex) {
 		log.error(">>>>> MissingServletRequestParameterException : {}", ex);
 		ErrorResponse errorResponse = MISSING_REQUEST_PARAM.getErrorResponse();
 
 		errorResponse.addMissingParams(ex.getParameterName());
 		return ResponseEntity.status(MISSING_REQUEST_PARAM.getStatus()).body(errorResponse);
+	}
+
+	@ExceptionHandler(MissingServletRequestPartException.class)
+	public ResponseEntity<ErrorResponse> handleMissingPartException(MissingServletRequestPartException ex) {
+		log.error(">>>>> MissingServletRequestPartException : {}", ex);
+		ErrorResponse errorResponse = MISSING_REQUEST_PART.getErrorResponse();
+
+		errorResponse.addMissingParts(ex.getRequestPartName());
+		return ResponseEntity.status(MISSING_REQUEST_PART.getStatus()).body(errorResponse);
 	}
 }
