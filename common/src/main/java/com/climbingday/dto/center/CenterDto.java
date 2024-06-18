@@ -1,7 +1,5 @@
 package com.climbingday.dto.center;
 
-import java.time.LocalTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
