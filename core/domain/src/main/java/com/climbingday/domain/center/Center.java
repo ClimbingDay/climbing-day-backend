@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -43,6 +44,7 @@ public class Center extends MutableBaseEntity {
 
 	private String notice;						// 암장 공지사항
 
+	@Setter
 	private String profileImage;				// 암장 이미지
 
 	@ManyToOne(fetch = FetchType.LAZY)

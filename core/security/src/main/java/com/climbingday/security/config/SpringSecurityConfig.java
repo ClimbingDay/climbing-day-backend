@@ -102,7 +102,7 @@ public class SpringSecurityConfig {
 			)
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers(adminAuthRequestMatchers()).hasAuthority(ROLE_ADMIN.name())
-				.requestMatchers(userAuthRequestMatchers()).hasAuthority(ROLE_USER.name())
+				.requestMatchers(userAuthRequestMatchers()).hasAnyAuthority(ROLE_ADMIN.name(), ROLE_USER.name())
 				.anyRequest().authenticated()
 			)
 			.exceptionHandling(exception -> exception

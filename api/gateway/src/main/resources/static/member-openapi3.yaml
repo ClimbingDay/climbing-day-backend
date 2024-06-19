@@ -46,8 +46,8 @@ paths:
               examples:
                 로그인 API - 성공:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTg1MDE4NjAsImV4cCI6MTcxODUwMzY2MCwicm9sZXMiOiJST0xFX1VTRVIifQ.z7PuJJ6vQvXPEW71gZkO5Zwk6OJYIMnqlyVRuvJY2rRAiKz_qNgf_Z3Hmb5yzMMdQCh3eSQwWVX8HwI6cgV2Tw\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTg1MDE4NjAsImV4cCI6MTcxODU4ODI2MCwicm9sZXMiOiJST0xFX1VTRVIifQ.FG7ac-loqkPNMBxB3ABs5GAjdmhXOJCHF-gicTurNc-gkwrmVjcy5qXj1AkIK-1i5OKeuUZTTD2nOkHeTwoyUg\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTg3OTk3NTksImV4cCI6MTcxODgwMTU1OSwicm9sZXMiOiJST0xFX1VTRVIifQ.uMKjCZVZ9r_bia019-I9HgtMNEapJMLuQvWo05F2BjeSZKnFNHKBcZc2Q3YsmQG3Meupyh0lOaH3wAuzZCBAyw\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Niwic3ViIjoidGVzdEBuYXZlci5jb20iLCJpYXQiOjE3MTg3OTk3NTksImV4cCI6MTcxODg4NjE1OSwicm9sZXMiOiJST0xFX1VTRVIifQ.N2j3wfB0Z1fX16wpUv1Pwgu5ZCD1WA_Z1vMONsir8SlPZ9F2DkvRsl4ijqDGndDkkXGD2-E0kioORdItb4Jn4A\"\
                     }}"
         "400":
           description: "400"
@@ -270,8 +270,8 @@ paths:
               examples:
                 토큰 재발급 API - 성공:
                   value: "{\"code\":200,\"message\":\"정상 처리되었습니다.\",\"data\":{\"accessToken\"\
-                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4NTAxODY5LCJleHAiOjE3MTg1MDM2NjksInJvbGVzIjoiUk9MRV9BRE1JTiJ9.2vIQR6cowBXRLCSoX-MPEx-F4e1iaVCRRc4yO_nnh9HGoH7syq2mZdc2BQq4s3TUDkBtJetdD9TkBJ06QED1yA\"\
-                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4NTAxODY5LCJleHAiOjE3MTg1ODgyNjksInJvbGVzIjoiUk9MRV9BRE1JTiJ9.ZQ-uWbjJEqlRtzxitS7a1sbZlQMsls0hhUVapFghIzThE5f_4_K27-XHE1Cnwms4Yk9vnnwqIfEwyJ5typBABw\"\
+                    :\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4Nzk5NzY4LCJleHAiOjE3MTg4MDE1NjgsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.volulNomqSwnp3VdvXdPV3J3THBbDDHvMGY8m9TYekL34Cwv7Hm3fQp7YmGNFCKB_tkt1ZY4GTQiB3HgJXv5Lg\"\
+                    ,\"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwic3ViIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE4Nzk5NzY4LCJleHAiOjE3MTg4ODYxNjgsInJvbGVzIjoiUk9MRV9BRE1JTiJ9.V9_d5RE-HuR735Iyw5PB93bdoCXDFkavldLCP_xu0oSKK8IsBVXIUO8Ycl7b12lw3AnarRPzigHPZScVXD_K5A\"\
                     }}"
         "403":
           description: "403"

@@ -10,10 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.climbingday.center.service.CenterService;
 import com.climbingday.dto.center.CenterRegisterDto;
@@ -35,9 +36,11 @@ public class CenterController {
 	@PostMapping("/register")
 	public ResponseEntity<CDResponse<?>> registerCenter(
 		@AuthenticationPrincipal UserDetailsImpl userDetails,
-		@Valid @RequestBody CenterRegisterDto centerRegisterDto) {
+		@Valid @RequestPart("center") CenterRegisterDto centerRegisterDto,
+		@RequestParam(value = "profile_image", required = false)MultipartFile file
+		) {
 		return ResponseEntity.status(CREATE.getStatus())
-			.body(new CDResponse<>(CREATE, Map.of("id", centerService.registerCenter(centerRegisterDto, userDetails))));
+			.body(new CDResponse<>(CREATE, Map.of("id", centerService.registerCenter(centerRegisterDto, file, userDetails))));
 	}
 
 	/**

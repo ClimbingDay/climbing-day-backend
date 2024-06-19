@@ -11,5 +11,7 @@ tasks.withType<Jar> {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("io.github.cdimascio:dotenv-java:2.2.0")
+
 }
 

@@ -4,11 +4,17 @@ import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.do
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.*;
 import static io.restassured.RestAssured.*;
 import static io.restassured.http.ContentType.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.*;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,11 +24,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.climbingday.center.service.CenterService;
 import com.climbingday.dto.center.CenterRegisterDto;
 import com.climbingday.infra.config.TestConfig;
 
@@ -45,6 +54,9 @@ class CenterControllerTest extends TestConfig {
 	@LocalServerPort
 	private int port;
 
+	@SpyBean
+	private CenterService centerService;
+
 	@BeforeEach
 	void setup(RestDocumentationContextProvider provider) {
 		RestAssured.port = port;
@@ -56,7 +68,12 @@ class CenterControllerTest extends TestConfig {
 	@Test
 	@DisplayName("1-1. 암장 등록 - 성공")
 	@Transactional
-	public void getCenterRegister1Test() {
+	public void getCenterRegister1Test() throws IOException {
+		File file = new ClassPathResource("climbing-day-no-image.jpg").getFile();
+
+		// 파일 업로드
+		doReturn("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg").when(centerService).uploadFile(any());
+
 		CenterRegisterDto centerRegisterDto = CenterRegisterDto.builder()
 			.name("암장이름")
 			.phoneNum("02-111-1111")
@@ -74,16 +91,9 @@ class CenterControllerTest extends TestConfig {
 				resourceDetails()
 					.tag("암장 API")
 					.summary("암장 등록"),
-				requestFields(
-					fieldWithPath("name").type(STRING).description("암장 이름"),
-					fieldWithPath("phoneNum").type(STRING).description("전화번호"),
-					fieldWithPath("address").type(STRING).description("주소"),
-					fieldWithPath("latitude").type(NUMBER).description("위도"),
-					fieldWithPath("longitude").type(NUMBER).description("경도"),
-					fieldWithPath("openTime").type(STRING).description("영업시작시간"),
-					fieldWithPath("closeTime").type(STRING).description("영업종료시간"),
-					fieldWithPath("description").type(STRING).description("소개"),
-					fieldWithPath("notice").type(STRING).description("공지사항")
+				requestParts(
+					partWithName("profile_image").description("암장 이미지"),
+					partWithName("center").description("암장 정보")
 				),
 				responseFields(
 					fieldWithPath("code").type(NUMBER).description("상태 코드"),
@@ -91,8 +101,9 @@ class CenterControllerTest extends TestConfig {
 					fieldWithPath("data.id").type(NUMBER).description("암장 고유번호")
 				)))
 			.header("Authorization", accessToken)
-			.body(centerRegisterDto)
-			.contentType(JSON)
+			.multiPart("profile_image", file)
+			.multiPart("center", centerRegisterDto, "application/json")
+			.contentType(MULTIPART_FORM_DATA_VALUE)
 		.when()
 			.post("/v1/center/register")
 		.then().log().all()
@@ -102,7 +113,12 @@ class CenterControllerTest extends TestConfig {
 	@Test
 	@DisplayName("1-2. 암장 등록 - 실패: 중복 암장이름")
 	@Transactional
-	public void getCenterRegister2Test() {
+	public void getCenterRegister2Test() throws IOException {
+		File file = new ClassPathResource("climbing-day-no-image.jpg").getFile();
+
+		// 파일 업로드
+		doReturn("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg").when(centerService).uploadFile(any());
+
 		CenterRegisterDto centerRegisterDto = CenterRegisterDto.builder()
 			.name("암장이름")
 			.phoneNum("02-111-1111")
@@ -120,24 +136,18 @@ class CenterControllerTest extends TestConfig {
 				resourceDetails()
 					.tag("암장 API")
 					.summary("암장 등록"),
-				requestFields(
-					fieldWithPath("name").type(STRING).description("암장 이름"),
-					fieldWithPath("phoneNum").type(STRING).description("전화번호"),
-					fieldWithPath("address").type(STRING).description("주소"),
-					fieldWithPath("latitude").type(NUMBER).description("위도"),
-					fieldWithPath("longitude").type(NUMBER).description("경도"),
-					fieldWithPath("openTime").type(STRING).description("영업시작시간"),
-					fieldWithPath("closeTime").type(STRING).description("영업종료시간"),
-					fieldWithPath("description").type(STRING).description("소개"),
-					fieldWithPath("notice").type(STRING).description("공지사항")
+				requestParts(
+					partWithName("profile_image").description("암장 이미지"),
+					partWithName("center").description("암장 정보")
 				),
 				responseFields(
 					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
 					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
 				)))
 			.header("Authorization", accessToken)
-			.body(centerRegisterDto)
-			.contentType(JSON)
+			.multiPart("profile_image", file)
+			.multiPart("center", centerRegisterDto, "application/json")
+			.contentType(MULTIPART_FORM_DATA_VALUE)
 		.when()
 			.post("/v1/center/register")
 		.then().log().all()
@@ -147,7 +157,12 @@ class CenterControllerTest extends TestConfig {
 	@Test
 	@DisplayName("1-3. 암장 등록 - 실패: 필드 유효성")
 	@Transactional
-	public void getCenterRegister3Test() {
+	public void getCenterRegister3Test() throws IOException {
+		File file = new ClassPathResource("climbing-day-no-image.jpg").getFile();
+
+		// 파일 업로드
+		doReturn("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg").when(centerService).uploadFile(any());
+
 		CenterRegisterDto centerRegisterDto = CenterRegisterDto.builder()
 			.name("")
 			.phoneNum("")
@@ -165,16 +180,9 @@ class CenterControllerTest extends TestConfig {
 				resourceDetails()
 					.tag("암장 API")
 					.summary("암장 등록"),
-				requestFields(
-					fieldWithPath("name").type(STRING).description("암장 이름"),
-					fieldWithPath("phoneNum").type(STRING).description("전화번호"),
-					fieldWithPath("address").type(STRING).description("주소"),
-					fieldWithPath("latitude").type(NUMBER).description("위도"),
-					fieldWithPath("longitude").type(NUMBER).description("경도"),
-					fieldWithPath("openTime").type(STRING).description("영업시작시간"),
-					fieldWithPath("closeTime").type(STRING).description("영업종료시간"),
-					fieldWithPath("description").type(STRING).description("소개"),
-					fieldWithPath("notice").type(STRING).description("공지사항")
+				requestParts(
+					partWithName("profile_image").description("암장 이미지"),
+					partWithName("center").description("암장 정보")
 				),
 				responseFields(
 					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
@@ -182,8 +190,9 @@ class CenterControllerTest extends TestConfig {
 					subsectionWithPath("validation").type(OBJECT).description("유효하지 않은 필드")
 				)))
 			.header("Authorization", accessToken)
-			.body(centerRegisterDto)
-			.contentType(JSON)
+			.multiPart("profile_image", file)
+			.multiPart("center", centerRegisterDto, "application/json")
+			.contentType(MULTIPART_FORM_DATA_VALUE)
 		.when()
 			.post("/v1/center/register")
 		.then().log().all()

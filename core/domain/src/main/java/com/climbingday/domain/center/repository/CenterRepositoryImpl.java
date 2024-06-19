@@ -34,6 +34,7 @@ public class CenterRepositoryImpl implements CenterCustom {
 				center.closeTime,
 				center.description,
 				center.notice,
+				center.profileImage,
 				center.member.nickName.as("memberNickName")
 				))
 			.from(center)

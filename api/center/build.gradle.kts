@@ -41,6 +41,9 @@ dependencies {
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    // s3
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.470")
+
     // 테스트 의존성
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.epages:restdocs-api-spec-mockmvc:$restdocsApiSpecVersion")

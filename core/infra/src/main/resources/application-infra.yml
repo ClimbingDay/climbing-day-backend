@@ -44,12 +44,6 @@ logging:
         org.hibernate:
             sql: debug
 
-aws:
-    s3:
-        accessKey: ENC(A5mZeZ7OjxR4w5heXOcRbkeZcnYgZKiego4DxH9tgno=)
-        secretKey: ENC(bbqI60EWN3iUWGg96vtgNpHpH95TvMCGDDG/GrAKHMUv93o05QR2bYO8USBS38xl6UfNwed5FDo=)
-
-
 ---
 spring:
     config.activate.on-profile: dev
@@ -96,8 +90,3 @@ logging:
     level:
         org.hibernate:
             sql: debug
-
-aws:
-    s3:
-        accessKey: ENC(A5mZeZ7OjxR4w5heXOcRbkeZcnYgZKiego4DxH9tgno=)
-        secretKey: ENC(bbqI60EWN3iUWGg96vtgNpHpH95TvMCGDDG/GrAKHMUv93o05QR2bYO8USBS38xl6UfNwed5FDo=)

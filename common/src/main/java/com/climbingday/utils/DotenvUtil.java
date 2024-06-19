@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 public class DotenvUtil {
 	public static Map<String, String> loadEnv() {
 		Map<String, String> envMap = new HashMap<>();
-		String absolutePath = Paths.get(System.getProperty("user.dir"), "..", "..", ".env").normalize().toString();
+		String absolutePath = Paths.get(System.getProperty("user.dir"), ".env").normalize().toString();
 
 		try (Stream<String> stream = Files.lines(Paths.get(absolutePath))) {
 			stream.filter(line -> !line.startsWith("#") && line.contains("="))

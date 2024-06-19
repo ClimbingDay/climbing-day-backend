@@ -38,8 +38,11 @@ dependencies {
     // swagger
     implementation("io.swagger.core.v3:swagger-core:2.1.6")
 
-    // env
-    implementation("io.github.cdimascio:spring-boot-starter-dotenv")
+    // Jasypt 의존성 추가
+    implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
+
+    // s3
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.470")
 
     // testContainer
     testFixturesImplementation("org.testcontainers:testcontainers:$testContainerVersion")

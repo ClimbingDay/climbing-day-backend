@@ -173,3 +173,6 @@ gradle-app.setting
 
 # DataBase
 *.d
+
+# 환경 변수
+.env

@@ -28,5 +28,7 @@ public class CenterDto {
 
 	private String notice;
 
+	private String profileImage;
+
 	private String memberNickName;
 }
