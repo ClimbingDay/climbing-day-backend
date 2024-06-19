@@ -15,7 +15,7 @@ public class JasyptConfig {
 	@Bean
 	public StringEncryptor stringEncryptor() {
 		// 최상단 디렉토리 .env 파일
-		Map<String, String> env = DotenvUtil.loadEnv("../../../../../../../../../.env"); // 실제 경로에 맞게 조정 필요
+		Map<String, String> env = DotenvUtil.loadEnv();
 		String password = env.get("JASYPT_ENCRYPTOR_PASSWORD");
 		String algorithm = env.get("JASYPT_ALGORITHM");
 
