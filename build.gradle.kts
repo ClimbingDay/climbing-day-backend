@@ -43,6 +43,9 @@ subprojects {
 		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 		implementation("org.springframework.boot:spring-boot-starter-web")
 
+		// Jasypt 의존성 추가
+		implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
+
 		// asciidoctorj
 		implementation("org.asciidoctor:asciidoctorj:2.4.3")
 
