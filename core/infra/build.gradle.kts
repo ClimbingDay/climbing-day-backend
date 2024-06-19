@@ -15,6 +15,8 @@ val openapiVersion = "2.5.0"
 
 
 dependencies {
+    implementation(project(":common"))
+
     // mysql
     implementation("mysql:mysql-connector-java:$mysqlVersion")
 
@@ -35,6 +37,9 @@ dependencies {
 
     // swagger
     implementation("io.swagger.core.v3:swagger-core:2.1.6")
+
+    // env
+    implementation("io.github.cdimascio:spring-boot-starter-dotenv")
 
     // testContainer
     testFixturesImplementation("org.testcontainers:testcontainers:$testContainerVersion")
