@@ -26,8 +26,8 @@ spring:
     mail:
         host: smtp.gmail.com                    # SMTP 서버 호스트 주소
         port: 587                               # SMTP 서버 포트 번호 Gmail의 경우 587 포트는 TLS/STARTTLS를 사용
-        username: seongo0587@gmail.com
-        password: iklapcmkhimbxcsi
+        username: ENC(vp1g8dUbsqr9k3koJH1TN300CYIkVhEQEEUWKkKQZSs=)
+        password: ENC(d8dQMjqP9PmhS9gSB4RVkYUYPV3jN74gurq5GlnZIBk=)
         properties:
             mail:
                 smtp:
@@ -43,6 +43,12 @@ logging:
     level:
         org.hibernate:
             sql: debug
+
+aws:
+    s3:
+        accessKey: ENC(A5mZeZ7OjxR4w5heXOcRbkeZcnYgZKiego4DxH9tgno=)
+        secretKey: ENC(bbqI60EWN3iUWGg96vtgNpHpH95TvMCGDDG/GrAKHMUv93o05QR2bYO8USBS38xl6UfNwed5FDo=)
+
 
 ---
 spring:
@@ -73,8 +79,8 @@ spring:
     mail:
         host: smtp.gmail.com                    # SMTP 서버 호스트 주소
         port: 587                               # SMTP 서버 포트 번호 Gmail의 경우 587 포트는 TLS/STARTTLS를 사용
-        username: seongo0587@gmail.com
-        password: iklapcmkhimbxcsi
+        username: ENC(vp1g8dUbsqr9k3koJH1TN300CYIkVhEQEEUWKkKQZSs=)
+        password: ENC(d8dQMjqP9PmhS9gSB4RVkYUYPV3jN74gurq5GlnZIBk=)
         properties:
             mail:
                 smtp:
@@ -90,3 +96,8 @@ logging:
     level:
         org.hibernate:
             sql: debug
+
+aws:
+    s3:
+        accessKey: ENC(A5mZeZ7OjxR4w5heXOcRbkeZcnYgZKiego4DxH9tgno=)
+        secretKey: ENC(bbqI60EWN3iUWGg96vtgNpHpH95TvMCGDDG/GrAKHMUv93o05QR2bYO8USBS38xl6UfNwed5FDo=)
