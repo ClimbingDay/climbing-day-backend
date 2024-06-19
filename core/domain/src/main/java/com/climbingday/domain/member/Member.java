@@ -65,6 +65,7 @@ public class Member extends MutableBaseEntity {
 			.nickName(registerDto.getNickName())
 			.phoneNumber(String.join("-", registerDto.getPhoneNumber()))
 			.birthDate(Date.valueOf(registerDto.getBirthDate()))
+			.profileImage("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg")
 			.build();
 	}
 }
