@@ -15,6 +15,13 @@ buildscript {
 	}
 }
 
+// 최상위 레벨에서 저장소 설정
+allprojects {
+	repositories {
+		mavenCentral()
+	}
+}
+
 tasks.withType<JavaCompile> {
 	sourceCompatibility = JavaVersion.VERSION_21.toString()
 	targetCompatibility = JavaVersion.VERSION_21.toString()
@@ -32,10 +39,6 @@ if (Files.exists(dotenvPath)) {
 		.associate { it[0] to it[1] }
 
 	allprojects {
-		repositories {
-			mavenCentral()
-		}
-
 		dotenv.forEach { (key, value) ->
 			project.extra[key] = value
 		}
