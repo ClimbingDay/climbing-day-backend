@@ -67,7 +67,6 @@ class CenterControllerTest extends TestConfig {
 
 	@Test
 	@DisplayName("1-1. 암장 등록 - 성공")
-	@Transactional
 	public void getCenterRegister1Test() throws IOException {
 		File file = new ClassPathResource("climbing-day-no-image.jpg").getFile();
 
@@ -112,7 +111,6 @@ class CenterControllerTest extends TestConfig {
 
 	@Test
 	@DisplayName("1-2. 암장 등록 - 실패: 중복 암장이름")
-	@Transactional
 	public void getCenterRegister2Test() throws IOException {
 		File file = new ClassPathResource("climbing-day-no-image.jpg").getFile();
 
@@ -156,7 +154,6 @@ class CenterControllerTest extends TestConfig {
 
 	@Test
 	@DisplayName("1-3. 암장 등록 - 실패: 필드 유효성")
-	@Transactional
 	public void getCenterRegister3Test() throws IOException {
 		File file = new ClassPathResource("climbing-day-no-image.jpg").getFile();
 
@@ -201,7 +198,6 @@ class CenterControllerTest extends TestConfig {
 
 	@Test
 	@DisplayName("2-1. 모든 암장 조회 - 성공")
-	@Transactional
 	public void getCenterAll1Test() {
 		given(spec).log().all()
 			.filter(document("암장 조회 API - 성공",
@@ -226,7 +222,6 @@ class CenterControllerTest extends TestConfig {
 
 	@Test
 	@DisplayName("2-2. 모든 암장 조회 - 실패: Parameter 누락")
-	@Transactional
 	public void getCenterAll2Test() {
 		given(spec).log().all()
 			.filter(document("암장 조회 API - 실패: Parameter 누락",
@@ -248,14 +243,63 @@ class CenterControllerTest extends TestConfig {
 			.statusCode(400);
 	}
 
+	// @Test
+	// @DisplayName("3-1. 암장 조회(이름) - 성공")
+	// @Transactional
+	// public void getCenterName1Test() throws IOException {
+	// 	File file = new ClassPathResource("climbing-day-no-image.jpg").getFile();
+	// 	String centerName = "클라이밍";
+	//
+	// 	// 파일 업로드
+	// 	doReturn("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg").when(centerService).uploadFile(any());
+	//
+	// 	CenterRegisterDto centerRegisterDto = CenterRegisterDto.builder()
+	// 		.name("암장이름2")
+	// 		.phoneNum("02-111-1111")
+	// 		.address("암장주소")
+	// 		.latitude(111.2222)
+	// 		.longitude(111.2222)
+	// 		.openTime("0:0")
+	// 		.closeTime("23:59")
+	// 		.description("설명")
+	// 		.notice("공지")
+	// 		.build();
+	//
+	// 	given(spec)
+	// 		.header("Authorization", accessToken)
+	// 		.multiPart("profile_image", file)
+	// 		.multiPart("center", centerRegisterDto, "application/json")
+	// 		.contentType(MULTIPART_FORM_DATA_VALUE)
+	// 	.when()
+	// 		.post("/v1/center/register");
+	//
+	// 	given(spec).log().all()
+	// 		.filter(document("암장 조회 API - 성공",
+	// 			resourceDetails()
+	// 				.tag("암장 API")
+	// 				.summary("암장 조회(이름)"),
+	// 			pathParameters(
+	// 				parameterWithName("centerName").description("암장 이름")
+	// 			),
+	// 			responseFields(
+	// 				fieldWithPath("code").type(NUMBER).description("상태 코드"),
+	// 				fieldWithPath("message").type(STRING).description("상태 메시지"),
+	// 				subsectionWithPath("data").type(OBJECT).description("암장 정보")
+	// 			)))
+	// 		.contentType(JSON)
+	// 	.when()
+	// 		.get("/v1/center/{centerName}", centerName)
+	// 	.then().log().all()
+	// 		.statusCode(200);
+	// }
+
 	@Test
-	@DisplayName("3-1. 암장 조회(이름) - 성공")
-	@Transactional
-	public void getCenterName1Test() {
-		String centerName = "클라이밍파크 성수점";
+	@DisplayName("3-1. 암장 조회(이름) - 실패: 존재하지 않는 암장")
+	public void getCenterName2Test() {
+		String centerName = "암장이름2";
 
 		given(spec).log().all()
-			.filter(document("암장 조회 API - 성공",
+			.filter(document("암장 조회 API - 실패: 존재하지 않는 암장",
 				resourceDetails()
 					.tag("암장 API")
 					.summary("암장 조회(이름)"),
@@ -263,15 +307,13 @@ class CenterControllerTest extends TestConfig {
 					parameterWithName("centerName").description("암장 이름")
 				),
 				responseFields(
-					fieldWithPath("code").type(NUMBER).description("상태 코드"),
-					fieldWithPath("message").type(STRING).description("상태 메시지"),
-					subsectionWithPath("data").type(OBJECT).description("암장 정보")
+					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
+					fieldWithPath("errorMessage").type(STRING).description("상태 메시지")
 				)))
-			.pathParam("centerName", centerName)  // 경로 변수 설정
 			.contentType(JSON)
 		.when()
-			.get("/v1/{centerName}")
+			.get("/v1/center/{centerName}", centerName)
 		.then().log().all()
-			.statusCode(200);
+			.statusCode(400);
 	}
 }

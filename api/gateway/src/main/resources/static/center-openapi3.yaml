@@ -11,8 +11,8 @@ paths:
     get:
       tags:
       - 암장 API
-      summary: 암장 조회
-      description: 암장 조회
+      summary: 모든 암장 조회
+      description: 모든 암장 조회
       operationId: '암장 조회 API - '
       parameters:
       - name: page
@@ -36,11 +36,11 @@ paths:
                     openTime\":\"0:0\",\"closeTime\":\"23:59\",\"description\":\"\
                     ??\",\"notice\":\"??\",\"profileImage\":\"https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg\"\
                     ,\"memberNickName\":\"admin\"}],\"pageable\":{\"pageNumber\":0,\"\
-                    pageSize\":10,\"sort\":{\"empty\":true,\"sorted\":false,\"unsorted\"\
-                    :true},\"offset\":0,\"paged\":true,\"unpaged\":false},\"totalElements\"\
-                    :1,\"totalPages\":1,\"last\":true,\"number\":0,\"sort\":{\"empty\"\
-                    :true,\"sorted\":false,\"unsorted\":true},\"size\":10,\"numberOfElements\"\
-                    :1,\"first\":true,\"empty\":false}}"
+                    pageSize\":10,\"sort\":{\"empty\":true,\"unsorted\":true,\"sorted\"\
+                    :false},\"offset\":0,\"paged\":true,\"unpaged\":false},\"last\"\
+                    :true,\"totalPages\":1,\"totalElements\":1,\"number\":0,\"size\"\
+                    :10,\"sort\":{\"empty\":true,\"unsorted\":true,\"sorted\":false},\"\
+                    first\":true,\"numberOfElements\":1,\"empty\":false}}"
         "400":
           description: "400"
           content:
@@ -75,7 +75,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-center-register-946372771'
+                $ref: '#/components/schemas/v1-center-centerName-946372771'
               examples:
                 '암장 등록 API - 실패: 중복 암장이름':
                   value: "{\"errorCode\":409,\"errorMessage\":\"이미 암장이름입니다.\"}"
@@ -89,9 +89,33 @@ paths:
                 '암장 등록 API - 실패: 필드 유효성':
                   value: "{\"errorCode\":400,\"errorMessage\":\"입력값에 대한 검증에 실패했습니다\
                     .\",\"validation\":{\"address\":\"주소는 필수 항목입니다.\",\"name\":\"암\
-                    장이름은 필수 항목입니다.\",\"phoneNum\":\"전화번호를 올바르게 입력해주세요\"}}"
+                    장이름은 필수 항목입니다.\",\"phoneNum\":\"전화번호는 필수 항목입니다.\"}}"
       security:
       - bearerAuthJWT: []
+  /v1/center/{centerName}:
+    get:
+      tags:
+      - 암장 API
+      summary: 암장 조회(이름)
+      description: 암장 조회(이름)
+      operationId: "암장 조회 API - 실패: 존재하지 않는 암장"
+      parameters:
+      - name: centerName
+        in: path
+        description: 암장 이름
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: "400"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-center-centerName-946372771'
+              examples:
+                '암장 조회 API - 실패: 존재하지 않는 암장':
+                  value: "{\"errorCode\":400,\"errorMessage\":\"존재하지 않는 암장입니다.\"}"
 components:
   schemas:
     v1-center-register-2054154011:
@@ -121,7 +145,7 @@ components:
         message:
           type: string
           description: 상태 메시지
-    v1-center-register-946372771:
+    v1-center-centerName-946372771:
       type: object
       properties:
         errorMessage:
