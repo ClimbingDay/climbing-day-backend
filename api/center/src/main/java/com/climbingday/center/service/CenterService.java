@@ -7,6 +7,7 @@ import static com.climbingday.enums.MemberErrorCode.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -78,10 +79,13 @@ public class CenterService {
 	 * 암장 조회(이름)
 	 */
 	@Transactional(readOnly = true)
-	public CenterDto getCenter(String centerName) {
-		return centerRepository.findByName(centerName).orElseThrow(() ->
-			new CenterException(EXISTS_NOT_CENTER)
-		);
+	public List<CenterDto> getCenter(String centerName) {
+		List<CenterDto> centers = centerRepository.findByName(centerName);
+		if(!centers.isEmpty()) {
+			return centers;
+		}else {
+			throw new CenterException(EXISTS_NOT_CENTER);
+		}
 	}
 
 	private void duplicateCenter(String centerName) {

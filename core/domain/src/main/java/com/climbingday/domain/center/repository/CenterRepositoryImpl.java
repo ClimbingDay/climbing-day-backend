@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.climbingday.dto.center.CenterDto;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -36,12 +37,12 @@ public class CenterRepositoryImpl implements CenterCustom {
 		return new PageImpl<>(centerList, pageable, total);
 	}
 
-	public Optional<CenterDto> findByName(String centerName) {
-		return Optional.ofNullable(
+	public List<CenterDto> findByName(String centerName) {
+		String likePattern = "%" + centerName + "%";
+		return
 			selectCenterQuery()
-			.where(center.name.eq(centerName))
-			.fetchOne()
-		);
+			.where(centerNameLike(likePattern))
+			.fetch();
 	}
 
 	private JPQLQuery<CenterDto> selectCenterQuery() {
@@ -59,5 +60,9 @@ public class CenterRepositoryImpl implements CenterCustom {
 			center.profileImage,
 			center.member.nickName.as("memberNickName")
 		)).from(center);
+	}
+
+	private BooleanExpression centerNameLike(String likePattern) {
+		return center.name.like(likePattern);
 	}
 }
