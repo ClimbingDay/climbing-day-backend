@@ -48,6 +48,8 @@ public class Member extends MutableBaseEntity {
 
 	private String profileImage;				// 프로필 이미지
 
+	private String introduce;					// 소개
+
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
 	private EStatus status = EStatus.ACTIVE;	// 상태
