@@ -72,6 +72,7 @@ class MemberControllerTest extends TestConfig {
 			.passwordConfirm("a12345!@#")
 			.phoneNumber("010-1234-5678")
 			.birthDate("2000-11-11")
+			.introduce("회원 소개")
 			.build();
 
 		given(spec).log().all()
@@ -85,7 +86,8 @@ class MemberControllerTest extends TestConfig {
 					fieldWithPath("password").type(STRING).description("패스워드"),
 					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
 					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호"),
-					fieldWithPath("birthDate").type(STRING).description("생년월일")
+					fieldWithPath("birthDate").type(STRING).description("생년월일"),
+					fieldWithPath("introduce").type(STRING).description("소개")
 				),
 				responseFields(
 					fieldWithPath("code").type(NUMBER).description("상태 코드"),
@@ -110,6 +112,7 @@ class MemberControllerTest extends TestConfig {
 			.passwordConfirm("a12345!@#")
 			.phoneNumber("010-1234-5678")
 			.birthDate("2000-11-11")
+			.introduce("")
 			.build();
 
 		given(spec).log().all()
@@ -123,7 +126,8 @@ class MemberControllerTest extends TestConfig {
 					fieldWithPath("password").type(STRING).description("패스워드"),
 					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
 					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호"),
-					fieldWithPath("birthDate").type(STRING).description("생년월일")
+					fieldWithPath("birthDate").type(STRING).description("생년월일"),
+					fieldWithPath("introduce").type(STRING).description("소개")
 				),
 				responseFields(
 					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),
@@ -147,6 +151,7 @@ class MemberControllerTest extends TestConfig {
 			.passwordConfirm("12345")
 			.phoneNumber("0101234-5678")
 			.birthDate("200011-11")
+			.introduce("qasdfjklhasdklfjasdlkfjasldkfjklasdfjsdafasdfasdf")
 			.build();
 
 		given(spec).log().all()
@@ -160,7 +165,8 @@ class MemberControllerTest extends TestConfig {
 					fieldWithPath("password").type(STRING).description("패스워드"),
 					fieldWithPath("passwordConfirm").type(STRING).description("패스워드 확인"),
 					fieldWithPath("phoneNumber").type(STRING).description("핸드폰 번호"),
-					fieldWithPath("birthDate").type(STRING).description("생년월일")
+					fieldWithPath("birthDate").type(STRING).description("생년월일"),
+					fieldWithPath("introduce").type(STRING).description("소개")
 				),
 				responseFields(
 					fieldWithPath("errorCode").type(NUMBER).description("상태 코드"),

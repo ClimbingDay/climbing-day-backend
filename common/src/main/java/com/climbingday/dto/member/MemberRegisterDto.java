@@ -32,4 +32,7 @@ public class MemberRegisterDto {
 	@Pattern(regexp = "^(?:(?:19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$", message = "생년월일을 올바르게 입력해주세요.")
 	@NotBlank(message = "생년월일은 필수 항목입니다")
 	private String birthDate;
+
+	@Size(max = 25, message = "회원 소개글은 25자 이하로 입력해주세요.")
+	private String introduce;
 }

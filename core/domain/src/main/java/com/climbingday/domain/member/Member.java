@@ -61,6 +61,10 @@ public class Member extends MutableBaseEntity {
 
 
 	public static Member fromMemberRegisterDto(MemberRegisterDto registerDto) {
+		String introduce = "";
+
+		if(registerDto.getIntroduce() != null && !registerDto.getIntroduce().isEmpty())
+			introduce = registerDto.getIntroduce();
 
 		return Member.builder()
 			.email(registerDto.getEmail())
@@ -68,6 +72,7 @@ public class Member extends MutableBaseEntity {
 			.phoneNumber(String.join("-", registerDto.getPhoneNumber()))
 			.birthDate(Date.valueOf(registerDto.getBirthDate()))
 			.profileImage("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg")
+			.introduce(introduce)
 			.build();
 	}
 }
