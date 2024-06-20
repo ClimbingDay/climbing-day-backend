@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,15 +45,26 @@ public class CenterController {
 	}
 
 	/**
-	 * 암장 조회
+	 * 모든 암장 조회
 	 */
 	@GetMapping
-	public ResponseEntity<CDResponse<?>> getCenter(
+	public ResponseEntity<CDResponse<?>> getCenters(
 		@RequestParam("page") int page
 	) {
 		int defaultSize = 10; // 기본 페이지 크기
 		Pageable defaultPageable = PageRequest.of(page, defaultSize);
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(centerService.getCenterPage(defaultPageable)));
+	}
+
+	/**
+	 * 암장 조회
+	 */
+	@GetMapping("/{centerName}")
+	public ResponseEntity<CDResponse<?>> getCenter(
+		@PathVariable String centerName
+	) {
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(centerService.getCenter(centerName)));
 	}
 }

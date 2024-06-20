@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 public enum MemberErrorCode implements BaseErrorCode {
-	EXISTS_NOT_MEMBER(400, "존재 하지 않는 회원입니다.", HttpStatus.BAD_REQUEST),
+	EXISTS_NOT_MEMBER(400, "존재하지 않는 회원입니다.", HttpStatus.BAD_REQUEST),
 	DUPLICATED_MEMBER_EMAIL(409, "이미 등록된 회원 이메일입니다.", HttpStatus.CONFLICT),
 	DUPLICATED_MEMBER_PHONE_NUMBER(409, "이미 등록된 휴대폰 번호입니다.", HttpStatus.CONFLICT),
 	DUPLICATED_MEMBER_NICK_NAME(409, "이미 등록된 닉네임입니다.", HttpStatus.CONFLICT),

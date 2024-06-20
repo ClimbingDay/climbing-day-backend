@@ -176,3 +176,5 @@ gradle-app.setting
 
 # 환경 변수
 .env
+runServer
+docker-compose.yml

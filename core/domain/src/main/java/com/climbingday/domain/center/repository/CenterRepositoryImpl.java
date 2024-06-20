@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.climbingday.dto.center.CenterDto;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -22,22 +23,7 @@ public class CenterRepositoryImpl implements CenterCustom {
 	private final JPAQueryFactory queryFactory;
 
 	public Page<CenterDto> findAllCenter(Pageable pageable) {
-		List<CenterDto> centerList = queryFactory
-			.select(Projections.constructor(CenterDto.class,
-				center.id,
-				center.name,
-				center.phoneNum,
-				center.address,
-				center.latitude,
-				center.longitude,
-				center.openTime,
-				center.closeTime,
-				center.description,
-				center.notice,
-				center.profileImage,
-				center.member.nickName.as("memberNickName")
-				))
-			.from(center)
+		List<CenterDto> centerList = selectCenterQuery()
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
@@ -48,5 +34,30 @@ public class CenterRepositoryImpl implements CenterCustom {
 			.fetchOne()).orElse(0L);
 
 		return new PageImpl<>(centerList, pageable, total);
+	}
+
+	public Optional<CenterDto> findByName(String centerName) {
+		return Optional.ofNullable(
+			selectCenterQuery()
+			.where(center.name.eq(centerName))
+			.fetchOne()
+		);
+	}
+
+	private JPQLQuery<CenterDto> selectCenterQuery() {
+		return queryFactory.select(Projections.constructor(CenterDto.class,
+			center.id,
+			center.name,
+			center.phoneNum,
+			center.address,
+			center.latitude,
+			center.longitude,
+			center.openTime,
+			center.closeTime,
+			center.description,
+			center.notice,
+			center.profileImage,
+			center.member.nickName.as("memberNickName")
+		)).from(center);
 	}
 }

@@ -67,11 +67,21 @@ public class CenterService {
 	}
 
 	/**
-	 * 암장 조회
+	 * 모든 암장 조회
 	 */
 	@Transactional(readOnly = true)
 	public Page<CenterDto> getCenterPage(Pageable pageable) {
 		return centerRepository.findAllCenter(pageable);
+	}
+
+	/**
+	 * 암장 조회(이름)
+	 */
+	@Transactional(readOnly = true)
+	public CenterDto getCenter(String centerName) {
+		return centerRepository.findByName(centerName).orElseThrow(() ->
+			new CenterException(EXISTS_NOT_CENTER)
+		);
 	}
 
 	private void duplicateCenter(String centerName) {

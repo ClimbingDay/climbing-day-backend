@@ -200,14 +200,14 @@ class CenterControllerTest extends TestConfig {
 	}
 
 	@Test
-	@DisplayName("2-1. 암장 조회 - 성공")
+	@DisplayName("2-1. 모든 암장 조회 - 성공")
 	@Transactional
 	public void getCenterAll1Test() {
 		given(spec).log().all()
 			.filter(document("암장 조회 API - 성공",
 				resourceDetails()
 					.tag("암장 API")
-					.summary("암장 조회"),
+					.summary("모든 암장 조회"),
 				queryParameters(
 					parameterWithName("page").description("조회할 페이지 번호").optional()
 				),
@@ -225,14 +225,14 @@ class CenterControllerTest extends TestConfig {
 	}
 
 	@Test
-	@DisplayName("2-2. 암장 조회 - 실패: Parameter 누락")
+	@DisplayName("2-2. 모든 암장 조회 - 실패: Parameter 누락")
 	@Transactional
 	public void getCenterAll2Test() {
 		given(spec).log().all()
 			.filter(document("암장 조회 API - 실패: Parameter 누락",
 				resourceDetails()
 					.tag("암장 API")
-					.summary("암장 조회"),
+					.summary("모든 암장 조회"),
 				queryParameters(
 					parameterWithName("page").description("조회할 페이지 번호").optional()
 				),
@@ -246,5 +246,32 @@ class CenterControllerTest extends TestConfig {
 			.get("/v1/center")
 		.then().log().all()
 			.statusCode(400);
+	}
+
+	@Test
+	@DisplayName("3-1. 암장 조회(이름) - 성공")
+	@Transactional
+	public void getCenterName1Test() {
+		String centerName = "클라이밍파크 성수점";
+
+		given(spec).log().all()
+			.filter(document("암장 조회 API - 성공",
+				resourceDetails()
+					.tag("암장 API")
+					.summary("암장 조회(이름)"),
+				pathParameters(
+					parameterWithName("centerName").description("암장 이름")
+				),
+				responseFields(
+					fieldWithPath("code").type(NUMBER).description("상태 코드"),
+					fieldWithPath("message").type(STRING).description("상태 메시지"),
+					subsectionWithPath("data").type(OBJECT).description("암장 정보")
+				)))
+			.pathParam("centerName", centerName)  // 경로 변수 설정
+			.contentType(JSON)
+		.when()
+			.get("/v1/{centerName}")
+		.then().log().all()
+			.statusCode(200);
 	}
 }

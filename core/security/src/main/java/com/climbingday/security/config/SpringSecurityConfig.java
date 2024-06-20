@@ -141,7 +141,8 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/member/phone-num/check"),				// 휴대폰 번호 중복확인
 			antMatcher(GET, "/member/nick-name/check"),				// 닉네임 중복확인
 
-			antMatcher(GET, "/center"),								// 암장 조회
+			antMatcher(GET, "/center"),								// 모든 암장 조회
+			antMatcher(GET, "/center/**"),							// 암장 조회(이름)
 
 			antMatcher(POST, "/member/email/auth/request"),			// 이메일 인증 코드 요청
 			antMatcher(POST, "/member/email/auth/confirm"),			// 이메일 인증 코드 확인
