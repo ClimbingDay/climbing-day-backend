@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
 plugins {
 	java
 	war
@@ -21,9 +24,27 @@ val asciidoctorExt = configurations.create("asciidoctorExt") {
 	extendsFrom(configurations["testImplementation"])
 }
 
-allprojects {
-	repositories {
-		mavenCentral()
+val dotenvPath = Paths.get(rootProject.rootDir.absolutePath, ".env")
+if (Files.exists(dotenvPath)) {
+	val dotenv = Files.readAllLines(dotenvPath)
+		.filter { it.contains("=") }
+		.map { it.split("=") }
+		.associate { it[0] to it[1] }
+
+	allprojects {
+		repositories {
+			mavenCentral()
+		}
+
+		dotenv.forEach { (key, value) ->
+			project.extra[key] = value
+		}
+
+		tasks.withType<Test> {
+			dotenv.forEach { (key, value) ->
+				environment(key, value)
+			}
+		}
 	}
 }
 
