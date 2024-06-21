@@ -1,6 +1,7 @@
-package com.climbingday.domain.member;
+package com.climbingday.domain.crew;
 
 import com.climbingday.domain.MutableBaseEntity;
+import com.climbingday.domain.member.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
