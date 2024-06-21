@@ -29,6 +29,7 @@ import com.climbingday.dto.member.EmailAuthDto;
 import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberDto;
 import com.climbingday.dto.member.MemberLoginDto;
+import com.climbingday.dto.member.MemberMyPageDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.dto.member.MemberTokenDto;
 import com.climbingday.member.exception.MemberException;
@@ -202,6 +203,14 @@ public class MemberService {
 		if(memberRepository.existsByNickName(nickName)) {
 			throw new MemberException(DUPLICATED_MEMBER_NICK_NAME);
 		}
+	}
+
+	/**
+	 * 마이 페이지 조회
+	 */
+	public MemberMyPageDto getMyPage(UserDetailsImpl userDetails) {
+		return memberRepository.getMyPage(userDetails.getId())
+			.orElseThrow(() -> new MemberException(EXISTS_NOT_MEMBER));
 	}
 
 	/**

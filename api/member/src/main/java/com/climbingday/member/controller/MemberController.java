@@ -124,4 +124,15 @@ public class MemberController {
 		return ResponseEntity.status(AVAILABLE_NICK_NAME.getStatus())
 			.body(new CDResponse<>(AVAILABLE_NICK_NAME));
 	}
+
+	/**
+	 * 마이 페이지 조회
+	 */
+	@GetMapping("/my-page")
+	public ResponseEntity<CDResponse<?>> myPage(
+		@AuthenticationPrincipal UserDetailsImpl userDetails
+	) {
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(memberService.getMyPage(userDetails)));
+	}
 }

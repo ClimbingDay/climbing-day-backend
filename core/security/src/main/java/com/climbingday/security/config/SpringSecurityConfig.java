@@ -164,7 +164,10 @@ public class SpringSecurityConfig {
 	private RequestMatcher[] userAuthRequestMatchers() {
 		List<RequestMatcher> requestMatchers = List.of(
 			antMatcher(GET, "/admin/member"),						// 모든 회원 조회
-			antMatcher(GET, "/member/token/refresh")				// AccessToken, RefreshToken 재발급
+
+			antMatcher(GET, "/member/token/refresh"),				// AccessToken, RefreshToken 재발급
+			antMatcher(GET, "/member/my-page")					// 마이 페이지 조회
+
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);
