@@ -21,6 +21,8 @@ public class GatewayApplication {
 	) {
 		return builder.routes()
 			.route("api-member", r -> r.path("/v1/member/**")
+				.or()
+				.path("/v1/crew/**")
 				.uri(memberServiceUrl))
 			.route("api-center", r -> r.path("/v1/center/**")
 				.uri(centerServiceUrl))
