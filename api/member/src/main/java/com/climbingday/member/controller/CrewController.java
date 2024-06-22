@@ -5,6 +5,7 @@ import static com.climbingday.enums.GlobalSuccessCode.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.climbingday.member.service.CrewService;
 import com.climbingday.response.CDResponse;
+import com.climbingday.security.service.UserDetailsImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,5 +35,16 @@ public class CrewController {
 		Pageable defaultPageable = PageRequest.of(page, defaultSize);
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(crewService.getCrewProfilePage(defaultPageable)));
+	}
+
+	/**
+	 * 나의 크루 프로필 조회(크루 번호, 이름, 프로필)
+	 */
+	@GetMapping("/profile/my")
+	public ResponseEntity<CDResponse<?>> getMyCrewProfile(
+		@AuthenticationPrincipal UserDetailsImpl userDetails
+	) {
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(crewService.getMyCrewProfile(userDetails)));
 	}
 }

@@ -170,8 +170,8 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/member/token/refresh"),				// AccessToken, RefreshToken 재발급
 			antMatcher(GET, "/member/my-page"),					// 마이 페이지 조회
 
-			antMatcher(GET, "/crew/profile")						// 모든 크루 프로필 조회(크루 번호, 이름, 프로필 이미지)
-
+			antMatcher(GET, "/crew/profile"),						// 모든 크루 프로필 조회(크루 번호, 이름, 프로필 이미지)
+			antMatcher(GET, "/crew/profile/my")					// 나의 크루 프로필 조회
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);
