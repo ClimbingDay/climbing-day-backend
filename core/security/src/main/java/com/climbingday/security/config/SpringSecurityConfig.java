@@ -125,7 +125,9 @@ public class SpringSecurityConfig {
 			)
 			.authorizeHttpRequests(auth -> auth
 				.anyRequest().denyAll()
-			);
+			)
+			.exceptionHandling(exception -> exception
+				.accessDeniedHandler(customAccessDeniedHandler));
 
 		return http.build();
 	}
@@ -159,14 +161,16 @@ public class SpringSecurityConfig {
 	}
 
 	/**
-	 * user auth endpoint
+	 * user, admin auth endpoint
 	 */
 	private RequestMatcher[] userAuthRequestMatchers() {
 		List<RequestMatcher> requestMatchers = List.of(
 			antMatcher(GET, "/admin/member"),						// 모든 회원 조회
 
 			antMatcher(GET, "/member/token/refresh"),				// AccessToken, RefreshToken 재발급
-			antMatcher(GET, "/member/my-page")					// 마이 페이지 조회
+			antMatcher(GET, "/member/my-page"),					// 마이 페이지 조회
+
+			antMatcher(GET, "/crew/profile")						// 모든 크루 프로필 조회(크루 번호, 이름, 프로필 이미지)
 
 		);
 
