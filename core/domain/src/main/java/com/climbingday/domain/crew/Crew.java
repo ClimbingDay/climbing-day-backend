@@ -30,5 +30,5 @@ public class Crew extends MutableBaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
-	private Member member;				// 크루 대표
+	private Member adminMember;			// 크루 대표
 }
