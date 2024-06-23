@@ -2,6 +2,8 @@ package com.climbingday.member.controller;
 
 import static com.climbingday.enums.GlobalSuccessCode.*;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,6 @@ public class GeneralController {
 		@AuthenticationPrincipal UserDetailsImpl userDetails
 	) {
 		return ResponseEntity.status(CREATE.getStatus())
-			.body(new CDResponse<>(generalService.registerPost(generalPostRegDto, userDetails)));
+			.body(new CDResponse<>(CREATE, Map.of("id", generalService.registerPost(generalPostRegDto, userDetails))));
 	}
 }
