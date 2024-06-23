@@ -52,7 +52,7 @@ public class CenterService {
 		// 암장 중복 확인
 		duplicateCenter(centerRegisterDto.getName());
 
-		// 회원 확인
+		// 회원 정보 가져오기
 		Member member = memberRepository.findById(userDetails.getId())
 			.orElseThrow(() -> new CenterException(EXISTS_NOT_MEMBER));
 

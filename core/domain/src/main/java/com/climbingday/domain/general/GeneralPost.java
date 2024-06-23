@@ -2,6 +2,7 @@ package com.climbingday.domain.general;
 
 import com.climbingday.domain.MutableBaseEntity;
 import com.climbingday.domain.member.Member;
+import com.climbingday.dto.general.GeneralPostRegDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,4 +35,12 @@ public class GeneralPost extends MutableBaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
+
+	public static GeneralPost fromGeneralPostRegisterDto(GeneralPostRegDto generalPostRegDto, Member member) {
+		return GeneralPost.builder()
+			.title(generalPostRegDto.getTitle())
+			.content(generalPostRegDto.getContent())
+			.member(member)
+			.build();
+	}
 }
