@@ -44,6 +44,8 @@ public class GeneralPostRepositoryImpl implements GeneralPostCustom {
 			.leftJoin(generalComment).on(generalComment.generalPost.id.eq(generalPost.id))
 			.leftJoin(member).on(generalPost.member.id.eq(member.id))
 			.groupBy(generalPost.id, member.nickName)
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
 			.fetch();
 
 		long total = Optional.ofNullable(queryFactory
