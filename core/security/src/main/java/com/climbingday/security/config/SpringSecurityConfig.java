@@ -152,6 +152,8 @@ public class SpringSecurityConfig {
 
 			antMatcher(GET, "/crew/profile"),							// 모든 크루 프로필 조회(크루 번호, 이름, 프로필 이미지)
 
+			antMatcher(GET, "/general/post"),							// 모든 일반 게시글 조회
+
 			// 스웨거
 			antMatcher(GET, "/swagger-ui.html"),
 			antMatcher(GET, "/swagger-ui/**"),

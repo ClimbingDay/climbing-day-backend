@@ -2,6 +2,8 @@ package com.climbingday.member.service;
 
 import static com.climbingday.enums.MemberErrorCode.*;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +11,7 @@ import com.climbingday.domain.general.GeneralPost;
 import com.climbingday.domain.general.repository.GeneralPostRepository;
 import com.climbingday.domain.member.Member;
 import com.climbingday.domain.member.repository.MemberRepository;
+import com.climbingday.dto.general.GeneralPostDto;
 import com.climbingday.dto.general.GeneralPostRegDto;
 import com.climbingday.member.exception.MemberException;
 import com.climbingday.security.service.UserDetailsImpl;
@@ -34,5 +37,10 @@ public class GeneralService {
 		GeneralPost generalPost = GeneralPost.fromGeneralPostRegisterDto(generalPostRegDto, member);
 
 		return generalPostRepository.save(generalPost).getId();
+	}
+
+	@Transactional(readOnly = true)
+	public Page<GeneralPostDto> getGeneralPosts(Pageable pageable) {
+		return generalPostRepository.getAllPost(pageable);
 	}
 }

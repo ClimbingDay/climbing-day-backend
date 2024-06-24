@@ -16,6 +16,7 @@ val openapiVersion = "2.5.0"
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":core:security"))
 
     // mysql
     implementation("mysql:mysql-connector-java:$mysqlVersion")
