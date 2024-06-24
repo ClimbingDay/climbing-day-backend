@@ -150,6 +150,8 @@ public class SpringSecurityConfig {
 			antMatcher(POST, "/member/email/auth/confirm"),			// 이메일 인증 코드 확인
 			antMatcher(POST, "/mail/verification/send"),				// 이메일 메일 보내기
 
+			antMatcher(GET, "/crew/profile"),							// 모든 크루 프로필 조회(크루 번호, 이름, 프로필 이미지)
+
 			// 스웨거
 			antMatcher(GET, "/swagger-ui.html"),
 			antMatcher(GET, "/swagger-ui/**"),
@@ -170,10 +172,9 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/member/token/refresh"),				// AccessToken, RefreshToken 재발급
 			antMatcher(GET, "/member/my-page"),					// 마이 페이지 조회
 
-			antMatcher(GET, "/crew/profile"),						// 모든 크루 프로필 조회(크루 번호, 이름, 프로필 이미지)
 			antMatcher(GET, "/crew/profile/my"),					// 나의 크루 프로필 조회
 
-			antMatcher(POST, "/general/post")						// 일반 게시글 등록
+			antMatcher(POST, "/general/post/register")			// 일반 게시글 등록
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);

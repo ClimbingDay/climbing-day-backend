@@ -29,10 +29,10 @@ public class CrewController {
 	 */
 	@GetMapping("/profile")
 	public ResponseEntity<CDResponse<?>> getCrewProfile(
-		@RequestParam("page") int page
+		@RequestParam("page") int page,
+		@RequestParam(name = "size", defaultValue = "10") int size
 	) {
-		int defaultSize = 10;
-		Pageable defaultPageable = PageRequest.of(page, defaultSize);
+		Pageable defaultPageable = PageRequest.of(page, size);
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(crewService.getCrewProfilePage(defaultPageable)));
 	}
