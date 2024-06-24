@@ -66,6 +66,7 @@ public class JwtProvider {
 
 		return Jwts.builder()
 			.claim("id", userDetails.getId())
+			.claim("nickName", userDetails.getNickName())
 			.setSubject(userDetails.getUsername())
 			.setIssuedAt(Date.from(now))
 			.setExpiration(expiration)
@@ -94,6 +95,7 @@ public class JwtProvider {
 
 		return Jwts.builder()
 			.claim("id", userDetails.getId())
+			.claim("nickName", userDetails.getNickName())
 			.setSubject(userDetails.getUsername())
 			.setIssuedAt(Date.from(now))
 			.setExpiration(expiration)
@@ -121,6 +123,7 @@ public class JwtProvider {
 			.id(claims.get("id", Long.class))
 			.email(claims.getSubject())
 			.password(null)
+			.nickName(claims.get("nickName", String.class))
 			.authorities(authorities)
 			.build();
 
