@@ -26,8 +26,8 @@ spring:
     mail:
         host: smtp.gmail.com                    # SMTP 서버 호스트 주소
         port: 587                               # SMTP 서버 포트 번호 Gmail의 경우 587 포트는 TLS/STARTTLS를 사용
-        username: seongo0587@gmail.com
-        password: nnelcxidmnuyhekr
+        username: ${SMTP_USERNAME}
+        password: ${SMTP_PASSWORD}
         properties:
             mail:
                 smtp:
@@ -43,6 +43,10 @@ logging:
     level:
         org.hibernate:
             sql: debug
+jasypt:
+    encryptor:
+        password: ${JASYPT_ENCRYPTOR_PASSWORD}
+        algorithm: ${JASYPT_ALGORITHM}
 
 ---
 spring:
@@ -73,8 +77,8 @@ spring:
     mail:
         host: smtp.gmail.com                    # SMTP 서버 호스트 주소
         port: 587                               # SMTP 서버 포트 번호 Gmail의 경우 587 포트는 TLS/STARTTLS를 사용
-        username: seongo0587@gmail.com
-        password: nnelcxidmnuyhekr
+        username: ${SMTP_USERNAME}
+        password: ${SMTP_PASSWORD}
         properties:
             mail:
                 smtp:
@@ -86,7 +90,13 @@ spring:
                     timeout: 5000               # 서버 응답 타임아웃 시간 (밀리초)
                     writetimeout: 5000          # 서버에 데이터 전송 타임아웃 시간 (밀리초)
 
+
 logging:
     level:
         org.hibernate:
             sql: debug
+
+jasypt:
+    encryptor:
+        password: ${JASYPT_ENCRYPTOR_PASSWORD}
+        algorithm: ${JASYPT_ALGORITHM}
