@@ -1,4 +1,4 @@
-package com.climbingday.mail.exception;
+package com.climbingday.event.exception;
 
 import static com.climbingday.enums.GlobalErrorCode.*;
 

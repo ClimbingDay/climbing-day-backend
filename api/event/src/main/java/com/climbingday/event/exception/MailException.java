@@ -1,4 +1,4 @@
-package com.climbingday.mail.exception;
+package com.climbingday.event.exception;
 
 import com.climbingday.enums.MailErrorCode;
 

@@ -3,6 +3,7 @@ package com.climbingday.response;
 import static com.climbingday.enums.GlobalSuccessCode.*;
 
 import com.climbingday.enums.GlobalSuccessCode;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;
 
@@ -10,6 +11,7 @@ import lombok.Getter;
 public class CDResponse<T> {
 	private int code;
 	private String message;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private T data;
 
 	public CDResponse(GlobalSuccessCode statusCode) {

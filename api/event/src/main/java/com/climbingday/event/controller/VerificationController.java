@@ -1,4 +1,4 @@
-package com.climbingday.mail.controller;
+package com.climbingday.event.controller;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.climbingday.dto.mail.EmailVerificationDto;
-import com.climbingday.mail.service.MailService;
+import com.climbingday.event.service.MailService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

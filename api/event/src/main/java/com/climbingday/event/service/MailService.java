@@ -1,4 +1,4 @@
-package com.climbingday.mail.service;
+package com.climbingday.event.service;
 
 import static com.climbingday.enums.MailErrorCode.*;
 
@@ -7,7 +7,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.climbingday.dto.mail.EmailVerificationDto;
-import com.climbingday.mail.exception.MailException;
+import com.climbingday.event.exception.MailException;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

@@ -59,15 +59,15 @@ jobs:
                     push: true
                     tags: ${{ secrets.DOCKER_USERNAME }}/climbing-day-gateway:latest
 
-            # api/mail
-            -   name: Mail API > Build and Push Docker images
+            # api/event
+            -   name: Event API > Build and Push Docker images
                 uses: docker/build-push-action@v5
                 with:
-                    context: api/mail
-                    file: api/mail/Dockerfile
+                    context: api/event
+                    file: api/event/Dockerfile
                     platforms: linux/amd64,linux/arm64
                     push: true
-                    tags: ${{ secrets.DOCKER_USERNAME }}/climbing-day-mail:latest
+                    tags: ${{ secrets.DOCKER_USERNAME }}/climbing-day-event:latest
 
             # api/member
             -   name: Member API > Build and Push Docker images

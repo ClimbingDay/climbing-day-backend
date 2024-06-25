@@ -17,7 +17,7 @@ public class GatewayApplication {
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder,
 		@Value("${member-service-url}") String memberServiceUrl,
 		@Value("${center-service-url}") String centerServiceUrl,
-		@Value("${mail-service-url}") String mailServiceUrl
+		@Value("${event-service-url}") String eventServiceUrl
 	) {
 		return builder.routes()
 			.route("api-member", r -> r.path("/v1/member/**")
@@ -28,8 +28,8 @@ public class GatewayApplication {
 				.uri(memberServiceUrl))
 			.route("api-center", r -> r.path("/v1/center/**")
 				.uri(centerServiceUrl))
-			.route("api-mail", r -> r.path("/v1/mail/**")
-				.uri(mailServiceUrl))
+			.route("api-event", r -> r.path("/v1/mail/**")
+				.uri(eventServiceUrl))
 			.build();
 	}
 }
