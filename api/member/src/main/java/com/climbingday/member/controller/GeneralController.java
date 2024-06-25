@@ -42,7 +42,7 @@ public class GeneralController {
 	}
 
 	/**
-	 * 일반 모든 게시글 조회
+	 * 모든 일반 게시글 조회
 	 */
 	@GetMapping("/post")
 	public ResponseEntity<CDResponse<?>> getGeneralPosts(

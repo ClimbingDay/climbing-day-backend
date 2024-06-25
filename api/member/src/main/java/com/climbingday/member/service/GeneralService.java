@@ -27,6 +27,9 @@ public class GeneralService {
 	private final MemberRepository memberRepository;
 	private final GeneralPostRepository generalPostRepository;
 
+	/**
+	 * 일반 게시글 등록
+	 */
 	@Transactional
 	public Long registerPost(GeneralPostRegDto generalPostRegDto, UserDetailsImpl userDetails) {
 
@@ -39,6 +42,9 @@ public class GeneralService {
 		return generalPostRepository.save(generalPost).getId();
 	}
 
+	/**
+	 * 모든 일반 게시글 조회
+	 */
 	@Transactional(readOnly = true)
 	public Page<GeneralPostDto> getGeneralPosts(Pageable pageable) {
 		return generalPostRepository.getAllPost(pageable);

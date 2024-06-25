@@ -151,6 +151,7 @@ public class SpringSecurityConfig {
 			antMatcher(POST, "/mail/verification/send"),				// 이메일 메일 보내기
 
 			antMatcher(GET, "/crew/profile"),							// 모든 크루 프로필 조회(크루 번호, 이름, 프로필 이미지)
+			antMatcher(GET, "/crew/post"),							// 모든 크루 게시글 조회
 
 			antMatcher(GET, "/general/post"),							// 모든 일반 게시글 조회
 
@@ -175,8 +176,10 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/member/my-page"),					// 마이 페이지 조회
 
 			antMatcher(GET, "/crew/profile/my"),					// 나의 크루 프로필 조회
+			antMatcher(POST, "/crew/post/register"),				// 크루 게시글 등록
 
 			antMatcher(POST, "/general/post/register")			// 일반 게시글 등록
+
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);
