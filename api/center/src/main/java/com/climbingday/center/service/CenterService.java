@@ -54,7 +54,7 @@ public class CenterService {
 
 		// 회원 정보 가져오기
 		Member member = memberRepository.findById(userDetails.getId())
-			.orElseThrow(() -> new CenterException(EXISTS_NOT_MEMBER));
+			.orElseThrow(() -> new CenterException(NOT_EXISTS_MEMBER));
 
 		Center center = Center.fromCenterRegisterDto(centerRegisterDto, member);
 

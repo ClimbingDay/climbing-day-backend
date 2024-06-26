@@ -26,7 +26,7 @@ public class CrewPostDto {
 	private Integer commentCount;
 
 	// 작성자
-	private String createBy;
+	private String createdBy;
 
 	// 작성일
 	private LocalDateTime createdDate;

@@ -210,7 +210,7 @@ public class MemberService {
 	 */
 	public MemberMyPageDto getMyPage(UserDetailsImpl userDetails) {
 		return memberRepository.getMyPage(userDetails.getId())
-			.orElseThrow(() -> new MemberException(EXISTS_NOT_MEMBER));
+			.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
 	}
 
 	/**

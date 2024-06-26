@@ -19,11 +19,13 @@ public class GeneralCommentDto {
 
 	private String content;
 
-	private LocalDateTime createDate;
-
 	private Integer likeCount;
 
-	private Integer commentCount;
+	private Integer replyCount;
+
+	private String createdBy;
+
+	private LocalDateTime createdDate;
 
 	List<GeneralReplyDto> replies = new ArrayList<>();
 }

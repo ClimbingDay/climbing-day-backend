@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import com.climbingday.dto.general.GeneralPostDetailDto;
 import com.climbingday.dto.general.GeneralPostDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
@@ -44,13 +45,14 @@ public class GeneralPostRepositoryImpl implements GeneralPostCustom {
 	}
 
 	@Override
-	public Optional<GeneralPostDto> getPost(Long postId) {
-		GeneralPostDto generalPostDto = selectPostQuery()
+	public Optional<GeneralPostDetailDto> getPost(Long postId) {
+		GeneralPostDetailDto generalPostDto = selectPostDetailQuery()
 			.where(generalPost.id.eq(postId))
 			.fetchOne();
 		return Optional.ofNullable(generalPostDto);
 	}
 
+	// 일반 게시판 조회 쿼리
 	private JPQLQuery<GeneralPostDto> selectPostQuery() {
 		return queryFactory
 			.select(Projections.constructor(GeneralPostDto.class,
@@ -60,6 +62,25 @@ public class GeneralPostRepositoryImpl implements GeneralPostCustom {
 				generalPostLike.countDistinct().castToNum(Integer.class),
 				generalComment.countDistinct().castToNum(Integer.class),
 				member.nickName,
+				generalPost.createdDate
+			))
+			.from(generalPost)
+			.leftJoin(generalPostLike).on(generalPostLike.generalPost.id.eq(generalPost.id))
+			.leftJoin(generalComment).on(generalComment.generalPost.id.eq(generalPost.id))
+			.leftJoin(member).on(generalPost.member.id.eq(member.id))
+			.groupBy(generalPost.id, member.nickName);
+	}
+
+	// 일반 게시판 상세 조회 쿼리
+	private JPQLQuery<GeneralPostDetailDto> selectPostDetailQuery() {
+		return queryFactory
+			.select(Projections.bean(GeneralPostDetailDto.class,
+				generalPost.id,
+				generalPost.title,
+				generalPost.content,
+				generalPostLike.countDistinct().castToNum(Integer.class).as("likeCount"),
+				generalComment.countDistinct().castToNum(Integer.class).as("commentCount"),
+				member.nickName.as("createdBy"),
 				generalPost.createdDate
 			))
 			.from(generalPost)

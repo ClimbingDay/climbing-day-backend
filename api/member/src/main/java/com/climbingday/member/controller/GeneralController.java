@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,5 +56,16 @@ public class GeneralController {
 					PageRequest.of(page, size)
 				)
 			));
+	}
+
+	/**
+	 * 일반 게시글 상세 조회
+	 */
+	@GetMapping("/post/{postId}")
+	public ResponseEntity<CDResponse<?>> getGeneralDetailPost(
+		@PathVariable Long postId
+	) {
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(generalService.getGeneralDetailPost(postId)));
 	}
 }

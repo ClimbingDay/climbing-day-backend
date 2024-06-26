@@ -1,6 +1,8 @@
 package com.climbingday.dto.general;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +28,7 @@ public class GeneralPostDto {
 	private Integer commentCount;
 
 	// 작성자
-	private String createBy;
+	private String createdBy;
 
 	// 작성일
 	private LocalDateTime createdDate;

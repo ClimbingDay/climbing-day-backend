@@ -12,11 +12,13 @@ import lombok.NoArgsConstructor;
 public class GeneralReplyDto {
 	private Long id;
 
+	private Long commentId;
+
 	private String content;
+
+	private Integer likeCount;
 
 	private String createdBy;
 
 	private LocalDateTime createdDate;
-
-	private Integer likeCount;
 }

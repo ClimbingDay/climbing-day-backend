@@ -57,7 +57,7 @@ public class CrewService {
 	public Long registerPost(CrewPostRegDto crewPostRegDto, UserDetailsImpl userDetails) {
 		// 회원 정보 가져오기
 		Member member = memberRepository.findById(userDetails.getId())
-			.orElseThrow(() -> new MemberException(EXISTS_NOT_MEMBER));
+			.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
 
 		CrewPost crewPost = CrewPost.fromCrewPostRegisterDto(crewPostRegDto, member);
 
