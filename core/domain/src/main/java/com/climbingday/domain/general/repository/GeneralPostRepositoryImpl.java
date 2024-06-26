@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.climbingday.dto.general.GeneralPostDto;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,30 @@ public class GeneralPostRepositoryImpl implements GeneralPostCustom {
 	@Override
 	public Page<GeneralPostDto> getAllPost(Pageable pageable) {
 
-		List<GeneralPostDto> generalPostList = queryFactory
+		List<GeneralPostDto> generalPostList =
+			selectPostQuery()
+				.offset(pageable.getOffset())
+				.limit(pageable.getPageSize())
+				.fetch();
+
+		long total = Optional.ofNullable(queryFactory
+			.select(generalPost.count())
+			.from(generalPost)
+			.fetchOne()).orElse(0L);
+
+		return new PageImpl<>(generalPostList, pageable, total);
+	}
+
+	@Override
+	public Optional<GeneralPostDto> getPost(Long postId) {
+		GeneralPostDto generalPostDto = selectPostQuery()
+			.where(generalPost.id.eq(postId))
+			.fetchOne();
+		return Optional.ofNullable(generalPostDto);
+	}
+
+	private JPQLQuery<GeneralPostDto> selectPostQuery() {
+		return queryFactory
 			.select(Projections.constructor(GeneralPostDto.class,
 				generalPost.id,
 				generalPost.title,
@@ -42,16 +66,6 @@ public class GeneralPostRepositoryImpl implements GeneralPostCustom {
 			.leftJoin(generalPostLike).on(generalPostLike.generalPost.id.eq(generalPost.id))
 			.leftJoin(generalComment).on(generalComment.generalPost.id.eq(generalPost.id))
 			.leftJoin(member).on(generalPost.member.id.eq(member.id))
-			.groupBy(generalPost.id, member.nickName)
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
-			.fetch();
-
-		long total = Optional.ofNullable(queryFactory
-			.select(generalPost.count())
-			.from(generalPost)
-			.fetchOne()).orElse(0L);
-
-		return new PageImpl<>(generalPostList, pageable, total);
+			.groupBy(generalPost.id, member.nickName);
 	}
 }
