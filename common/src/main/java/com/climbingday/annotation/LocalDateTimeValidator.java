@@ -49,7 +49,7 @@ public class LocalDateTimeValidator implements ConstraintValidator<LocalDateTime
 			LocalDate today = LocalDate.now();
 			if(dateTime.toLocalDate().isBefore(today)) {
 				context.disableDefaultConstraintViolation();
-				context.buildConstraintViolationWithTemplate("현재 년월일 이후만 입력 가능합니다.").addConstraintViolation();
+				context.buildConstraintViolationWithTemplate("현재 날짜 이후만 입력 가능합니다.").addConstraintViolation();
 				return false;
 			}
 
