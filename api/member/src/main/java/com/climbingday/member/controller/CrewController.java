@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.climbingday.dto.crew.CrewPostRegDto;
+import com.climbingday.dto.crew.CrewPostRegisterDto;
 import com.climbingday.member.service.CrewService;
 import com.climbingday.response.CDResponse;
 import com.climbingday.security.service.UserDetailsImpl;
@@ -59,11 +59,11 @@ public class CrewController {
 	 */
 	@PostMapping("/post/register")
 	public ResponseEntity<CDResponse<?>> registerPost(
-		@Valid @RequestBody CrewPostRegDto crewPostRegDto,
+		@Valid @RequestBody CrewPostRegisterDto crewPostRegisterDto,
 		@AuthenticationPrincipal UserDetailsImpl userDetails
 	) {
 		return ResponseEntity.status(CREATE.getStatus())
-			.body(new CDResponse<>(CREATE, Map.of("id", crewService.registerPost(crewPostRegDto, userDetails))));
+			.body(new CDResponse<>(CREATE, Map.of("id", crewService.registerPost(crewPostRegisterDto, userDetails))));
 	}
 
 	/**

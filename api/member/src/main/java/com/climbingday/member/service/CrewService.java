@@ -15,7 +15,7 @@ import com.climbingday.domain.crew.repository.CrewRepository;
 import com.climbingday.domain.member.Member;
 import com.climbingday.domain.member.repository.MemberRepository;
 import com.climbingday.dto.crew.CrewPostDto;
-import com.climbingday.dto.crew.CrewPostRegDto;
+import com.climbingday.dto.crew.CrewPostRegisterDto;
 import com.climbingday.dto.crew.CrewProfileDto;
 import com.climbingday.member.exception.MemberException;
 import com.climbingday.security.service.UserDetailsImpl;
@@ -54,12 +54,12 @@ public class CrewService {
 	 * 크루 게시글 등록
 	 */
 	@Transactional
-	public Long registerPost(CrewPostRegDto crewPostRegDto, UserDetailsImpl userDetails) {
+	public Long registerPost(CrewPostRegisterDto crewPostRegisterDto, UserDetailsImpl userDetails) {
 		// 회원 정보 가져오기
 		Member member = memberRepository.findById(userDetails.getId())
 			.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
 
-		CrewPost crewPost = CrewPost.fromCrewPostRegisterDto(crewPostRegDto, member);
+		CrewPost crewPost = CrewPost.fromCrewPostRegisterDto(crewPostRegisterDto, member);
 
 		return crewPostRepository.save(crewPost).getId();
 	}

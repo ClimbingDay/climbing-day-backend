@@ -2,7 +2,7 @@ package com.climbingday.domain.crew;
 
 import com.climbingday.domain.MutableBaseEntity;
 import com.climbingday.domain.member.Member;
-import com.climbingday.dto.crew.CrewPostRegDto;
+import com.climbingday.dto.crew.CrewPostRegisterDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,10 +36,10 @@ public class CrewPost extends MutableBaseEntity {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	public static CrewPost fromCrewPostRegisterDto(CrewPostRegDto crewPostRegDto, Member member) {
+	public static CrewPost fromCrewPostRegisterDto(CrewPostRegisterDto crewPostRegisterDto, Member member) {
 		return CrewPost.builder()
-			.title(crewPostRegDto.getTitle())
-			.content(crewPostRegDto.getContent())
+			.title(crewPostRegisterDto.getTitle())
+			.content(crewPostRegisterDto.getContent())
 			.member(member)
 			.build();
 	}
