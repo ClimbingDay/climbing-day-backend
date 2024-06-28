@@ -20,7 +20,7 @@ import jakarta.validation.Payload;
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LocalTimeValid {
-	String message() default "시간 항목을 올바르게 입력해주세요.";
+	String message() default "시간 형식이 잘못되었습니다.";
 	Class<?>[] groups() default {};
 	Class<? extends Payload>[] payload() default {};
 }
