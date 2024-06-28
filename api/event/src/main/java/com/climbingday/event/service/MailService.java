@@ -1,13 +1,13 @@
 package com.climbingday.event.service;
 
-import static com.climbingday.enums.MailErrorCode.*;
+import static com.climbingday.enums.EventErrorCode.*;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.climbingday.dto.mail.EmailVerificationDto;
-import com.climbingday.event.exception.MailException;
+import com.climbingday.event.exception.EventException;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -52,7 +52,7 @@ public class MailService {
 		}catch(MessagingException e) {
 			log.debug("MailService.sendEmail exception occur toEmail: {}, " +
 				"title: {}, authCode: {}", email, title, authCode);
-			throw new MailException(UNABLE_TO_SEND_EMAIL);
+			throw new EventException(UNABLE_TO_SEND_EMAIL);
 		}
 	}
 }
