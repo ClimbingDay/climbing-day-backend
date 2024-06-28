@@ -11,6 +11,7 @@ tasks.withType<Jar> {
 dependencies {
     implementation(project(":core:infra"))
     implementation(project(":core:security"))
+    implementation(project(":core:domain"))
     implementation(project(":common"))
 
     // security
