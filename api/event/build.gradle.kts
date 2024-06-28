@@ -13,6 +13,9 @@ dependencies {
     implementation(project(":core:security"))
     implementation(project(":common"))
 
+    // security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
     // valid
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
