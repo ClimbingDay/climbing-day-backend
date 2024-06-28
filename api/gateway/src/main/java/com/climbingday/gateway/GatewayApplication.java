@@ -29,6 +29,8 @@ public class GatewayApplication {
 			.route("api-center", r -> r.path("/v1/center/**")
 				.uri(centerServiceUrl))
 			.route("api-event", r -> r.path("/v1/mail/**")
+				.or()
+				.path("/v1/record/**")
 				.uri(eventServiceUrl))
 			.build();
 	}

@@ -1,7 +1,7 @@
 package com.climbingday.member.service;
 
 import static com.climbingday.enums.GlobalErrorCode.*;
-import static com.climbingday.enums.MailErrorCode.*;
+import static com.climbingday.enums.EventErrorCode.*;
 import static com.climbingday.enums.MemberErrorCode.*;
 
 import java.util.HashMap;

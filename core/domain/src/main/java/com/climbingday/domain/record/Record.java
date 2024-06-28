@@ -3,6 +3,7 @@ package com.climbingday.domain.record;
 import java.time.LocalDateTime;
 
 import com.climbingday.domain.member.Member;
+import com.climbingday.dto.record.RecordRegisterDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,9 +14,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class Record {
 	@Id
@@ -24,11 +27,20 @@ public class Record {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
-	private Member memberId;
+	private Member member;
 
 	private LocalDateTime startTime;
 
 	private LocalDateTime endTime;
 
 	private Long duration;
+
+	public static Record fromRecordRegisterDto(RecordRegisterDto recordRegisterDto, Member member) {
+		return Record.builder()
+			.member(member)
+			.startTime(recordRegisterDto.getStartTime())
+			.endTime(recordRegisterDto.getEndTime())
+			.duration(recordRegisterDto.getDuration())
+			.build();
+	}
 }
