@@ -8,6 +8,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class LocalTimeValidator implements ConstraintValidator<LocalTimeValid, String> {
+
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 	@Override
 	public void initialize(LocalTimeValid constraintAnnotation) {
 	}
@@ -18,17 +20,16 @@ public class LocalTimeValidator implements ConstraintValidator<LocalTimeValid, S
 			return true; // null을 유효하게 처리하거나, false를 반환하여 null을 무효처리
 		}
 
-		// "0:0" 형식을 "00:00" 형식으로 변환
-		String[] parts = value.split(":");
-		if (parts.length == 2) {
-			parts[0] = parts[0].length() == 1 ? "0" + parts[0] : parts[0];
-			parts[1] = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
-			value = parts[0] + ":" + parts[1];
-		}
-
 		// 시간 검사 로직 (예: 특정 시간 범위 내에 있는지 확인)
 		try {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+			// "0:0" 형식을 "00:00" 형식으로 변환
+			String[] parts = value.split(":");
+			if (parts.length == 2) {
+				parts[0] = parts[0].length() == 1 ? "0" + parts[0] : parts[0];
+				parts[1] = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
+				value = parts[0] + ":" + parts[1];
+			}
+
 			LocalTime time = LocalTime.parse(value, formatter);
 
 			// 00:00부터 23:59 사이의 시간인지 확인
