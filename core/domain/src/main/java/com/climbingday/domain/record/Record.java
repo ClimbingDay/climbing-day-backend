@@ -38,8 +38,8 @@ public class Record {
 	public static Record fromRecordRegisterDto(RecordRegisterDto recordRegisterDto, Member member) {
 		return Record.builder()
 			.member(member)
-			.startTime(recordRegisterDto.getStartTime())
-			.endTime(recordRegisterDto.getEndTime())
+			.startTime(LocalDateTime.parse(recordRegisterDto.getStartTime()))
+			.endTime(LocalDateTime.parse(recordRegisterDto.getEndTime()))
 			.duration(recordRegisterDto.getDuration())
 			.build();
 	}

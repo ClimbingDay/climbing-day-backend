@@ -1,10 +1,8 @@
 package com.climbingday.dto.record;
 
-import java.time.LocalDateTime;
-
 import com.climbingday.annotation.LocalDateTimeValid;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,11 +15,11 @@ import lombok.NoArgsConstructor;
 public class RecordRegisterDto {
 
 	@LocalDateTimeValid
-	private LocalDateTime startTime;
+	private String startTime;
 
 	@LocalDateTimeValid
-	private LocalDateTime endTime;
+	private String endTime;
 
-	@NotBlank(message = "기록시간은 필수 항목입니다.")
+	@NotNull(message = "기록시간은 필수 항목입니다.")
 	private Long duration;
 }
