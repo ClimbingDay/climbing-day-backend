@@ -143,9 +143,6 @@ public class MemberController {
 	/**
 	 * 기록 등록
 	 */
-	/**
-	 * 기록 등록
-	 */
 	@PostMapping("/record/register")
 	public ResponseEntity<CDResponse<?>> registerRecord(
 		@Valid @RequestBody RecordRegisterDto recordRegisterDto,
