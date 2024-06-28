@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.climbingday.enums.MailErrorCode;
+import com.climbingday.enums.BaseErrorCode;
 import com.climbingday.response.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +21,10 @@ public class GlobalExceptionHandler {
 			.body(INTERNAL_SERVER_ERROR.getErrorResponse());
 	}
 
-	@ExceptionHandler(MailException.class)
-	protected ResponseEntity<ErrorResponse> handleMemberException(MailException ex) {
+	@ExceptionHandler(EventException.class)
+	protected ResponseEntity<ErrorResponse> handleMemberException(EventException ex) {
 		log.error(">>>>> MailException : {}", ex);
-		MailErrorCode errorCode = ex.getErrorCode();
+		BaseErrorCode errorCode = ex.getErrorCode();
 		return ResponseEntity.status(errorCode.getStatus())
 			.body(errorCode.getErrorResponse());
 	}
