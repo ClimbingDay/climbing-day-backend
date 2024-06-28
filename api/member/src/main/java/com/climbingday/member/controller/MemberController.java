@@ -18,7 +18,9 @@ import com.climbingday.dto.member.EmailAuthDto;
 import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberRegisterDto;
+import com.climbingday.dto.member.RecordRegisterDto;
 import com.climbingday.member.service.MemberService;
+import com.climbingday.member.service.RecordService;
 import com.climbingday.response.CDResponse;
 import com.climbingday.security.service.UserDetailsImpl;
 
@@ -29,7 +31,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
+
 	private final MemberService memberService;
+	private final RecordService recordService;
 
 	/**
 	 * 회원 가입
@@ -134,5 +138,20 @@ public class MemberController {
 	) {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(memberService.getMyPage(userDetails)));
+	}
+
+	/**
+	 * 기록 등록
+	 */
+	/**
+	 * 기록 등록
+	 */
+	@PostMapping("/record/register")
+	public ResponseEntity<CDResponse<?>> registerRecord(
+		@Valid @RequestBody RecordRegisterDto recordRegisterDto,
+		@AuthenticationPrincipal UserDetailsImpl userDetails
+	) {
+		return ResponseEntity.status(CREATE.getStatus())
+			.body(new CDResponse<>(CREATE, Map.of("id", recordService.registerRecord(userDetails, recordRegisterDto))));
 	}
 }

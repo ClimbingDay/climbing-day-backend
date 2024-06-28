@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import com.climbingday.domain.member.Member;
-import com.climbingday.dto.record.RecordRegisterDto;
+import com.climbingday.dto.member.RecordRegisterDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

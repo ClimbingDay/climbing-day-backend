@@ -1,4 +1,4 @@
-package com.climbingday.dto.record;
+package com.climbingday.dto.member;
 
 import com.climbingday.annotation.LocalDateTimeValid;
 
