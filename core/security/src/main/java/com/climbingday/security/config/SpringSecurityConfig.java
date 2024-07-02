@@ -155,6 +155,9 @@ public class SpringSecurityConfig {
 
 			antMatcher(GET, "/general/post"),							// 모든 일반 게시글 조회
 
+			// 이용약관
+			antMatcher(GET, "/terms/test"),							// 이용약관 테스트
+
 			// 스웨거
 			antMatcher(GET, "/swagger-ui.html"),
 			antMatcher(GET, "/swagger-ui/**"),
