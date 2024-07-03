@@ -1,7 +1,7 @@
 package com.climbingday.member.service;
 
-import static com.climbingday.enums.GlobalErrorCode.*;
 import static com.climbingday.enums.EventErrorCode.*;
+import static com.climbingday.enums.GlobalErrorCode.*;
 import static com.climbingday.enums.MemberErrorCode.*;
 
 import java.util.HashMap;
@@ -95,7 +95,15 @@ public class MemberService {
 	 * 비밀번호 재설정
 	 */
 	public void passwordReset(PasswordResetDto passwordResetDto) {
+		String email = passwordResetDto.getEmail();
 
+		if(emailAuthCheck(email)) {
+			Member member = memberRepository.findByEmail(email)
+				.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
+
+			member.setPassword(passwordResetDto.getPassword());
+			memberRepository.save(member);
+		}
 	}
 
 	/**
@@ -118,10 +126,7 @@ public class MemberService {
 	 */
 	public void emailAuth(EmailDto emailDto) {
 		String email = emailDto.getEmail();
-		checkEmail(email);
-
 		String authCode = generateCode();
-
 		sendEmailVerification(email, authCode);
 	}
 
