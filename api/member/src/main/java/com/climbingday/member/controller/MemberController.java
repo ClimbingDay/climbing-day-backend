@@ -18,6 +18,7 @@ import com.climbingday.dto.member.EmailAuthDto;
 import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberRegisterDto;
+import com.climbingday.dto.member.PasswordResetDto;
 import com.climbingday.dto.member.RecordRegisterDto;
 import com.climbingday.member.service.MemberService;
 import com.climbingday.member.service.RecordService;
@@ -53,6 +54,19 @@ public class MemberController {
 		@Valid @RequestBody MemberLoginDto memberLoginDto) {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(memberService.login(memberLoginDto)));
+	}
+
+	/**
+	 * 비밀번호 재설정
+	 */
+	@PostMapping("/password-reset")
+	public ResponseEntity<CDResponse<?>> passwordReset(
+		@RequestBody PasswordResetDto passwordResetDto
+	){
+		memberService.passwordReset(passwordResetDto);
+
+		return ResponseEntity.status(PASSWORD_RESET_SUCCESS.getStatus())
+			.body(new CDResponse<>(PASSWORD_RESET_SUCCESS));
 	}
 
 	/**

@@ -101,7 +101,7 @@ public class MemberService {
 			Member member = memberRepository.findByEmail(email)
 				.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
 
-			member.setPassword(passwordResetDto.getPassword());
+			member.setPassword(passwordEncoder.encode(passwordResetDto.getPassword()));
 			memberRepository.save(member);
 		}
 	}
