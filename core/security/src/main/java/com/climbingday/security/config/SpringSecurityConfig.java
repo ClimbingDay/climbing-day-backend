@@ -142,6 +142,7 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/member/email/check"),					// 이메일 중복확인
 			antMatcher(GET, "/member/phone-num/check"),				// 휴대폰 번호 중복확인
 			antMatcher(GET, "/member/nick-name/check"),				// 닉네임 중복확인
+			antMatcher(POST, "/member/password-reset"),				// 비밀번호 초기화(변경)
 
 			antMatcher(GET, "/center"),								// 모든 암장 조회
 			antMatcher(GET, "/center/**"),							// 암장 조회(이름)
@@ -154,6 +155,8 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/crew/post"),							// 모든 크루 게시글 조회
 
 			antMatcher(GET, "/general/post"),							// 모든 일반 게시글 조회
+
+
 
 			// 이용약관
 			antMatcher(GET, "/terms/test"),							// 이용약관 테스트
