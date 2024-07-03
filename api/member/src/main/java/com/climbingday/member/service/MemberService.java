@@ -32,6 +32,7 @@ import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberMyPageDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.dto.member.MemberTokenDto;
+import com.climbingday.dto.member.PasswordResetDto;
 import com.climbingday.member.exception.MemberException;
 import com.climbingday.security.jwt.JwtProvider;
 import com.climbingday.security.service.UserDetailsImpl;
@@ -91,21 +92,25 @@ public class MemberService {
 	}
 
 	/**
+	 * 비밀번호 재설정
+	 */
+	public void passwordReset(PasswordResetDto passwordResetDto) {
+
+	}
+
+	/**
 	 * 이메일 인증 여부 체크
 	 */
-	public void emailAuthCheck(String email) {
-		Map redisEmailInfo = redisRepository.getEmailCodeAndConfirm(email);
+	public boolean emailAuthCheck(String email) {
+		Map emailVerificationInfo = redisRepository.getEmailCodeAndConfirm(email);
 
-		Optional.ofNullable(redisEmailInfo.get("confirm"))
-			.ifPresentOrElse(
-				confirm -> {
-					if(!confirm.equals("Y"))
-						throw new MemberException(NOT_AUTHENTICATED_EMAIL);
-				},
-				() -> {
-					throw new MemberException(NOT_AUTHENTICATED_EMAIL);
-				}
-			);
+		String confirm = (String)emailVerificationInfo.get("confirm");
+
+		if(confirm == null || !confirm.equals("Y")) {
+			throw new MemberException(NOT_AUTHENTICATED_EMAIL);
+		}
+
+		return true;
 	}
 
 	/**
