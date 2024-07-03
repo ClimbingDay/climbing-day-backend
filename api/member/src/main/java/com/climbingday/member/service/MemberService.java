@@ -98,11 +98,15 @@ public class MemberService {
 		String email = passwordResetDto.getEmail();
 
 		if(emailAuthCheck(email)) {
+			validatePassword(passwordResetDto.getPassword(), passwordResetDto.getPasswordConfirm());
+
 			Member member = memberRepository.findByEmail(email)
 				.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
 
 			member.setPassword(passwordEncoder.encode(passwordResetDto.getPassword()));
 			memberRepository.save(member);
+
+			redisRepository.deleteRedisInfo(email);
 		}
 	}
 
