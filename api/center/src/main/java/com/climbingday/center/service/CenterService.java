@@ -68,7 +68,7 @@ public class CenterService {
 	}
 
 	/**
-	 * 모든 암장 조회
+	 * 모든 암장 조회(페이징)
 	 */
 	@Transactional(readOnly = true)
 	public Page<CenterDto> getCenterPage(Pageable pageable) {
