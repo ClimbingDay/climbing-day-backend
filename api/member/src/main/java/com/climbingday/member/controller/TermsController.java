@@ -26,6 +26,9 @@ public class TermsController {
 	@Autowired
 	private ResourceLoader resourceLoader;
 
+	/**
+	 * 약관 내용(웹뷰)
+	 */
 	@GetMapping("/{contentUrl}")
 	public ResponseEntity<Resource> getHtmlTerms(
 		@PathVariable String contentUrl
