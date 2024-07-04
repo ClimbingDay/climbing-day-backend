@@ -27,5 +27,5 @@ public class Terms {
 
 	private boolean isMandatory;
 
-	private LocalDateTime createDate;
+	private LocalDateTime createdDate;
 }
