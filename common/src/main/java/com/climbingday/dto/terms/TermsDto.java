@@ -2,6 +2,8 @@ package com.climbingday.dto.terms;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +22,7 @@ public class TermsDto {
 
 	private String contentUrl;
 
+	@JsonProperty("isMandatory")
 	private boolean isMandatory;
 
 	private LocalDateTime createdDate;
