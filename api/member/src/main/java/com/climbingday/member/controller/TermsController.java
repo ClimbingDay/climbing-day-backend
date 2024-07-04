@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,13 +26,15 @@ public class TermsController {
 	@Autowired
 	private ResourceLoader resourceLoader;
 
-	@GetMapping("/test")
-	public ResponseEntity<Resource> getHtmlTerms() {
+	@GetMapping("/{contentUrl}")
+	public ResponseEntity<Resource> getHtmlTerms(
+		@PathVariable String contentUrl
+	) {
 		try {
-			Resource resource = resourceLoader.getResource("classpath:static/terms.html");
+			Resource resource = resourceLoader.getResource("classpath:static/" + contentUrl + ".html");
 
 			return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=terms.html")
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + contentUrl + ".html")
 				.contentType(MediaType.TEXT_HTML)
 				.body(resource);
 		} catch (Exception e) {
