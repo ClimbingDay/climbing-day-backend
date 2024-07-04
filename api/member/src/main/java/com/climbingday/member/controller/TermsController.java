@@ -1,11 +1,8 @@
 package com.climbingday.member.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import static com.climbingday.enums.GlobalSuccessCode.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.climbingday.member.service.TermsService;
+import com.climbingday.response.CDResponse;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,11 +23,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/terms")
 public class TermsController {
 
-	@Autowired
-	private ResourceLoader resourceLoader;
+	private final ResourceLoader resourceLoader;
+	private final TermsService termsService;
 
 	/**
-	 * 약관 내용(웹뷰)
+	 * 이용약관 내용(웹뷰)
 	 */
 	@GetMapping("/{contentUrl}")
 	public ResponseEntity<Resource> getHtmlTerms(
@@ -43,5 +43,14 @@ public class TermsController {
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
 		}
+	}
+
+	/**
+	 * 이용약관 목록 조회
+	 */
+	@GetMapping
+	public ResponseEntity<CDResponse<?>> getTemrsList() {
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(termsService.getTermsList()));
 	}
 }
