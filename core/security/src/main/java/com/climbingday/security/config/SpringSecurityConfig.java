@@ -157,6 +157,7 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/general/post"),							// 모든 일반 게시글 조회
 
 			// 이용약관
+			antMatcher(GET, "/terms"),								// 이용약관 목록 조회
 			antMatcher(GET, "/terms/climbingDayTerms"),				// 이용약관 테스트
 			antMatcher(GET, "/terms/locationTerms"),					// 위치기반 이용약관 테스트
 
