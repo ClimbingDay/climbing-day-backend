@@ -18,6 +18,8 @@ public class TermsDto {
 
 	private String type;
 
+	private String name;
+
 	private String version;
 
 	private String contentUrl;
