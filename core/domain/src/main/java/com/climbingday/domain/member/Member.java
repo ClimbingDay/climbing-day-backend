@@ -24,11 +24,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Table(uniqueConstraints = {
-	@UniqueConstraint(columnNames = "email"),
-	@UniqueConstraint(columnNames = "nickName"),
-	@UniqueConstraint(columnNames = "phoneNumber")
-})
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class Member extends MutableBaseEntity {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
