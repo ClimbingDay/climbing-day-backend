@@ -7,8 +7,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.climbingday.security.service.UserDetailsImpl;
-
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
 	@Override
 	public Optional<String> getCurrentAuditor() {
@@ -18,7 +16,6 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
 			return Optional.empty();
 		}
 
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		return Optional.ofNullable(userDetails.getNickName());
+		return Optional.ofNullable(authentication.getName());
 	}
 }
