@@ -15,7 +15,9 @@ public enum MemberErrorCode implements BaseErrorCode {
 	DELETE_MEMBER(400, "탈퇴 또는 삭제된 회원입니다.", HttpStatus.BAD_REQUEST),
 	CHECK_ID_OR_PASSWORD(401, "아이디 또는 비밀번호를 확인해주세요.", HttpStatus.UNAUTHORIZED),
 	NOT_MATCHED_PASSWORD(400, "비밀번호와 비밀번호 확인이 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
-	NOT_EXISTS_POST(400, "존재하지 않는 게시글 입니다.", HttpStatus.BAD_REQUEST);
+	NOT_EXISTS_POST(400, "존재하지 않는 게시글 입니다.", HttpStatus.BAD_REQUEST),
+	DISAGREE_REQUIRED_TERMS(400, "필수 이용약관에 동의하지 않았습니다.", HttpStatus.BAD_REQUEST),
+	NOT_FIND_TERMS(400, "해당 약관을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
 
 	private final int errorCode;
 	private final String errorMessage;

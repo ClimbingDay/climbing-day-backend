@@ -4,6 +4,7 @@ import static com.climbingday.enums.EventErrorCode.*;
 import static com.climbingday.enums.GlobalErrorCode.*;
 import static com.climbingday.enums.MemberErrorCode.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,11 @@ import org.springframework.web.client.RestTemplate;
 
 import com.climbingday.domain.common.repository.RedisRepository;
 import com.climbingday.domain.member.Member;
+import com.climbingday.domain.member.MemberTerms;
 import com.climbingday.domain.member.repository.MemberRepository;
+import com.climbingday.domain.member.repository.MemberTermsRepository;
+import com.climbingday.domain.terms.Terms;
+import com.climbingday.domain.terms.repository.TermsRepository;
 import com.climbingday.dto.member.EmailAuthDto;
 import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberDto;
@@ -33,6 +38,8 @@ import com.climbingday.dto.member.MemberMyPageDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.dto.member.MemberTokenDto;
 import com.climbingday.dto.member.PasswordResetDto;
+import com.climbingday.dto.terms.TermsDto;
+import com.climbingday.dto.terms.TermsListDto;
 import com.climbingday.member.exception.MemberException;
 import com.climbingday.security.jwt.JwtProvider;
 import com.climbingday.security.service.UserDetailsImpl;
@@ -45,6 +52,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
+	private final TermsRepository termsRepository;
+	private final MemberTermsRepository memberTermsRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 	private final JwtProvider jwtProvider;
@@ -63,11 +72,33 @@ public class MemberService {
 		validatePassword(memberRegisterDto.getPassword(), memberRegisterDto.getPasswordConfirm());		// 비밀번호 일치 확인
 		checkPhoneNumber(memberRegisterDto.getPhoneNumber());											// 휴대폰 중복 확인
 		checkNickName(memberRegisterDto.getNickName());													// 닉네임 중복 확인
+		checkRequiredTerms(memberRegisterDto.getTerms());												// 필수 이용약관 확인
 
 		Member member = Member.fromMemberRegisterDto(memberRegisterDto);
 		member.setPassword(passwordEncoder.encode(memberRegisterDto.getPassword()));
 
-		return memberRepository.save(member).getId();
+		Map<String, Boolean> termsMap = memberRegisterDto.getTerms().getFieldnamesAndValues();
+
+		Member createMember = memberRepository.save(member);
+
+		// 약관 조회 및 회원 약관 동의 내용 저장
+		for(String type: termsMap.keySet()) {
+			Terms terms = termsRepository.findByType(type)
+				.orElseThrow(() -> new MemberException(NOT_FIND_TERMS));
+
+			Boolean isAgree = termsMap.get(type);
+
+			MemberTerms memberTerms = MemberTerms.builder()
+				.member(createMember)
+				.terms(terms)
+				.isAgree(isAgree)
+				.agreeDate(isAgree ? LocalDateTime.now() : null)
+				.build();
+
+			memberTermsRepository.save(memberTerms);
+		}
+
+		return createMember.getId();
 	}
 
 	/**
@@ -270,5 +301,18 @@ public class MemberService {
 			.accessToken(accessToken)
 			.refreshToken(refreshToken)
 			.build();
+	}
+
+	/**
+	 * 필수 이용약관 확인
+	 */
+	private void checkRequiredTerms(TermsListDto termsListDto) {
+		List<TermsDto> requiredTerms = termsRepository.getRequiredTerms();
+
+		for(TermsDto terms: requiredTerms) {
+			// 필수 약관인데 동의하지 않은 경우
+			if(terms.isMandatory() && !termsListDto.getTerm(terms.getType()))
+				throw new MemberException(DISAGREE_REQUIRED_TERMS);
+		}
 	}
 }

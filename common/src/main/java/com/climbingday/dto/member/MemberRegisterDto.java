@@ -1,6 +1,10 @@
 package com.climbingday.dto.member;
 
+import com.climbingday.dto.terms.TermsListDto;
+
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -35,4 +39,8 @@ public class MemberRegisterDto {
 
 	@Size(max = 25, message = "회원 소개글은 25자 이하로 입력해주세요.")
 	private String introduce;
+
+	@Valid
+	@NotNull(message = "이용약관 동의 정보는 필수 항목입니다.")
+	private TermsListDto terms;
 }
