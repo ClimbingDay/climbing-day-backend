@@ -39,7 +39,7 @@ public class NaverOAuthService implements OAuthService {
 			NaverUserInfoDto userInfo = getNaverUserInfo(oAuthLoginDto.getAccessToken());
 			MemberRegisterDto memberRegisterDto = convertToRegisterDto(userInfo, oAuthLoginDto);
 			Optional<Member> member = memberRepository.findByEmailAndProvider(memberRegisterDto.getEmail(),
-				EProviders.NAVER.name());
+				EProviders.NAVER);
 
 			if(member.isEmpty()) {
 				// 신규 회원 가입 처리 및 로그인
