@@ -41,6 +41,9 @@ dependencies {
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    // webflux
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
     // 테스트 의존성
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.epages:restdocs-api-spec-mockmvc:$restdocsApiSpecVersion")
