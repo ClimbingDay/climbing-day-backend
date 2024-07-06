@@ -144,6 +144,9 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/member/nick-name/check"),				// 닉네임 중복확인
 			antMatcher(POST, "/member/password-reset"),				// 비밀번호 초기화(변경)
 
+			antMatcher(POST, "/member/auth/*/login"),					// 소셜 로그인
+			antMatcher(POST, "/member/auth/*/register"),				// 소셜 회원 가입
+
 			antMatcher(GET, "/center"),								// 모든 암장 조회
 			antMatcher(GET, "/center/**"),							// 암장 조회(이름)
 
