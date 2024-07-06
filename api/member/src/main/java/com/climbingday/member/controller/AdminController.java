@@ -23,11 +23,4 @@ public class AdminController {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(CREATE, memberService.getAllMember()));
 	}
-
-	// @PostMapping("/auth")
-	// public ResponseEntity<CDResponse<?>> changeMemberRoles(
-	// 	@AuthenticationPrincipal UserDetailsImpl userDetails
-	// ) {
-	//
-	// })
 }
