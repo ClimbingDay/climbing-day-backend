@@ -67,7 +67,7 @@ public class MemberService {
 	 * 회원 등록
 	 */
 	@Transactional
-	public Long registerMember(MemberRegisterDto memberRegisterDto) {
+	public Member registerMember(MemberRegisterDto memberRegisterDto) {
 		checkEmail(memberRegisterDto.getEmail());														// 이메일 중복 확인
 		validatePassword(memberRegisterDto.getPassword(), memberRegisterDto.getPasswordConfirm());		// 비밀번호 일치 확인
 		checkPhoneNumber(memberRegisterDto.getPhoneNumber());											// 휴대폰 중복 확인
@@ -98,7 +98,7 @@ public class MemberService {
 			memberTermsRepository.save(memberTerms);
 		}
 
-		return createMember.getId();
+		return createMember;
 	}
 
 	/**
@@ -116,8 +116,19 @@ public class MemberService {
 		UserDetailsImpl userDetail = (UserDetailsImpl) authenticated.getPrincipal();
 
 		MemberTokenDto tokenDto = createToken(userDetail);
-		int refreshExpirationSeconds = jwtProvider.getRefreshExpirationSeconds();
-		redisRepository.setRedisRefreshToken(userDetail.getId(), tokenDto.getRefreshToken(), refreshExpirationSeconds);
+		registerRedisRefreshToken(userDetail, tokenDto);
+
+		return tokenDto;
+	}
+
+	/**
+	 * 소셜 로그인
+	 */
+	public MemberTokenDto oAuthLogin(Member member) {
+		UserDetailsImpl userDetail = (UserDetailsImpl) UserDetailsImpl.from(member);
+
+		MemberTokenDto tokenDto = createToken(userDetail);
+		registerRedisRefreshToken(userDetail, tokenDto);
 
 		return tokenDto;
 	}
@@ -315,4 +326,13 @@ public class MemberService {
 				throw new MemberException(DISAGREE_REQUIRED_TERMS);
 		}
 	}
+
+	/**
+	 * refreshToken redis 저장
+	 */
+	private void registerRedisRefreshToken(UserDetailsImpl userDetail, MemberTokenDto tokenDto) {
+		int refreshExpirationSeconds = jwtProvider.getRefreshExpirationSeconds();
+		redisRepository.setRedisRefreshToken(userDetail.getId(), tokenDto.getRefreshToken(), refreshExpirationSeconds);
+	}
+
 }

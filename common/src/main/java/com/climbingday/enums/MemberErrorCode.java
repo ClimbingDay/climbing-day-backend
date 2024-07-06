@@ -17,7 +17,9 @@ public enum MemberErrorCode implements BaseErrorCode {
 	NOT_MATCHED_PASSWORD(400, "비밀번호와 비밀번호 확인이 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
 	NOT_EXISTS_POST(400, "존재하지 않는 게시글 입니다.", HttpStatus.BAD_REQUEST),
 	DISAGREE_REQUIRED_TERMS(400, "필수 이용약관에 동의하지 않았습니다.", HttpStatus.BAD_REQUEST),
-	NOT_FIND_TERMS(400, "해당 약관을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
+	NOT_FIND_TERMS(400, "해당 약관을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+	UNSUPPORTED_OAUTH_LOGIN(400, "지원하지 않는 소셜로그인입니다.", HttpStatus.BAD_REQUEST),
+	NAVER_LOGIN_ERROR(504, "네이버 로그인이 정상적으로 처리되지 않았습니다.", HttpStatus.GATEWAY_TIMEOUT);
 
 	private final int errorCode;
 	private final String errorMessage;

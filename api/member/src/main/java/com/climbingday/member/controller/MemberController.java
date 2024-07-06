@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,9 +19,12 @@ import com.climbingday.dto.member.EmailAuthDto;
 import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberRegisterDto;
+import com.climbingday.dto.member.OAuthLoginDto;
 import com.climbingday.dto.member.PasswordResetDto;
 import com.climbingday.dto.member.RecordRegisterDto;
 import com.climbingday.member.service.MemberService;
+import com.climbingday.member.service.OAuthService;
+import com.climbingday.member.service.OAuthServiceFactory;
 import com.climbingday.member.service.RecordService;
 import com.climbingday.response.CDResponse;
 import com.climbingday.security.service.UserDetailsImpl;
@@ -35,6 +39,7 @@ public class MemberController {
 
 	private final MemberService memberService;
 	private final RecordService recordService;
+	private final OAuthServiceFactory oAuthServiceFactory;
 
 	/**
 	 * 회원 가입
@@ -43,7 +48,7 @@ public class MemberController {
 	public ResponseEntity<CDResponse<?>> registerMember(
 		@Valid @RequestBody MemberRegisterDto reqMemberDto) {
 		return ResponseEntity.status(CREATE.getStatus())
-			.body(new CDResponse<>(CREATE, Map.of("id", memberService.registerMember(reqMemberDto))));
+			.body(new CDResponse<>(CREATE, Map.of("id", memberService.registerMember(reqMemberDto).getId())));
 	}
 
 	/**
@@ -54,6 +59,19 @@ public class MemberController {
 		@Valid @RequestBody MemberLoginDto memberLoginDto) {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(memberService.login(memberLoginDto)));
+	}
+
+	/**
+	 * 소셜 로그인
+	 */
+	@PostMapping("/auth/{provider}/login")
+	public ResponseEntity<CDResponse<?>> authLogin(
+		@PathVariable String provider,
+		@RequestBody OAuthLoginDto oAuthLoginDto
+	) {
+		OAuthService oAuthService = oAuthServiceFactory.getService(provider);
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(oAuthService.login(oAuthLoginDto)));
 	}
 
 	/**
