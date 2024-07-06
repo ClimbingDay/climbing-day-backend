@@ -3,9 +3,10 @@ package com.climbingday.domain.member;
 import java.sql.Date;
 
 import com.climbingday.domain.MutableBaseEntity;
+import com.climbingday.dto.member.MemberRegisterDto;
+import com.climbingday.enums.member.EProviders;
 import com.climbingday.enums.member.ERoles;
 import com.climbingday.enums.member.EStatus;
-import com.climbingday.dto.member.MemberRegisterDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,8 +15,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,7 +52,7 @@ public class Member extends MutableBaseEntity {
 	@Builder.Default
 	private ERoles roles = ERoles.ROLE_USER;	// 역할(권한)
 
-
+	private EProviders provider;
 
 	public static Member fromMemberRegisterDto(MemberRegisterDto registerDto) {
 		String introduce = "";

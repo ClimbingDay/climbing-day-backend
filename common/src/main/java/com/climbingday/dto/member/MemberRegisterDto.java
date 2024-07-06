@@ -1,6 +1,7 @@
 package com.climbingday.dto.member;
 
 import com.climbingday.dto.terms.TermsListDto;
+import com.climbingday.enums.member.EProviders;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -43,4 +44,6 @@ public class MemberRegisterDto {
 	@Valid
 	@NotNull(message = "이용약관 동의 정보는 필수 항목입니다.")
 	private TermsListDto terms;
+
+	private EProviders provider;
 }

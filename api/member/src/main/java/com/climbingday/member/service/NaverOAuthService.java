@@ -94,7 +94,7 @@ public class NaverOAuthService implements OAuthService {
 			.phoneNumber(naverUserInfo.getPhoneNumber())
 			.birthDate(naverUserInfo.getBirthday() + "-" + naverUserInfo.getBirthday())
 			.terms(oAuthLoginDto.getTerms())
-			.providers(EProviders.NAVER)
+			.provider(EProviders.NAVER)
 			.build();
 	}
 }
