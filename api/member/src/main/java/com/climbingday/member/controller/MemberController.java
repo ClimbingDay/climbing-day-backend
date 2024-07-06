@@ -20,6 +20,7 @@ import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.dto.member.OAuthLoginDto;
+import com.climbingday.dto.member.OAuthRegisterDto;
 import com.climbingday.dto.member.PasswordResetDto;
 import com.climbingday.dto.member.RecordRegisterDto;
 import com.climbingday.member.service.MemberService;
@@ -72,6 +73,19 @@ public class MemberController {
 		OAuthService oAuthService = oAuthServiceFactory.getService(provider);
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(oAuthService.login(oAuthLoginDto)));
+	}
+
+	/**
+	 * 소셜 회원 등록
+	 */
+	@PostMapping("/auth/{provider}/register")
+	public ResponseEntity<CDResponse<?>> authRegister(
+		@PathVariable String provider,
+		@RequestBody OAuthRegisterDto oAuthRegisterDto
+	) {
+		OAuthService oAuthService = oAuthServiceFactory.getService(provider);
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(oAuthService.registerAndLogin(oAuthRegisterDto)));
 	}
 
 	/**

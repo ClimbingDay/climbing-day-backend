@@ -20,6 +20,7 @@ import com.climbingday.dto.member.MemberTokenDto;
 import com.climbingday.dto.member.NaverResponseDto;
 import com.climbingday.dto.member.NaverUserInfoDto;
 import com.climbingday.dto.member.OAuthLoginDto;
+import com.climbingday.dto.member.OAuthRegisterDto;
 import com.climbingday.enums.member.EProviders;
 import com.climbingday.member.exception.MemberException;
 
@@ -33,23 +34,34 @@ public class NaverOAuthService implements OAuthService {
 	private final MemberRepository memberRepository;
 
 	@Override
-	@Transactional
 	public MemberTokenDto login(OAuthLoginDto oAuthLoginDto) {
 		try {
 			NaverUserInfoDto userInfo = getNaverUserInfo(oAuthLoginDto.getAccessToken());
-			MemberRegisterDto memberRegisterDto = convertToRegisterDto(userInfo, oAuthLoginDto);
-			Optional<Member> member = memberRepository.findByEmailAndProvider(memberRegisterDto.getEmail(),
+			Optional<Member> member = memberRepository.findByEmailAndProvider(userInfo.getNaverResponseDto().getEmail(),
 				EProviders.NAVER);
 
-			if(member.isEmpty()) {
-				// 신규 회원 가입 처리 및 로그인
-				Member registeredMember = memberService.registerMember(memberRegisterDto);
-				return memberService.oAuthLogin(registeredMember);
-			}else {
+			if (member.isPresent()) {
 				// 기존 회원 로그인 처리
 				return memberService.oAuthLogin(member.get());
+			} else {
+				throw new MemberException(NOT_EXISTS_MEMBER);
 			}
 		} catch (Exception e) {
+			throw new MemberException(NAVER_LOGIN_ERROR);
+		}
+	}
+
+	@Override
+	public MemberTokenDto registerAndLogin(OAuthRegisterDto oAuthRegisterDto) {
+		try {
+			NaverUserInfoDto userInfo = getNaverUserInfo(oAuthRegisterDto.getAccessToken());
+			MemberRegisterDto memberRegisterDto = convertToRegisterDto(userInfo, oAuthRegisterDto);
+
+			// 신규 회원 가입 처리 및 로그인
+			Member registeredMember = memberService.registerMember(memberRegisterDto);
+			return memberService.oAuthLogin(registeredMember);
+		} catch (
+			Exception e) {
 			throw new MemberException(NAVER_LOGIN_ERROR);
 		}
 	}
@@ -66,34 +78,35 @@ public class NaverOAuthService implements OAuthService {
 
 		return webClient.get()
 			.retrieve()
-			.onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), response -> response.bodyToMono(NaverUserInfoDto.class)
-				.flatMap(errorBody -> {
-					HttpStatus status = (HttpStatus)response.statusCode();
-					return Mono.error(WebClientResponseException.create(
-						status.value(),
-						status.getReasonPhrase(),
-						response.headers().asHttpHeaders(),
-						null,
-						null
-					));
-				})
+			.onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
+				response -> response.bodyToMono(NaverUserInfoDto.class)
+					.flatMap(errorBody -> {
+						HttpStatus status = (HttpStatus)response.statusCode();
+						return Mono.error(WebClientResponseException.create(
+							status.value(),
+							status.getReasonPhrase(),
+							response.headers().asHttpHeaders(),
+							null,
+							null
+						));
+					})
 			)
 			.bodyToMono(NaverUserInfoDto.class)
 			.block();
 	}
 
-	private MemberRegisterDto convertToRegisterDto(NaverUserInfoDto userInfo, OAuthLoginDto oAuthLoginDto) {
+	private MemberRegisterDto convertToRegisterDto(NaverUserInfoDto userInfo, OAuthRegisterDto oAuthRegisterDto) {
 		NaverResponseDto naverUserInfo = userInfo.getNaverResponseDto();
 		String password = UUID.randomUUID().toString().replace("-", "");
 
 		return MemberRegisterDto.builder()
 			.email(naverUserInfo.getEmail())
-			.nickName(oAuthLoginDto.getNickName())
+			.nickName(oAuthRegisterDto.getNickName())
 			.password(password)
 			.passwordConfirm(password)
 			.phoneNumber(naverUserInfo.getPhoneNumber())
 			.birthDate(naverUserInfo.getBirthday() + "-" + naverUserInfo.getBirthday())
-			.terms(oAuthLoginDto.getTerms())
+			.terms(oAuthRegisterDto.getTerms())
 			.provider(EProviders.NAVER)
 			.build();
 	}
