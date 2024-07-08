@@ -72,20 +72,7 @@ public class MemberController {
 	) {
 		OAuthService oAuthService = oAuthServiceFactory.getService(provider);
 		return ResponseEntity.status(SUCCESS.getStatus())
-			.body(new CDResponse<>(oAuthService.login(oAuthLoginDto)));
-	}
-
-	/**
-	 * 소셜 회원 등록
-	 */
-	@PostMapping("/auth/{provider}/register")
-	public ResponseEntity<CDResponse<?>> authRegister(
-		@PathVariable String provider,
-		@RequestBody OAuthRegisterDto oAuthRegisterDto
-	) {
-		OAuthService oAuthService = oAuthServiceFactory.getService(provider);
-		return ResponseEntity.status(SUCCESS.getStatus())
-			.body(new CDResponse<>(oAuthService.registerAndLogin(oAuthRegisterDto)));
+			.body(new CDResponse<>(oAuthService.registerAndLogin(oAuthLoginDto)));
 	}
 
 	/**
