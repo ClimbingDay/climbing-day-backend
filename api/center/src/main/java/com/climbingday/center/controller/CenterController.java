@@ -61,7 +61,7 @@ public class CenterController {
 	 * 암장 조회
 	 */
 	@GetMapping("/{centerName}")
-	public ResponseEntity<CDResponse<?>> getCenter(
+	public ResponseEntity<CDResponse<?>> getCenterName(
 		@PathVariable String centerName
 	) {
 		return ResponseEntity.status(SUCCESS.getStatus())

@@ -20,7 +20,6 @@ import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberLoginDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.dto.member.OAuthLoginDto;
-import com.climbingday.dto.member.OAuthRegisterDto;
 import com.climbingday.dto.member.PasswordResetDto;
 import com.climbingday.dto.member.RecordRegisterDto;
 import com.climbingday.member.service.MemberService;
