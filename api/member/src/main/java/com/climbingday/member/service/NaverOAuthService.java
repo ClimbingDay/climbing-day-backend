@@ -20,7 +20,6 @@ import com.climbingday.dto.member.MemberTokenDto;
 import com.climbingday.dto.member.NaverResponseDto;
 import com.climbingday.dto.member.NaverUserInfoDto;
 import com.climbingday.dto.member.OAuthLoginDto;
-import com.climbingday.dto.member.OAuthRegisterDto;
 import com.climbingday.enums.member.EProviders;
 import com.climbingday.member.exception.MemberException;
 
@@ -34,6 +33,7 @@ public class NaverOAuthService implements OAuthService {
 	private final MemberRepository memberRepository;
 
 	@Override
+	@Transactional
 	public MemberTokenDto login(OAuthLoginDto oAuthLoginDto) {
 		try {
 			NaverUserInfoDto userInfo = getNaverUserInfo(oAuthLoginDto.getAccessToken());
@@ -52,14 +52,29 @@ public class NaverOAuthService implements OAuthService {
 	}
 
 	@Override
-	public MemberTokenDto registerAndLogin(OAuthRegisterDto oAuthRegisterDto) {
+	@Transactional
+	public MemberTokenDto registerAndLogin(OAuthLoginDto oAuthLoginDto) {
 		try {
-			NaverUserInfoDto userInfo = getNaverUserInfo(oAuthRegisterDto.getAccessToken());
-			MemberRegisterDto memberRegisterDto = convertToRegisterDto(userInfo, oAuthRegisterDto);
+			NaverUserInfoDto userInfo = getNaverUserInfo(oAuthLoginDto.getAccessToken());
+			Optional<Member> member = memberRepository.findByEmailAndProvider(userInfo.getNaverResponseDto().getEmail(),
+				EProviders.NAVER);
 
-			// 신규 회원 가입 처리 및 로그인
-			Member registeredMember = memberService.registerMember(memberRegisterDto);
-			return memberService.oAuthLogin(registeredMember);
+			if (member.isPresent()) {
+				// 기존 회원 로그인 처리
+				return memberService.oAuthLogin(member.get());
+			} else {
+				// 신규 가입 및 로그인 처리
+				MemberRegisterDto memberRegisterDto = convertToRegisterDto(userInfo, oAuthLoginDto);
+
+				// nickName 랜덤생성 -> to do 최적화 필요
+				while(memberRepository.existsByNickName(memberRegisterDto.getNickName())) {
+					// 새로운 랜덤 닉네임 가져오기
+					memberRegisterDto.setNickName(oAuthLoginDto.generateRandomNickName());
+				}
+
+				Member registeredMember = memberService.registerMember(memberRegisterDto);
+				return memberService.oAuthLogin(registeredMember);
+			}
 		} catch (
 			Exception e) {
 			throw new MemberException(NAVER_LOGIN_ERROR);
@@ -95,18 +110,18 @@ public class NaverOAuthService implements OAuthService {
 			.block();
 	}
 
-	private MemberRegisterDto convertToRegisterDto(NaverUserInfoDto userInfo, OAuthRegisterDto oAuthRegisterDto) {
+	private MemberRegisterDto convertToRegisterDto(NaverUserInfoDto userInfo, OAuthLoginDto oAuthLoginDto) {
 		NaverResponseDto naverUserInfo = userInfo.getNaverResponseDto();
 		String password = UUID.randomUUID().toString().replace("-", "");
 
 		return MemberRegisterDto.builder()
 			.email(naverUserInfo.getEmail())
-			.nickName(oAuthRegisterDto.getNickName())
+			.nickName(oAuthLoginDto.getNickName())
 			.password(password)
 			.passwordConfirm(password)
 			.phoneNumber(naverUserInfo.getPhoneNumber())
 			.birthDate(naverUserInfo.getBirthday() + "-" + naverUserInfo.getBirthday())
-			.terms(oAuthRegisterDto.getTerms())
+			.terms(oAuthLoginDto.getTerms())
 			.provider(EProviders.NAVER)
 			.build();
 	}
