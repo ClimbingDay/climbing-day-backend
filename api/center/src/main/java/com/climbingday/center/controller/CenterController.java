@@ -67,4 +67,15 @@ public class CenterController {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(centerService.getCenter(centerName)));
 	}
+
+	/**
+	 * 암장 레벨 및 색상 조회
+	 */
+	@GetMapping("/{centerName}/level")
+	public ResponseEntity<CDResponse<?>> getCenterLevel(
+		@PathVariable String centerName
+	) {
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(centerService.getCenterLevel(centerName)));
+	}
 }

@@ -7,7 +7,9 @@ import static com.climbingday.enums.MemberErrorCode.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -20,12 +22,16 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.climbingday.center.exception.CenterException;
 import com.climbingday.domain.center.Center;
+import com.climbingday.domain.center.repository.CenterLevelRepository;
 import com.climbingday.domain.center.repository.CenterRepository;
 import com.climbingday.domain.member.Member;
 import com.climbingday.domain.member.repository.MemberRepository;
 import com.climbingday.dto.center.CenterDto;
+import com.climbingday.dto.center.CenterLevelDto;
 import com.climbingday.dto.center.CenterRegisterDto;
+import com.climbingday.dto.center.LevelColorDto;
 import com.climbingday.security.service.UserDetailsImpl;
+import com.querydsl.core.Tuple;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +46,7 @@ public class CenterService {
 
 	private final CenterRepository centerRepository;
 	private final MemberRepository memberRepository;
+	private final CenterLevelRepository centerLevelRepository;
 	private final AmazonS3 s3Client;
 
 	private final String DEFAULT_PROFILE_IMAGE = "https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg";
@@ -80,7 +87,7 @@ public class CenterService {
 	 */
 	@Transactional(readOnly = true)
 	public List<CenterDto> getCenter(String centerName) {
-		List<CenterDto> centers = centerRepository.findByName(centerName);
+		List<CenterDto> centers = centerRepository.getCenters(centerName);
 		if(!centers.isEmpty()) {
 			return centers;
 		}else {
@@ -92,6 +99,38 @@ public class CenterService {
 		if (centerRepository.existsByName(centerName)) {
 			throw new CenterException(DUPLICATED_CENTER_NAME);
 		}
+	}
+
+	/**
+	 * 암장 레벨 및 색상 조회
+	 */
+	@Transactional(readOnly = true)
+	public CenterLevelDto getCenterLevel(String centerName) {
+		// 암장 조회
+		Center center = centerRepository.findCenterByName(centerName)
+				.orElseThrow(() -> new CenterException(EXISTS_NOT_CENTER));
+
+		List<Tuple> centerLevels = centerLevelRepository.getCenterLevels(center.getId());
+
+		CenterLevelDto response = new CenterLevelDto();
+		if(!centerLevels.isEmpty()) {
+			response.setName(centerLevels.get(0).get(0, String.class));
+			Map<Integer, LevelColorDto> levelColorDtoMap = new HashMap<>();
+
+			for(Tuple centerLevel: centerLevels) {
+				LevelColorDto levelColorDto = LevelColorDto.builder()
+					.level(centerLevel.get(3, String.class))
+					.colorName(centerLevel.get(1, String.class))
+					.colorValue(centerLevel.get(2, String.class))
+					.build();
+
+				levelColorDtoMap.put(centerLevel.get(4, Integer.class), levelColorDto);
+			}
+
+			response.setLevelColor(levelColorDtoMap);
+		}
+
+		return response;
 	}
 
 	/**
