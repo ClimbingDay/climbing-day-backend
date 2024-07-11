@@ -10,5 +10,5 @@ import com.climbingday.dto.center.CenterDto;
 public interface CenterCustom {
 	Page<CenterDto> findAllCenter(Pageable pageable);
 
-	List<CenterDto> findByName(String centerName);
+	List<CenterDto> getCenters(String centerName);
 }
