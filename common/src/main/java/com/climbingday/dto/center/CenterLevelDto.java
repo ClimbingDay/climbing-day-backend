@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class CenterLevelDto {
 	private String name;
 
-	private Map<Integer, LevelColorDto> levelColor;
+	private Map<Long, LevelColorDto> levelColor;
 }
