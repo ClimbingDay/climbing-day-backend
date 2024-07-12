@@ -38,7 +38,7 @@ public class CenterController {
 	public ResponseEntity<CDResponse<?>> registerCenter(
 		@AuthenticationPrincipal UserDetailsImpl userDetails,
 		@Valid @RequestPart("center") CenterRegisterDto centerRegisterDto,
-		@RequestParam(value = "profile_image", required = false)MultipartFile file
+		@RequestParam(value = "profileImage", required = false)MultipartFile file
 		) {
 		return ResponseEntity.status(CREATE.getStatus())
 			.body(new CDResponse<>(CREATE, Map.of("id", centerService.registerCenter(centerRegisterDto, file, userDetails))));
