@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class MemberMyPageDto {
+public class MemberMyProfileDto {
 	private Long id;
 
 	private String nickName;

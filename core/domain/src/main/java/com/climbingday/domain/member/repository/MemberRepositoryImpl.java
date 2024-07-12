@@ -10,7 +10,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import com.climbingday.dto.member.MemberDto;
-import com.climbingday.dto.member.MemberMyPageDto;
+import com.climbingday.dto.member.MemberMyProfileDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -36,9 +36,9 @@ public class MemberRepositoryImpl implements MemberCustom {
 	}
 
 	@Override
-	public Optional<MemberMyPageDto> getMyPage(Long id) {
-		MemberMyPageDto memberMyPageDto = queryFactory
-			.select(Projections.constructor(MemberMyPageDto.class,
+	public Optional<MemberMyProfileDto> getMyPage(Long id) {
+		MemberMyProfileDto memberMyProfileDto = queryFactory
+			.select(Projections.constructor(MemberMyProfileDto.class,
 				member.id,
 				member.nickName,
 				member.profileImage,
@@ -51,7 +51,7 @@ public class MemberRepositoryImpl implements MemberCustom {
 			.where(memberId(id))
 			.fetchOne();
 
-		return Optional.ofNullable(memberMyPageDto);
+		return Optional.ofNullable(memberMyProfileDto);
 	}
 
 	private BooleanExpression memberId(Long id) {
