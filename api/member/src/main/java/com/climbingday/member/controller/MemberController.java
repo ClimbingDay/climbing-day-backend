@@ -191,7 +191,7 @@ public class MemberController {
 	@PostMapping("/me/profile-image")
 	public ResponseEntity<CDResponse<?>> updateProfileImage(
 		@AuthenticationPrincipal UserDetailsImpl userDetails,
-		@RequestParam(value = "profile_image", required = false) MultipartFile file
+		@RequestParam(value = "profileImage", required = false) MultipartFile file
 	) {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(Map.of("profileImage", memberService.updateProfileImage(userDetails, file))));
