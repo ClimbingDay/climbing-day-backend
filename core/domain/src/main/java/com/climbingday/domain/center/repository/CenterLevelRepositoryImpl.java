@@ -31,6 +31,7 @@ public class CenterLevelRepositoryImpl implements CenterLevelCustom {
 			.join(centerLevel.center, center)
 			.join(centerLevel.level, level)
 			.join(centerLevel.color, color)
+			.where(center.id.eq(centerId))
 			.fetch();
 	}
 }
