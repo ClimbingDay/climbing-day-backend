@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LevelColorDto {
-	private String level;
+	private String levelName;
 
 	private String colorName;
 
-	private String colorValue;
+	private String colorHex;
 }

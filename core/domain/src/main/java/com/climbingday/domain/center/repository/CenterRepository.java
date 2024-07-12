@@ -9,5 +9,5 @@ import com.climbingday.domain.center.Center;
 public interface CenterRepository extends JpaRepository<Center, Long>, CenterCustom {
 	boolean existsByName(String name);
 
-	Optional<Center> findCenterByName(String name);
+	Optional<Center> findCenterById(Long id);
 }

@@ -105,9 +105,9 @@ public class CenterService {
 	 * 암장 레벨 및 색상 조회
 	 */
 	@Transactional(readOnly = true)
-	public CenterLevelDto getCenterLevel(String centerName) {
+	public CenterLevelDto getCenterLevel(Long centerId) {
 		// 암장 조회
-		Center center = centerRepository.findCenterByName(centerName)
+		Center center = centerRepository.findCenterById(centerId)
 				.orElseThrow(() -> new CenterException(EXISTS_NOT_CENTER));
 
 		List<Tuple> centerLevels = centerLevelRepository.getCenterLevels(center.getId());
@@ -119,9 +119,9 @@ public class CenterService {
 
 			for(Tuple centerLevel: centerLevels) {
 				LevelColorDto levelColorDto = LevelColorDto.builder()
-					.level(centerLevel.get(3, String.class))
+					.levelName(centerLevel.get(3, String.class))
 					.colorName(centerLevel.get(1, String.class))
-					.colorValue(centerLevel.get(2, String.class))
+					.colorHex(centerLevel.get(2, String.class))
 					.build();
 
 				levelColorDtoMap.put(centerLevel.get(4, Long.class), levelColorDto);
