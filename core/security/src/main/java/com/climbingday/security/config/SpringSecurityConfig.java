@@ -183,9 +183,9 @@ public class SpringSecurityConfig {
 			antMatcher(GET, "/admin/member"),						// 모든 회원 조회
 
 			antMatcher(GET, "/member/token/refresh"),				// AccessToken, RefreshToken 재발급
-			antMatcher(GET, "/member/my-page"),					// 마이 페이지 조회
+			antMatcher(GET, "/member/me/profile"),					// 내 프로필 조회
+			antMatcher(POST, "/member/me/profile"),					// 내 프로필 수정
 			antMatcher(POST, "/member/record/register"),			// 기록 등록
-			antMatcher(POST, "/member/me/profile-image"),			// 내 프로필 이미지 변경
 
 			antMatcher(GET, "/crew/profile/my"),					// 나의 크루 프로필 조회
 			antMatcher(POST, "/crew/post/register"),				// 크루 게시글 등록
