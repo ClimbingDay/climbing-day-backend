@@ -15,10 +15,6 @@ springdoc:
         path: /swagger-ui
         enabled: true
 
-s3:
-    bucket:
-        name: climbing-day-bucket
-
 server:
     port: 8082
     servlet:

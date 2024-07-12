@@ -16,6 +16,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    // s3
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.470")
+
     // querydsl
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
     annotationProcessor("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
