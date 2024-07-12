@@ -4,6 +4,7 @@ import static com.climbingday.enums.EventErrorCode.*;
 import static com.climbingday.enums.GlobalErrorCode.*;
 import static com.climbingday.enums.MemberErrorCode.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.climbingday.domain.common.repository.RedisRepository;
+import com.climbingday.domain.common.repository.S3Repository;
 import com.climbingday.domain.member.Member;
 import com.climbingday.domain.member.MemberTerms;
 import com.climbingday.domain.member.repository.MemberRepository;
@@ -58,7 +61,10 @@ public class MemberService {
 	private final AuthenticationManager authenticationManager;
 	private final JwtProvider jwtProvider;
 	private final RedisRepository redisRepository;
+	private final S3Repository s3Repository;
 	private final RestTemplate restTemplate;
+
+	private final String DEFAULT_PROFILE_IMAGE = "https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg";
 
 	@Value("${service-url}")
 	private String serviceUrl;
@@ -299,6 +305,30 @@ public class MemberService {
 		}catch (RestClientException e) {
 			throw new MemberException(UNABLE_TO_SEND_EMAIL);
 		}
+	}
+
+	/**
+	 * 내 프로필 사진 변경
+	 */
+	@Transactional
+	public String updateProfileImage(UserDetailsImpl userDetail, MultipartFile file) {
+		// 회원 정보 가져오기
+		Member member = memberRepository.findById(userDetail.getId())
+			.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
+
+		if(!(file==null || file.isEmpty())) {
+			try {
+				member.setProfileImage(s3Repository.uploadFile(file));
+			}catch(IOException e) {
+				throw new MemberException(S3_UPLOAD_FAILED);
+			}
+		}else {
+			member.setProfileImage(DEFAULT_PROFILE_IMAGE);
+		}
+
+		memberRepository.save(member);
+
+		return member.getProfileImage();
 	}
 
 	/**

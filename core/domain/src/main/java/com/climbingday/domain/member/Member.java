@@ -40,6 +40,7 @@ public class Member extends MutableBaseEntity {
 
 	private String phoneNumber;					// 전화번호
 
+	@Setter
 	private String profileImage;				// 프로필 이미지
 
 	private String introduce;					// 소개

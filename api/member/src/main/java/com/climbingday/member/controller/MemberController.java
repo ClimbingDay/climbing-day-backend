@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.climbingday.dto.member.EmailAuthDto;
 import com.climbingday.dto.member.EmailDto;
@@ -182,5 +183,17 @@ public class MemberController {
 	) {
 		return ResponseEntity.status(CREATE.getStatus())
 			.body(new CDResponse<>(CREATE, Map.of("id", recordService.registerRecord(userDetails, recordRegisterDto))));
+	}
+
+	/**
+	 * 내 프로필 사진 변경
+	 */
+	@PostMapping("/me/profile-image")
+	public ResponseEntity<CDResponse<?>> updateProfileImage(
+		@AuthenticationPrincipal UserDetailsImpl userDetails,
+		@RequestParam(value = "profile_image", required = false) MultipartFile file
+	) {
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(Map.of("profileImage", memberService.updateProfileImage(userDetails, file))));
 	}
 }
