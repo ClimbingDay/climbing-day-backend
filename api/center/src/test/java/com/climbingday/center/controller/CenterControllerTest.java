@@ -115,7 +115,7 @@ class CenterControllerTest extends TestConfig {
 		File file = new ClassPathResource("climbing-day-no-image.jpg").getFile();
 
 		// 파일 업로드
-		doReturn("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg").when(centerService).uploadFile(any());
+		// doReturn("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg").when(centerService).uploadFile(any());
 
 		CenterRegisterDto centerRegisterDto = CenterRegisterDto.builder()
 			.name("암장이름")
