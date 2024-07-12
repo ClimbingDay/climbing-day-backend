@@ -37,7 +37,7 @@ public class CenterRepositoryImpl implements CenterCustom {
 		return new PageImpl<>(centerList, pageable, total);
 	}
 
-	public List<CenterDto> getCenters(String centerName) {
+	public List<CenterDto> getCenterByName(String centerName) {
 		String likePattern = "%" + centerName + "%";
 		return
 			selectCenterQuery()

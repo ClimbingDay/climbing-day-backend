@@ -87,7 +87,7 @@ public class CenterService {
 	 */
 	@Transactional(readOnly = true)
 	public List<CenterDto> getCenter(String centerName) {
-		List<CenterDto> centers = centerRepository.getCenters(centerName);
+		List<CenterDto> centers = centerRepository.getCenterByName(centerName);
 		if(!centers.isEmpty()) {
 			return centers;
 		}else {
