@@ -5,6 +5,7 @@ import static com.climbingday.enums.GlobalErrorCode.*;
 import static com.climbingday.enums.MemberErrorCode.*;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,8 @@ import com.climbingday.dto.member.EmailAuthDto;
 import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberDto;
 import com.climbingday.dto.member.MemberLoginDto;
-import com.climbingday.dto.member.MemberMyPageDto;
+import com.climbingday.dto.member.MemberMyProfileDto;
+import com.climbingday.dto.member.MemberProfileDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.dto.member.MemberTokenDto;
 import com.climbingday.dto.member.PasswordResetDto;
@@ -270,7 +272,7 @@ public class MemberService {
 	/**
 	 * 마이 페이지 조회
 	 */
-	public MemberMyPageDto getMyPage(UserDetailsImpl userDetails) {
+	public MemberMyProfileDto getMyPage(UserDetailsImpl userDetails) {
 		return memberRepository.getMyPage(userDetails.getId())
 			.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
 	}
@@ -308,27 +310,52 @@ public class MemberService {
 	}
 
 	/**
-	 * 내 프로필 사진 변경
+	 * 내 프로필 수정
 	 */
 	@Transactional
-	public String updateProfileImage(UserDetailsImpl userDetail, MultipartFile file) {
+	public void updateProfile(
+		UserDetailsImpl userDetail,
+		MemberProfileDto memberProfileDto,
+		MultipartFile file
+	) {
 		// 회원 정보 가져오기
 		Member member = memberRepository.findById(userDetail.getId())
 			.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
 
+		if(memberProfileDto != null) {
+			Map<String, String> nonNullFields = memberProfileDto.getNonNullFields();
+
+			// 닉네임 변경을 해야하는 경우 중복체크
+			if(nonNullFields.containsKey("nickName"))
+				checkNickName(nonNullFields.get("nickName"));
+
+			// 회원 프로필 이미지를 제외한 정보 수정
+			nonNullFields.forEach((fieldName, value) -> {
+				try {
+					Field field = Member.class.getDeclaredField(fieldName);
+					field.setAccessible(true);
+					field.set(member, value);
+				}catch (NoSuchFieldException | IllegalAccessException e) {
+					if(e.getMessage().equals(NOT_MATCHED_PASSWORD.getErrorMessage())){
+						throw new MemberException(NOT_MATCHED_PASSWORD);
+					}else {
+						throw new MemberException(INTERNAL_SERVER_ERROR);
+					}
+				}
+			});
+		}
+
+		// 회원 프로필 이미지 수정
 		if(!(file==null || file.isEmpty())) {
 			try {
-				member.setProfileImage(s3Repository.uploadFile(file));
+				String profileImageUrl = s3Repository.uploadFile(file);
+				member.setProfileImage(profileImageUrl);
 			}catch(IOException e) {
 				throw new MemberException(S3_UPLOAD_FAILED);
 			}
-		}else {
-			member.setProfileImage(DEFAULT_PROFILE_IMAGE);
 		}
 
 		memberRepository.save(member);
-
-		return member.getProfileImage();
 	}
 
 	/**

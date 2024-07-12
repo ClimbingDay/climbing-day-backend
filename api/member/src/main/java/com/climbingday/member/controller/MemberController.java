@@ -1,6 +1,7 @@
 package com.climbingday.member.controller;
 
 import static com.climbingday.enums.GlobalSuccessCode.*;
+import static com.climbingday.enums.MemberErrorCode.*;
 
 import java.util.Map;
 
@@ -13,16 +14,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.climbingday.dto.member.EmailAuthDto;
 import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberLoginDto;
+import com.climbingday.dto.member.MemberProfileDto;
 import com.climbingday.dto.member.MemberRegisterDto;
 import com.climbingday.dto.member.OAuthLoginDto;
 import com.climbingday.dto.member.PasswordResetDto;
 import com.climbingday.dto.member.RecordRegisterDto;
+import com.climbingday.member.exception.MemberException;
 import com.climbingday.member.service.MemberService;
 import com.climbingday.member.service.OAuthService;
 import com.climbingday.member.service.OAuthServiceFactory;
@@ -163,14 +167,32 @@ public class MemberController {
 	}
 
 	/**
-	 * 마이 페이지 조회
+	 * 내 프로필 조회
 	 */
-	@GetMapping("/my-page")
+	@GetMapping("/me/profile")
 	public ResponseEntity<CDResponse<?>> myPage(
 		@AuthenticationPrincipal UserDetailsImpl userDetails
 	) {
 		return ResponseEntity.status(SUCCESS.getStatus())
 			.body(new CDResponse<>(memberService.getMyPage(userDetails)));
+	}
+
+	/**
+	 * 내 프로필 수정
+	 */
+	@PostMapping("/me/profile")
+	public ResponseEntity<CDResponse<?>> updateProfileImage(
+		@AuthenticationPrincipal UserDetailsImpl userDetails,
+		@Valid @RequestPart(name = "member", required = false) MemberProfileDto memberProfileDto,
+		@RequestParam(name = "profileImage", required = false) MultipartFile file
+	) {
+		if(memberProfileDto == null && (file == null || file.isEmpty())){
+			throw new MemberException(NO_UPDATE_FIELDS);
+		}
+
+		memberService.updateProfile(userDetails, memberProfileDto, file);
+		return ResponseEntity.status(SUCCESS.getStatus())
+			.body(new CDResponse<>(MEMBER_PROFILE_UPDATE_SUCCESS));
 	}
 
 	/**
@@ -183,17 +205,5 @@ public class MemberController {
 	) {
 		return ResponseEntity.status(CREATE.getStatus())
 			.body(new CDResponse<>(CREATE, Map.of("id", recordService.registerRecord(userDetails, recordRegisterDto))));
-	}
-
-	/**
-	 * 내 프로필 사진 변경
-	 */
-	@PostMapping("/me/profile-image")
-	public ResponseEntity<CDResponse<?>> updateProfileImage(
-		@AuthenticationPrincipal UserDetailsImpl userDetails,
-		@RequestParam(value = "profileImage", required = false) MultipartFile file
-	) {
-		return ResponseEntity.status(SUCCESS.getStatus())
-			.body(new CDResponse<>(Map.of("profileImage", memberService.updateProfileImage(userDetails, file))));
 	}
 }

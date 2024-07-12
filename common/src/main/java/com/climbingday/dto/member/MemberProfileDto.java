@@ -1,5 +1,10 @@
 package com.climbingday.dto.member;
 
+import static com.climbingday.enums.MemberErrorCode.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -22,4 +27,19 @@ public class MemberProfileDto {
 
 	@Size(max = 25, message = "회원 소개글은 25자 이하로 입력해주세요.")
 	private String introduce;
+
+	public Map<String, String> getNonNullFields() {
+		Map<String, String> nonNullFields = new HashMap<>();
+
+		if(nickName != null) nonNullFields.put("nickName", nickName);
+		if(password != null) {
+			if(!password.equals(passwordConfirm)) {
+				throw new IllegalArgumentException(NOT_MATCHED_PASSWORD.getErrorMessage());
+			}
+			nonNullFields.put("password", password);
+		}
+		if(introduce != null) nonNullFields.put("introduce", introduce);
+
+		return nonNullFields;
+	}
 }
