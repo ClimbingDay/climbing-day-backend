@@ -149,6 +149,7 @@ public class SpringSecurityConfig {
 
 			antMatcher(GET, "/center"),								// 모든 암장 조회
 			antMatcher(GET, "/center/**"),							// 암장 조회(이름)
+			antMatcher(GET, "/center/*/level"),						// 암장 레벨 및 색상 조회
 
 			antMatcher(POST, "/member/email/auth/request"),			// 이메일 인증 코드 요청
 			antMatcher(POST, "/member/email/auth/confirm"),			// 이메일 인증 코드 확인
