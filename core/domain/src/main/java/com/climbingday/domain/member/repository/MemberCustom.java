@@ -5,9 +5,10 @@ import java.util.Optional;
 
 import com.climbingday.dto.member.MemberDto;
 import com.climbingday.dto.member.MemberMyProfileDto;
+import com.querydsl.core.Tuple;
 
 public interface MemberCustom {
 	List<MemberDto> getAllMember();
 
-	Optional<MemberMyProfileDto> getMyPage(Long id);
+	List<Tuple> getMyPage(Long id);
 }

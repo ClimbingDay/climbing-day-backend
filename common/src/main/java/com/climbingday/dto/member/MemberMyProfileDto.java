@@ -1,5 +1,10 @@
 package com.climbingday.dto.member;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.climbingday.dto.crew.CrewProfileDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +22,6 @@ public class MemberMyProfileDto {
 
 	private String introduce;
 
-	private String crewName;
+	@Builder.Default
+	private List<CrewProfileDto> crew = new ArrayList<>();
 }

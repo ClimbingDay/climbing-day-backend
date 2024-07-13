@@ -5,12 +5,11 @@ import static com.climbingday.domain.member.QMember.*;
 import static com.climbingday.domain.memberCrew.QMemberCrew.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import com.climbingday.dto.member.MemberDto;
-import com.climbingday.dto.member.MemberMyProfileDto;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -36,22 +35,22 @@ public class MemberRepositoryImpl implements MemberCustom {
 	}
 
 	@Override
-	public Optional<MemberMyProfileDto> getMyPage(Long id) {
-		MemberMyProfileDto memberMyProfileDto = queryFactory
-			.select(Projections.constructor(MemberMyProfileDto.class,
+	public List<Tuple> getMyPage(Long id) {
+		return queryFactory
+			.select(
 				member.id,
 				member.nickName,
 				member.profileImage,
 				member.introduce,
-				crew.name
-			))
+				crew.id,
+				crew.name,
+				crew.profileImage
+			)
 			.from(member)
 			.leftJoin(memberCrew).on(member.id.eq(memberCrew.member.id))
 			.leftJoin(crew).on(memberCrew.crew.id.eq(crew.id))
 			.where(memberId(id))
-			.fetchOne();
-
-		return Optional.ofNullable(memberMyProfileDto);
+			.fetch();
 	}
 
 	private BooleanExpression memberId(Long id) {
