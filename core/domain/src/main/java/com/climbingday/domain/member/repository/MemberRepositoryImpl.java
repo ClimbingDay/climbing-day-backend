@@ -3,11 +3,13 @@ package com.climbingday.domain.member.repository;
 import static com.climbingday.domain.crew.QCrew.*;
 import static com.climbingday.domain.member.QMember.*;
 import static com.climbingday.domain.memberCrew.QMemberCrew.*;
+import static com.climbingday.domain.sigungu.QSigungu.*;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.climbingday.domain.sigungu.QSigungu;
 import com.climbingday.dto.member.MemberDto;
 import com.climbingday.dto.member.MemberMatchDto;
 import com.querydsl.core.Tuple;
@@ -17,6 +19,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -72,13 +76,20 @@ public class MemberRepositoryImpl implements MemberCustom {
 		// 랜덤 정렬을 위한 Expressions 생성
 		OrderSpecifier<?> randomOrder = Expressions.numberTemplate(Double.class, "function('RAND')").asc();
 
+		// 서브쿼리를 사용하여 sigungu_name 값을 가져옴
+		JPQLQuery<String> sigunguNameSubQuery = JPAExpressions
+			.select(sigungu.name)
+			.from(sigungu)
+			.where(sigungu.code.eq(member.sigunguCode));
+
 		return queryFactory
 			.select(Projections.fields(MemberMatchDto.class,
 				member.nickName,
 				new CaseBuilder()
 					.when(member.memberSettings.isProfileVisible.isFalse())
 					.then("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg")
-					.otherwise(member.profileImage).as("profileImage")
+					.otherwise(member.profileImage).as("profileImage"),
+				Expressions.stringTemplate("({0})", sigunguNameSubQuery).as("sigunguName") // 서브쿼리를 통해 가져온 sigunguName
 			))
 			.from(member)
 			.where(
