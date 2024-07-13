@@ -59,6 +59,7 @@ public class Member extends MutableBaseEntity {
 	@Enumerated(EnumType.STRING)
 	private EProviders provider;
 
+	@Setter
 	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private MemberSettings memberSettings;
 
@@ -68,7 +69,7 @@ public class Member extends MutableBaseEntity {
 		if(registerDto.getIntroduce() != null && !registerDto.getIntroduce().isEmpty())
 			introduce = registerDto.getIntroduce();
 
-		return Member.builder()
+		Member member = Member.builder()
 			.email(registerDto.getEmail())
 			.nickName(registerDto.getNickName())
 			.phoneNumber(String.join("-", registerDto.getPhoneNumber()))
@@ -77,5 +78,13 @@ public class Member extends MutableBaseEntity {
 			.introduce(introduce)
 			.provider(registerDto.getProvider())
 			.build();
+
+		MemberSettings settings = MemberSettings.builder()
+			.member(member)
+			.build();
+
+		member.setMemberSettings(settings);
+
+		return member;
 	}
 }
