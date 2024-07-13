@@ -1,6 +1,7 @@
 package com.climbingday.dto.center;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class CenterLevelDto {
 	private String name;
 
-	private Map<Long, LevelColorDto> levelColor;
+	@Builder.Default
+	private List<LevelColorDto> levelColor = new ArrayList<>();
 }

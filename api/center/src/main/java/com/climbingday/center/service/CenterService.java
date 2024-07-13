@@ -112,19 +112,17 @@ public class CenterService {
 		CenterLevelDto response = new CenterLevelDto();
 		if(!centerLevels.isEmpty()) {
 			response.setName(centerLevels.get(0).get(0, String.class));
-			Map<Long, LevelColorDto> levelColorDtoMap = new HashMap<>();
 
 			for(Tuple centerLevel: centerLevels) {
 				LevelColorDto levelColorDto = LevelColorDto.builder()
+					.levelId(centerLevel.get(4, Long.class))
 					.levelName(centerLevel.get(3, String.class))
 					.colorName(centerLevel.get(1, String.class))
 					.colorHex(centerLevel.get(2, String.class))
 					.build();
 
-				levelColorDtoMap.put(centerLevel.get(4, Long.class), levelColorDto);
+				response.getLevelColor().add(levelColorDto);
 			}
-
-			response.setLevelColor(levelColorDtoMap);
 		}
 
 		return response;

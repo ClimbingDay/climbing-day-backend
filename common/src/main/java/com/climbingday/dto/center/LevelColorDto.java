@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LevelColorDto {
+	private Long levelId;
+
 	private String levelName;
 
 	private String colorName;
