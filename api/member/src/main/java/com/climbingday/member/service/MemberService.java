@@ -34,6 +34,7 @@ import com.climbingday.domain.member.repository.MemberRepository;
 import com.climbingday.domain.member.repository.MemberTermsRepository;
 import com.climbingday.domain.terms.Terms;
 import com.climbingday.domain.terms.repository.TermsRepository;
+import com.climbingday.dto.crew.CrewProfileDto;
 import com.climbingday.dto.member.EmailAuthDto;
 import com.climbingday.dto.member.EmailDto;
 import com.climbingday.dto.member.MemberDto;
@@ -48,6 +49,7 @@ import com.climbingday.dto.terms.TermsListDto;
 import com.climbingday.member.exception.MemberException;
 import com.climbingday.security.jwt.JwtProvider;
 import com.climbingday.security.service.UserDetailsImpl;
+import com.querydsl.core.Tuple;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -270,11 +272,33 @@ public class MemberService {
 	}
 
 	/**
-	 * 마이 페이지 조회
+	 * 내 프로필 조회
 	 */
 	public MemberMyProfileDto getMyPage(UserDetailsImpl userDetails) {
-		return memberRepository.getMyPage(userDetails.getId())
-			.orElseThrow(() -> new MemberException(NOT_EXISTS_MEMBER));
+		List<Tuple> myProfiles = memberRepository.getMyPage(userDetails.getId());
+		Tuple myProfileTuple = myProfiles.get(0);
+
+		MemberMyProfileDto response = MemberMyProfileDto.builder()
+			.id(myProfileTuple.get(0, Long.class))
+			.nickName(myProfileTuple.get(1, String.class))
+			.profileImage(myProfileTuple.get(2, String.class))
+			.introduce(myProfileTuple.get(3, String.class))
+			.build();
+
+		// 크루 처리
+		for(Tuple myProfile: myProfiles) {
+			if(myProfile.get(4, Long.class) != null) {
+				CrewProfileDto crewProfileDto = CrewProfileDto.builder()
+					.id(myProfile.get(4, Long.class))
+					.name(myProfile.get(5, String.class))
+					.profileImage(myProfile.get(6, String.class))
+					.build();
+
+				response.getCrew().add(crewProfileDto);
+			}
+		}
+
+		return response;
 	}
 
 	/**

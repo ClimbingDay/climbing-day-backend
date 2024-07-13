@@ -12,6 +12,7 @@ tasks.withType<Jar> {
 val snippetsDir = layout.buildDirectory.dir("generated-snippets")
 val restdocsApiSpecVersion = "0.18.2"
 val openUiVersion = "1.7.0"
+val queryDslVersion = "5.0.0";
 
 plugins {
     id("com.epages.restdocs-api-spec") version "0.17.1"
@@ -43,6 +44,9 @@ dependencies {
 
     // webflux
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+    // querydsl
+    implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
 
     // 테스트 의존성
     testImplementation("org.springframework.boot:spring-boot-starter-test")

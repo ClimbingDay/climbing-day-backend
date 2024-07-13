@@ -120,7 +120,7 @@ public class NaverOAuthService implements OAuthService {
 			.password(password)
 			.passwordConfirm(password)
 			.phoneNumber(naverUserInfo.getPhoneNumber())
-			.birthDate(naverUserInfo.getBirthday() + "-" + naverUserInfo.getBirthday())
+			.birthDate(naverUserInfo.getBirthyear() + "-" + naverUserInfo.getBirthday())
 			.terms(oAuthLoginDto.getTerms())
 			.provider(EProviders.NAVER)
 			.build();
