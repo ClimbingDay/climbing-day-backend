@@ -57,7 +57,9 @@ public class Member extends MutableBaseEntity {
 	private ERoles roles = ERoles.ROLE_USER;	// 역할(권한)
 
 	@Enumerated(EnumType.STRING)
-	private EProviders provider;
+	private EProviders provider;				// 제공자
+
+	private String sigunguCode;					// 시군구 코드
 
 	@Setter
 	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
