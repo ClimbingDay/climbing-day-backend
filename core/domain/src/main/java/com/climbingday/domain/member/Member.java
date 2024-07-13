@@ -53,6 +53,7 @@ public class Member extends MutableBaseEntity {
 	@Builder.Default
 	private ERoles roles = ERoles.ROLE_USER;	// 역할(권한)
 
+	@Enumerated(EnumType.STRING)
 	private EProviders provider;
 
 	public static Member fromMemberRegisterDto(MemberRegisterDto registerDto) {
@@ -68,6 +69,7 @@ public class Member extends MutableBaseEntity {
 			.birthDate(Date.valueOf(registerDto.getBirthDate()))
 			.profileImage("https://climbing-day-bucket.s3.ap-northeast-2.amazonaws.com/climbing-day-no-image.jpg")
 			.introduce(introduce)
+			.provider(registerDto.getProvider())
 			.build();
 	}
 }
