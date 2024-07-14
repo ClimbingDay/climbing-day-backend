@@ -193,7 +193,9 @@ public class SpringSecurityConfig {
 			antMatcher(POST, "/crew/post/register"),					// 크루 게시글 등록
 
 			antMatcher(POST, "/general/post/register"),				// 일반 게시글 등록
-			antMatcher(GET, "/general/post/*")						// 일반 게시글 상세 조회
+			antMatcher(GET, "/general/post/*"),						// 일반 게시글 상세 조회
+
+			antMatcher(POST, "/event/member-match")					// 회원 매칭
 		);
 
 		return requestMatchers.toArray(RequestMatcher[]::new);

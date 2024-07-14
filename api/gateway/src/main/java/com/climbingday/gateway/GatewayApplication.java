@@ -33,6 +33,8 @@ public class GatewayApplication {
 			.route("api-event", r -> r.path("/v1/mail/**")
 				.or()
 				.path("/v1/sigungu")
+				.or()
+				.path("/v1/event/**")
 				.uri(eventServiceUrl))
 			.build();
 	}

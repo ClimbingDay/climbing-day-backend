@@ -61,6 +61,10 @@ public class Member extends MutableBaseEntity {
 
 	private String sigunguCode;					// 시군구 코드
 
+	private double latitude;					// 위도
+
+	private double longitude;					// 경도
+
 	@Setter
 	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private MemberSettings memberSettings;

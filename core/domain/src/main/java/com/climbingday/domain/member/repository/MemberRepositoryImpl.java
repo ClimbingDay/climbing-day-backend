@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.climbingday.domain.sigungu.QSigungu;
 import com.climbingday.dto.member.MemberDto;
 import com.climbingday.dto.member.MemberMatchDto;
 import com.querydsl.core.Tuple;
