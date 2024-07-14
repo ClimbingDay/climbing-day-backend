@@ -14,6 +14,9 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":common"))
 
+    // org.json
+    implementation("org.json:json:20220320")
+
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
 
