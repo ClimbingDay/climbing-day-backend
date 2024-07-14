@@ -83,6 +83,7 @@ public class MemberRepositoryImpl implements MemberCustom {
 
 		return queryFactory
 			.select(Projections.fields(MemberMatchDto.class,
+				member.id,
 				member.nickName,
 				new CaseBuilder()
 					.when(member.memberSettings.isProfileVisible.isFalse())
