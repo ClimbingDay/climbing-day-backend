@@ -56,12 +56,18 @@ public class NaverOAuthService implements OAuthService {
 	public MemberTokenDto registerAndLogin(OAuthLoginDto oAuthLoginDto) {
 		try {
 			NaverUserInfoDto userInfo = getNaverUserInfo(oAuthLoginDto.getAccessToken());
-			Optional<Member> member = memberRepository.findByEmailAndProvider(userInfo.getNaverResponseDto().getEmail(),
-				EProviders.NAVER);
+			Optional<Member> optionalMember = memberRepository.findByEmail(userInfo.getNaverResponseDto().getEmail());
 
-			if (member.isPresent()) {
+			if (optionalMember.isPresent()) {
+				Member member = optionalMember.get();
+
+				// 클라이밍 데이 로그인 회원
+				if(member.getProvider() == null) {
+					throw new MemberException(CLIMBING_DAY_LOGIN_MEMBER);
+				}
+
 				// 기존 회원 로그인 처리
-				return memberService.oAuthLogin(member.get());
+				return memberService.oAuthLogin(member);
 			} else {
 				// 신규 가입 및 로그인 처리
 				MemberRegisterDto memberRegisterDto = convertToRegisterDto(userInfo, oAuthLoginDto);

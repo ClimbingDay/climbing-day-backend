@@ -26,6 +26,11 @@ public class MemberUserDetailsService implements UserDetailsService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomSecurityException(CHECK_ID_OR_PASSWORD));
 
+        // 소셜 로그인의 경우 소셜 로그인으로 유도
+        if(member.getProvider() != null) {
+            throw new CustomSecurityException(SOCIAL_LOGIN_MEMBER);
+        }
+
         if (member.getStatus().equals(INACTIVE)) {
             throw new CustomSecurityException(DELETE_MEMBER);
         }
