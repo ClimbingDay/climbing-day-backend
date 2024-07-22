@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class TryLevelDto {
-	@NotNull(message = "시도한 level_id는 필수 항목입니다.")
+	@NotNull(message = "시도한 레벨 아이디는 필수 항목입니다.")
 	private Long tryLevelId;
 
-	@NotNull(message = "시도한 color_id 필수 항목입니다.")
+	@NotNull(message = "시도한 색상 아이디는 필수 항목입니다.")
 	private Long colorId;
 
 	@NotNull(message = "성공 여부는 필수 항목입니다.")
