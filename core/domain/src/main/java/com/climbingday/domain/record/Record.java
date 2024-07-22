@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import com.climbingday.domain.center.Center;
 import com.climbingday.domain.member.Member;
 import com.climbingday.dto.member.RecordRegisterDto;
 
@@ -30,6 +31,10 @@ public class Record {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "center_id")
+	private Center center;
 
 	private LocalDateTime startTime;
 

@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecordRegisterDto {
+	@NotNull(message = "암장 아이디는 필수 항목입니다.")
+	private Long centerId;
 
 	@LocalDateTimeValid
 	private String startTime;
