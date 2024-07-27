@@ -14,9 +14,6 @@ public class TryLevelDto {
 	@NotNull(message = "시도한 레벨 아이디는 필수 항목입니다.")
 	private Long tryLevelId;
 
-	@NotNull(message = "시도한 색상 아이디는 필수 항목입니다.")
-	private Long colorId;
-
 	@NotNull(message = "성공 여부는 필수 항목입니다.")
 	@JsonProperty("isSuccess")
 	private boolean isSuccess;
