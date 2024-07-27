@@ -30,5 +30,5 @@ public class RecordRegisterDto {
 	private Long duration;
 
 	@Valid
-	private List<TryLevelDto> trylevelList = new ArrayList<>();
+	private List<TryLevelDto> tryLevelList = new ArrayList<>();
 }
