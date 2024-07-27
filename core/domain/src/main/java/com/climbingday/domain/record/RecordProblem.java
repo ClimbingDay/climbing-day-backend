@@ -1,5 +1,6 @@
 package com.climbingday.domain.record;
 
+import com.climbingday.domain.center.CenterLevel;
 import com.climbingday.domain.center.Color;
 import com.climbingday.domain.center.Level;
 
@@ -32,7 +33,7 @@ public class RecordProblem {
 	private Record record;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "level_id")
+	@JoinColumn(name = "try_level_id")
 	private Level tryLevel;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -41,4 +42,13 @@ public class RecordProblem {
 
 	@Builder.Default
 	private boolean isSuccess = false;
+
+	public static RecordProblem fromCenterLevel(CenterLevel centerLevel, Record record, boolean isSuccess) {
+		return RecordProblem.builder()
+			.record(record)
+			.tryLevel(centerLevel.getLevel())
+			.color(centerLevel.getColor())
+			.isSuccess(isSuccess)
+			.build();
+	}
 }
