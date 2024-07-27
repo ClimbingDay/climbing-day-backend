@@ -10,6 +10,7 @@ import com.climbingday.domain.center.Center;
 import com.climbingday.domain.member.Member;
 import com.climbingday.dto.member.RecordRegisterDto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -37,6 +39,7 @@ public class Record {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
+	@Setter
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "center_id")
 	private Center center;
@@ -47,7 +50,8 @@ public class Record {
 
 	private Long duration;
 
-	@OneToMany(mappedBy = "record")
+	@Builder.Default
+	@OneToMany(mappedBy = "record", cascade = CascadeType.PERSIST)
 	private List<RecordProblem> recordProblemList = new ArrayList<>();
 
 	public static Record fromRecordRegisterDto(RecordRegisterDto recordRegisterDto, Member member) {
