@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public enum CenterErrorCode implements BaseErrorCode {
 	DUPLICATED_CENTER_NAME(409, "이미 암장이름입니다.", HttpStatus.CONFLICT),
-	EXISTS_NOT_CENTER(400, "존재하지 않는 암장입니다.", HttpStatus.BAD_REQUEST);
+	NOT_EXISTS_CENTER(400, "존재하지 않는 암장입니다.", HttpStatus.BAD_REQUEST);
 
 	private final int errorCode;
 	private final String errorMessage;

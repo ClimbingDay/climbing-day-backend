@@ -88,7 +88,7 @@ public class CenterService {
 		if(!centers.isEmpty()) {
 			return centers;
 		}else {
-			throw new CenterException(EXISTS_NOT_CENTER);
+			throw new CenterException(NOT_EXISTS_CENTER);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class CenterService {
 	public CenterLevelDto getCenterLevel(Long centerId) {
 		// 암장 조회
 		Center center = centerRepository.findCenterById(centerId)
-				.orElseThrow(() -> new CenterException(EXISTS_NOT_CENTER));
+				.orElseThrow(() -> new CenterException(NOT_EXISTS_CENTER));
 
 		List<Tuple> centerLevels = centerLevelRepository.getCenterLevels(center.getId());
 

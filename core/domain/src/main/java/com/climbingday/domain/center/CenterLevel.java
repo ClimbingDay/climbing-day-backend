@@ -10,13 +10,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class CenterLevel {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "center_lavel_id")
+	@Column(name = "center_level_id")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
