@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.climbingday.domain.common.repository.RedisRepository;
 import com.climbingday.domain.common.repository.S3Repository;
+import com.climbingday.domain.follow.repository.FollowRepository;
 import com.climbingday.domain.member.Member;
 import com.climbingday.domain.member.MemberTerms;
 import com.climbingday.domain.member.repository.MemberRepository;
@@ -61,6 +62,7 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 	private final TermsRepository termsRepository;
 	private final MemberTermsRepository memberTermsRepository;
+	private final FollowRepository followRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 	private final JwtProvider jwtProvider;
@@ -298,6 +300,11 @@ public class MemberService {
 				response.getCrew().add(crewProfileDto);
 			}
 		}
+
+		// 팔로워 수
+		response.setFollowerCount(followRepository.followerCount(response.getId()));
+		// 팔로잉 수
+		response.setFollowingCount(followRepository.followingCount(response.getId()));
 
 		return response;
 	}
