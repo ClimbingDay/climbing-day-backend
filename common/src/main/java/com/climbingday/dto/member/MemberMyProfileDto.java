@@ -22,6 +22,10 @@ public class MemberMyProfileDto {
 
 	private String introduce;
 
+	private Long followerCount;
+
+	private Long followingCount;
+
 	@Builder.Default
 	private List<CrewProfileDto> crew = new ArrayList<>();
 }
